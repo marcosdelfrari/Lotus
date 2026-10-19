@@ -1,4 +1,4 @@
-import { formatCurrency, formatDate } from "@/lib/format";
+import { formatCurrency, formatDate, formatShortDate } from "@/lib/format";
 import {
   proposalTotalServices,
   type TrafficProposalView,
@@ -10,35 +10,41 @@ function SlideHeader({
   title,
   subtitle,
   badge,
+  hideBadgeOnMobile = false,
 }: {
   index: string;
   category: string;
   title: string;
   subtitle?: string;
   badge?: string | null;
+  hideBadgeOnMobile?: boolean;
 }) {
   return (
-    <header className="border-b border-white/7 pb-6">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="flex items-center gap-2.5">
-          <span className="inline-flex items-center rounded-full border border-white/10 bg-white/3 px-2.5 py-0.5 font-mono text-[10px] tracking-[0.22em] text-foreground/80">
+    <header className="border-b border-white/7 pb-3.5 sm:pb-6">
+      <div className="flex flex-wrap items-center justify-between gap-2 sm:gap-3">
+        <div className="flex items-center gap-2 sm:gap-2.5">
+          <span className="inline-flex items-center rounded-full border border-white/10 bg-white/3 px-2 py-0.5 font-mono text-[9px] tracking-[0.18em] text-foreground/80 sm:px-2.5 sm:text-[10px] sm:tracking-[0.22em]">
             {index}
           </span>
-          <span className="font-mono text-[10px] uppercase tracking-[0.26em] text-muted">
+          <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-muted sm:text-[10px] sm:tracking-[0.26em]">
             {category}
           </span>
         </div>
         {badge ? (
-          <span className="rounded-full border border-white/10 bg-white/3 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
+          <span
+            className={`rounded-full border border-white/10 bg-white/3 px-2.5 py-0.5 font-mono text-[9px] uppercase tracking-[0.12em] text-muted-foreground sm:px-3 sm:py-1 sm:text-[10px] sm:tracking-[0.18em] ${
+              hideBadgeOnMobile ? "hidden sm:inline" : ""
+            }`}
+          >
             {badge}
           </span>
         ) : null}
       </div>
-      <h2 className="mt-4 text-2xl font-extralight tracking-[-0.02em] text-foreground sm:text-3xl lg:text-[34px] lg:leading-[1.15]">
+      <h2 className="mt-2.5 text-xl font-extralight tracking-[-0.02em] text-foreground sm:mt-4 sm:text-3xl lg:text-[34px] lg:leading-[1.15]">
         {title}
       </h2>
       {subtitle ? (
-        <p className="mt-2 max-w-2xl text-[13px] font-light leading-relaxed text-muted-foreground">
+        <p className="mt-1 max-w-2xl text-xs font-light leading-relaxed text-muted-foreground sm:mt-2 sm:text-[13px]">
           {subtitle}
         </p>
       ) : null}
@@ -50,81 +56,85 @@ export function ProposalStep1Content({ proposal }: { proposal: TrafficProposalVi
   const monthlyTotal = proposalTotalServices(proposal);
 
   return (
-    <div className="flex h-full flex-col justify-between gap-8">
-      <div className="space-y-6">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <div className="flex items-center gap-2.5">
-            <span className="h-1.5 w-1.5 rounded-full bg-foreground" />
-            <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-muted">
+    <div className="flex h-full flex-col justify-between gap-5 sm:gap-8">
+      <div className="space-y-2.5 sm:space-y-6">
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2 sm:gap-2.5">
+            <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-foreground" />
+            <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-muted sm:text-[10px] sm:tracking-[0.28em]">
               DOSSIÊ EXECUTIVO
             </span>
           </div>
           {proposal.validUntil ? (
-            <span className="rounded-full border border-white/10 bg-white/3 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
-              Válida até {formatDate(proposal.validUntil)}
+            <span className="shrink-0 rounded-full border border-white/10 bg-white/3 px-2.5 py-0.5 font-mono text-[9px] uppercase tracking-[0.12em] text-muted-foreground sm:px-3 sm:py-1 sm:text-[10px] sm:tracking-[0.18em]">
+              <span className="sm:hidden">Até {formatShortDate(proposal.validUntil)}</span>
+              <span className="hidden sm:inline">
+                Válida até {formatDate(proposal.validUntil)}
+              </span>
             </span>
           ) : null}
         </div>
 
-        <div className="space-y-4 pt-2">
-          <p className="font-mono text-[11px] uppercase tracking-[0.24em] text-muted-foreground">
-            Preparado exclusivamente para{" "}
+        <div className="space-y-1.5 sm:space-y-4 sm:pt-2">
+          <p className="truncate font-mono text-[10px] uppercase tracking-[0.16em] text-muted-foreground sm:text-[11px] sm:tracking-[0.24em]">
+            <span className="sm:hidden">Para </span>
+            <span className="hidden sm:inline">Preparado exclusivamente para </span>
             <span className="text-foreground">{proposal.companyName}</span>
           </p>
-          <h2 className="max-w-3xl text-3xl font-extralight leading-[1.1] tracking-[-0.03em] text-foreground sm:text-4xl lg:text-[44px]">
+          <h2 className="max-w-3xl text-[22px] font-extralight leading-[1.18] tracking-[-0.03em] text-foreground sm:text-4xl sm:leading-[1.1] lg:text-[44px]">
             {proposal.title || "Gestão de Tráfego Pago & Performance Digital"}
           </h2>
           {proposal.intro ? (
-            <p className="max-w-2xl pt-1 text-sm font-light leading-relaxed text-muted-foreground sm:text-[15px]">
+            <p className="max-w-2xl pt-0.5 text-[13px] font-light leading-relaxed text-muted-foreground sm:pt-1 sm:text-[15px]">
               {proposal.intro}
             </p>
           ) : null}
         </div>
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-3 sm:space-y-4">
         {proposal.goals ? (
-          <div className="rounded-2xl border border-white/7 bg-white/2 px-5 py-4">
-            <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-muted">
+          <div className="rounded-xl border border-white/7 bg-white/2 px-3.5 py-3 sm:rounded-2xl sm:px-5 sm:py-4">
+            <p className="font-mono text-[9px] uppercase tracking-[0.2em] text-muted sm:text-[10px] sm:tracking-[0.24em]">
               Diretriz Estratégica
             </p>
-            <p className="mt-1.5 text-[13px] font-light leading-relaxed text-foreground/90 sm:text-sm">
+            <p className="mt-1 text-xs font-light leading-relaxed text-foreground/90 sm:mt-1.5 sm:text-sm">
               {proposal.goals}
             </p>
           </div>
         ) : null}
 
-        <dl className="grid gap-px overflow-hidden rounded-2xl border border-white/8 bg-white/7 sm:grid-cols-2 lg:grid-cols-4">
-          <div className="bg-[#111111] px-5 py-4">
-            <dt className="font-mono text-[9px] uppercase tracking-[0.24em] text-muted">
+        <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-white/8 bg-white/7 sm:rounded-2xl lg:grid-cols-4">
+          <div className="bg-[#111111] px-3.5 py-2.5 sm:px-5 sm:py-4">
+            <dt className="font-mono text-[8.5px] uppercase tracking-[0.2em] text-muted sm:text-[9px] sm:tracking-[0.24em]">
               Contratante
             </dt>
-            <dd className="mt-1.5 truncate text-sm font-medium text-foreground">
+            <dd className="mt-1 truncate text-xs font-medium text-foreground sm:mt-1.5 sm:text-sm">
               {proposal.companyName}
             </dd>
           </div>
-          <div className="bg-[#111111] px-5 py-4">
-            <dt className="font-mono text-[9px] uppercase tracking-[0.24em] text-muted">
+          <div className="bg-[#111111] px-3.5 py-2.5 sm:px-5 sm:py-4">
+            <dt className="font-mono text-[8.5px] uppercase tracking-[0.2em] text-muted sm:text-[9px] sm:tracking-[0.24em]">
               Segmento
             </dt>
-            <dd className="mt-1.5 truncate text-sm font-light text-foreground/85">
+            <dd className="mt-1 truncate text-xs font-light text-foreground/85 sm:mt-1.5 sm:text-sm">
               {proposal.segment || "Performance & Aquisição"}
             </dd>
           </div>
-          <div className="bg-[#111111] px-5 py-4">
-            <dt className="font-mono text-[9px] uppercase tracking-[0.24em] text-muted">
+          <div className="bg-[#111111] px-3.5 py-2.5 sm:px-5 sm:py-4">
+            <dt className="font-mono text-[8.5px] uppercase tracking-[0.2em] text-muted sm:text-[9px] sm:tracking-[0.24em]">
               Fee Mensal
             </dt>
-            <dd className="mt-1.5 font-mono text-sm tabular-nums text-foreground">
+            <dd className="mt-1 font-mono text-xs tabular-nums text-foreground sm:mt-1.5 sm:text-sm">
               {formatCurrency(monthlyTotal)}
-              <span className="text-[11px] text-muted">/mês</span>
+              <span className="text-[10px] text-muted sm:text-[11px]">/mês</span>
             </dd>
           </div>
-          <div className="bg-[#111111] px-5 py-4">
-            <dt className="font-mono text-[9px] uppercase tracking-[0.24em] text-muted">
+          <div className="bg-[#111111] px-3.5 py-2.5 sm:px-5 sm:py-4">
+            <dt className="font-mono text-[8.5px] uppercase tracking-[0.2em] text-muted sm:text-[9px] sm:tracking-[0.24em]">
               Ciclo / Contato
             </dt>
-            <dd className="mt-1.5 truncate font-mono text-xs text-foreground/85">
+            <dd className="mt-1 truncate font-mono text-[11px] text-foreground/85 sm:mt-1.5 sm:text-xs">
               {proposal.deadlineDays
                 ? `${proposal.deadlineDays} dias`
                 : proposal.contactPhone || "Ativação imediata"}
@@ -412,54 +422,61 @@ export function ProposalStep6Review({
         title="Resumo & Formalização"
         subtitle="Quadro consolidado da proposta comercial antes da assinatura digital."
         badge={proposal.companyName}
+        hideBadgeOnMobile
       />
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <div className="rounded-2xl border border-white/8 bg-white/2 p-4">
-          <p className="font-mono text-[9px] uppercase tracking-[0.22em] text-muted">
+      <div className="grid grid-cols-2 gap-2.5 sm:gap-4 lg:grid-cols-4">
+        <div className="rounded-xl border border-white/8 bg-white/2 p-3 sm:rounded-2xl sm:p-4">
+          <p className="font-mono text-[8.5px] uppercase tracking-[0.18em] text-muted sm:text-[9px] sm:tracking-[0.22em]">
             Mensalidade Gestão
           </p>
-          <p className="mt-2 font-mono text-xl font-light tabular-nums text-foreground">
+          <p className="mt-1.5 font-mono text-base font-light tabular-nums text-foreground sm:mt-2 sm:text-xl">
             {formatCurrency(monthlyTotal)}
-            <span className="text-xs text-muted">/mês</span>
+            <span className="text-[10px] text-muted sm:text-xs">/mês</span>
           </p>
-          <p className="mt-1 text-[11px] text-muted-foreground">
+          <p className="mt-0.5 text-[10px] text-muted-foreground sm:mt-1 sm:text-[11px]">
             {proposal.services.length} serviços incluídos
           </p>
         </div>
 
-        <div className="rounded-2xl border border-white/8 bg-white/2 p-4">
-          <p className="font-mono text-[9px] uppercase tracking-[0.22em] text-muted">
+        <div className="rounded-xl border border-white/8 bg-white/2 p-3 sm:rounded-2xl sm:p-4">
+          <p className="font-mono text-[8.5px] uppercase tracking-[0.18em] text-muted sm:text-[9px] sm:tracking-[0.22em]">
             Setup Inicial
           </p>
-          <p className="mt-2 font-mono text-xl font-light tabular-nums text-foreground">
+          <p className="mt-1.5 font-mono text-base font-light tabular-nums text-foreground sm:mt-2 sm:text-xl">
             {proposal.setupFee != null && proposal.setupFee > 0
               ? formatCurrency(proposal.setupFee)
               : "Isento"}
           </p>
-          <p className="mt-1 text-[11px] text-muted-foreground">Taxa única de ativação</p>
+          <p className="mt-0.5 text-[10px] text-muted-foreground sm:mt-1 sm:text-[11px]">
+            Taxa única de ativação
+          </p>
         </div>
 
-        <div className="rounded-2xl border border-white/8 bg-white/2 p-4">
-          <p className="font-mono text-[9px] uppercase tracking-[0.22em] text-muted">
+        <div className="rounded-xl border border-white/8 bg-white/2 p-3 sm:rounded-2xl sm:p-4">
+          <p className="font-mono text-[8.5px] uppercase tracking-[0.18em] text-muted sm:text-[9px] sm:tracking-[0.22em]">
             Verba de Mídia
           </p>
-          <p className="mt-2 font-mono text-xl font-light tabular-nums text-foreground">
+          <p className="mt-1.5 font-mono text-base font-light tabular-nums text-foreground sm:mt-2 sm:text-xl">
             {proposal.adBudgetSuggestion
               ? formatCurrency(proposal.adBudgetSuggestion)
               : "Sob medida"}
           </p>
-          <p className="mt-1 text-[11px] text-muted-foreground">Google Ads & Meta Ads</p>
+          <p className="mt-0.5 text-[10px] text-muted-foreground sm:mt-1 sm:text-[11px]">
+            Google Ads & Meta Ads
+          </p>
         </div>
 
-        <div className="rounded-2xl border border-white/8 bg-white/2 p-4">
-          <p className="font-mono text-[9px] uppercase tracking-[0.22em] text-muted">
+        <div className="rounded-xl border border-white/8 bg-white/2 p-3 sm:rounded-2xl sm:p-4">
+          <p className="font-mono text-[8.5px] uppercase tracking-[0.18em] text-muted sm:text-[9px] sm:tracking-[0.22em]">
             Implantação & Bônus
           </p>
-          <p className="mt-2 font-mono text-xl font-light tabular-nums text-foreground">
+          <p className="mt-1.5 font-mono text-base font-light tabular-nums text-foreground sm:mt-2 sm:text-xl">
             {proposal.deadlineDays ? `${proposal.deadlineDays} dias` : "Imediato"}
           </p>
-          <p className="mt-1 text-[11px] text-muted-foreground">Kickoff e onboarding inclusos</p>
+          <p className="mt-0.5 text-[10px] text-muted-foreground sm:mt-1 sm:text-[11px]">
+            Kickoff e onboarding inclusos
+          </p>
         </div>
       </div>
 

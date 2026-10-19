@@ -22,7 +22,7 @@ export function AppShell({
     pathname.startsWith("/servicos/");
   const fullBleed = pathname === "/admin" || bare;
   const frame = fullBleed
-    ? "w-full px-5 sm:px-8 lg:px-10"
+    ? "w-full px-3.5 sm:px-8 lg:px-10"
     : "mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8";
 
   return (
@@ -61,7 +61,7 @@ export function AppShell({
         </div>
       </header>
       )}
-      <main className={`flex-1 ${bare ? "py-6 sm:py-10" : "py-8"} ${frame}`}>{children}</main>
+      <main className={`flex-1 ${bare ? "py-3 sm:py-10" : "py-8"} ${frame}`}>{children}</main>
     </div>
   );
 }

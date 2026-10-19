@@ -75,7 +75,10 @@ export function ContractedServicesScreen({
           </h1>
           <p className="mt-3 max-w-xl text-sm font-light leading-relaxed text-muted-foreground">
             Gestão de tráfego e serviços vinculados à proposta aceita por{" "}
-            <strong className="font-medium text-foreground">{proposal.companyName}</strong>.
+            <strong className="font-medium text-foreground">
+              {proposal.companyName}
+            </strong>
+            .
             {acceptedLabel ? (
               <>
                 {" "}
@@ -100,7 +103,9 @@ export function ContractedServicesScreen({
                       className="flex items-start justify-between gap-4 py-4 first:pt-0 last:pb-0"
                     >
                       <div className="min-w-0">
-                        <p className="text-sm font-medium text-foreground">{service.name}</p>
+                        <p className="text-sm font-medium text-foreground">
+                          {service.name}
+                        </p>
                         {service.description ? (
                           <p className="mt-1 text-xs font-light leading-relaxed text-muted-foreground">
                             {service.description}
@@ -109,14 +114,17 @@ export function ContractedServicesScreen({
                       </div>
                       <p className="shrink-0 font-mono text-sm tabular-nums text-foreground">
                         {formatCurrency(service.value)}
-                        <span className="text-[10px] font-normal text-muted">/mês</span>
+                        <span className="text-[10px] font-normal text-muted">
+                          /mês
+                        </span>
                       </p>
                     </li>
                   ))}
                 </ul>
               ) : (
                 <p className="mt-4 text-sm font-light text-muted-foreground">
-                  Nenhum serviço detalhado na proposta. Consulte o contrato completo.
+                  Nenhum serviço detalhado na proposta. Consulte o contrato
+                  completo.
                 </p>
               )}
 
@@ -179,12 +187,15 @@ export function ContractedServicesScreen({
                 Suporte
               </p>
               <p className="mt-2 text-xs font-light leading-relaxed text-muted-foreground">
-                Dúvidas sobre escopo ou faturamento? Fale com nosso time pelo WhatsApp cadastrado na
-                proposta
+                Dúvidas sobre escopo ou faturamento? Fale com nosso time
                 {proposal.contactPhone ? (
                   <>
                     {" "}
-                    (<span className="font-mono text-foreground">{proposal.contactPhone}</span>)
+                    (
+                    <span className="font-mono text-foreground">
+                      {proposal.contactPhone}
+                    </span>
+                    )
                   </>
                 ) : null}
                 .

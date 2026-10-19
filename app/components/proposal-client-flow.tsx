@@ -2,7 +2,7 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
-import { useCallback, useEffect, useState, useTransition } from "react";
+import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 import { acceptProposalAction } from "@/app/(workspace)/propostas/actions";
 import { ProposalAcceptedScreen } from "@/app/components/proposal-accepted-screen";
 import { ProposalFlowStepBody } from "@/app/components/proposal-flow-sections";
@@ -30,6 +30,7 @@ export function ProposalClientFlow({
   const [reviewingProposal, setReviewingProposal] = useState(contractReviewOnly);
   const [error, setError] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
+  const flowRef = useRef<HTMLDivElement>(null);
 
   const isAccepted = accepted || proposal.status === "accepted";
   const canAccept = proposal.status === "sent" && !previewMode && !isAccepted;
@@ -39,8 +40,12 @@ export function ProposalClientFlow({
   const goToStep = useCallback(
     (nextStep: number) => {
       const clamped = Math.max(1, Math.min(maxStep, nextStep));
+      if (clamped === step) return;
       setDirection(clamped >= step ? 1 : -1);
       setStep(clamped);
+      requestAnimationFrame(() => {
+        flowRef.current?.scrollIntoView({ block: "start", behavior: "smooth" });
+      });
     },
     [maxStep, step],
   );
@@ -86,25 +91,31 @@ export function ProposalClientFlow({
   const progressPct = (step / maxStep) * 100;
 
   return (
-    <div className="space-y-5">
+    <div ref={flowRef} className="scroll-mt-3 space-y-2.5 sm:space-y-5">
       {/* Top Deck Bar */}
-      <div className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-white/7 bg-[#111111]/90 px-4 py-3 backdrop-blur-md sm:px-5">
-        <div className="flex items-center gap-3">
+      <div className="flex items-center justify-between gap-2 rounded-xl border border-white/7 bg-[#111111]/90 px-3 py-2 backdrop-blur-md sm:flex-wrap sm:gap-4 sm:rounded-2xl sm:px-5 sm:py-3">
+        <div
+          className={`items-center gap-3 ${
+            isAccepted && !previewMode ? "flex shrink-0" : "hidden sm:flex"
+          }`}
+        >
           {isAccepted && !previewMode ? (
             contractReviewOnly ? (
               <Link
                 href="/servicos"
-                className="inline-flex items-center gap-1.5 rounded-full border border-positive/30 bg-positive/10 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.18em] text-positive transition-colors hover:bg-positive/20"
+                className="inline-flex items-center gap-1 rounded-full border border-positive/30 bg-positive/10 px-2.5 py-1 font-mono text-[9px] uppercase tracking-[0.14em] text-positive transition-colors hover:bg-positive/20 sm:gap-1.5 sm:px-3 sm:text-[10px] sm:tracking-[0.18em]"
               >
-                ← Serviços contratados
+                ← <span className="sm:hidden">Voltar</span>
+                <span className="hidden sm:inline">Serviços contratados</span>
               </Link>
             ) : (
               <button
                 type="button"
                 onClick={() => setReviewingProposal(false)}
-                className="inline-flex items-center gap-1.5 rounded-full border border-positive/30 bg-positive/10 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.18em] text-positive transition-colors hover:bg-positive/20"
+                className="inline-flex items-center gap-1 rounded-full border border-positive/30 bg-positive/10 px-2.5 py-1 font-mono text-[9px] uppercase tracking-[0.14em] text-positive transition-colors hover:bg-positive/20 sm:gap-1.5 sm:px-3 sm:text-[10px] sm:tracking-[0.18em]"
               >
-                ← Voltar para confirmação
+                ← <span className="sm:hidden">Voltar</span>
+                <span className="hidden sm:inline">Voltar para confirmação</span>
               </button>
             )
           ) : (
@@ -114,7 +125,7 @@ export function ProposalClientFlow({
               }`}
             />
           )}
-          <div className="flex items-center gap-2">
+          <div className="hidden items-center gap-2 sm:flex">
             <span className="font-mono text-[10px] uppercase tracking-[0.24em] text-muted">
               Proposta
             </span>
@@ -128,7 +139,7 @@ export function ProposalClientFlow({
         {/* Horizontal Slide Selector */}
         <nav
           aria-label="Etapas da proposta"
-          className="flex items-center gap-1 overflow-x-auto py-0.5"
+          className="flex flex-1 items-center justify-between gap-1 overflow-x-auto py-0.5 sm:flex-initial sm:justify-start"
         >
           {visibleSteps.map((s) => {
             const active = s.id === step;
@@ -138,7 +149,7 @@ export function ProposalClientFlow({
                 key={s.id}
                 type="button"
                 onClick={() => goToStep(s.id)}
-                className={`group flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[11px] transition-all ${
+                className={`group flex items-center justify-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] transition-all sm:px-3 sm:py-1.5 sm:text-[11px] ${
                   active
                     ? "bg-foreground font-medium text-background shadow-sm"
                     : past
@@ -167,7 +178,7 @@ export function ProposalClientFlow({
       </div>
 
       {/* Main Widescreen Slide Stage */}
-      <div className="relative flex min-h-135 flex-col justify-between overflow-hidden rounded-[28px] border border-white/9 bg-linear-to-b from-[#161616] via-[#101010] to-[#0b0b0b] shadow-[0_32px_90px_-20px_rgba(0,0,0,0.85)] sm:min-h-147.5">
+      <div className="relative flex flex-col justify-between overflow-hidden rounded-2xl border border-white/9 bg-linear-to-b from-[#161616] via-[#101010] to-[#0b0b0b] shadow-[0_32px_90px_-20px_rgba(0,0,0,0.85)] sm:min-h-147.5 sm:rounded-[28px]">
         {/* Progress hairline at top of slide */}
         <div className="h-0.5 w-full bg-white/4">
           <div
@@ -187,7 +198,7 @@ export function ProposalClientFlow({
         />
 
         {/* Slide Body */}
-        <div className="relative z-10 flex flex-1 flex-col justify-between p-6 sm:p-10 lg:p-12">
+        <div className="relative z-10 flex flex-1 flex-col justify-between p-4 sm:p-10 lg:p-12">
           <AnimatePresence mode="wait" initial={false}>
             <motion.div
               key={step}
@@ -266,8 +277,8 @@ export function ProposalClientFlow({
         </div>
 
         {/* Slide Deck Bottom Dock */}
-        <footer className="relative z-10 flex flex-wrap items-center justify-between gap-4 border-t border-white/6 bg-black/25 px-6 py-4 sm:px-10">
-          <div className="flex items-center gap-3">
+        <footer className="relative z-10 flex items-center justify-between gap-3 border-t border-white/6 bg-black/25 px-4 py-3 sm:flex-wrap sm:gap-4 sm:px-10 sm:py-4">
+          <div className="hidden items-center gap-3 sm:flex">
             <span className="font-mono text-[9px] uppercase tracking-[0.28em] text-muted">
               LÓTUS
             </span>
@@ -295,12 +306,12 @@ export function ProposalClientFlow({
           </div>
 
           {/* Navigation Controls */}
-          <div className="flex items-center gap-2.5">
+          <div className="flex shrink-0 items-center gap-2">
             <button
               type="button"
               disabled={step <= 1}
               onClick={() => goToStep(step - 1)}
-              className="rounded-full border border-white/10 bg-white/2 px-4 py-2 text-[11px] font-medium tracking-wide text-foreground transition-all hover:border-white/25 hover:bg-white/6 disabled:opacity-20"
+              className="whitespace-nowrap rounded-full border border-white/10 bg-white/2 px-3.5 py-2 text-[11px] font-medium tracking-wide text-foreground transition-all hover:border-white/25 hover:bg-white/6 disabled:opacity-20 sm:px-4"
             >
               ← Anterior
             </button>
@@ -308,7 +319,7 @@ export function ProposalClientFlow({
               <button
                 type="button"
                 onClick={() => goToStep(step + 1)}
-                className="rounded-full bg-foreground px-5 py-2 text-[11px] font-medium tracking-wide text-background transition-all hover:opacity-90 active:scale-[0.98]"
+                className="whitespace-nowrap rounded-full bg-foreground px-4 py-2 text-[11px] font-medium tracking-wide text-background transition-all hover:opacity-90 active:scale-[0.98] sm:px-5"
               >
                 Continuar →
               </button>
