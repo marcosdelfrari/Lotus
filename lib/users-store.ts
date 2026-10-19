@@ -116,6 +116,8 @@ export async function activateClientProPlan(input: {
     return { error: "Conta do Analytics não encontrada para ativar o plano Pro." } as const;
   }
   const plan = await setClientPlanActive(clientId, true);
-  if ("error" in plan) return plan;
+  if ("error" in plan) {
+    return { error: plan.error } as const;
+  }
   return { account: plan.account, clientId } as const;
 }
