@@ -82,3 +82,40 @@ export async function setClientPlanActive(id: string, planActive: boolean) {
   });
   return { account: toAccount(updated) } as const;
 }
+
+/** Conta do Analytics que deve receber o plano Pro (e-mail do login tem prioridade). */
+export async function resolveAnalyticsClientId(input: {
+  email: string;
+  preferredIds: string[];
+}) {
+  const normalized = input.email.trim().toLowerCase();
+  if (normalized) {
+    const byEmail = await prisma.user.findUnique({ where: { email: normalized } });
+    if (byEmail && roleForEmail(byEmail.email) === "client") {
+      return byEmail.id;
+    }
+  }
+
+  for (const id of input.preferredIds) {
+    if (!id) continue;
+    const user = await prisma.user.findUnique({ where: { id } });
+    if (user && roleForEmail(user.email) === "client") {
+      return user.id;
+    }
+  }
+
+  return null;
+}
+
+export async function activateClientProPlan(input: {
+  email: string;
+  preferredIds: string[];
+}) {
+  const clientId = await resolveAnalyticsClientId(input);
+  if (!clientId) {
+    return { error: "Conta do Analytics não encontrada para ativar o plano Pro." } as const;
+  }
+  const plan = await setClientPlanActive(clientId, true);
+  if ("error" in plan) return plan;
+  return { account: plan.account, clientId } as const;
+}

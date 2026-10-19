@@ -10,7 +10,7 @@ import {
   type ProposalCommercialPayload,
   type TrafficProposalView,
 } from "@/lib/proposal-types";
-import { setClientPlanActive } from "@/lib/users-store";
+import { activateClientProPlan, setClientPlanActive } from "@/lib/users-store";
 
 const OPEN_PROPOSAL_STATUSES = [
   ProposalStatus.draft,
@@ -20,6 +20,36 @@ const OPEN_PROPOSAL_STATUSES = [
 
 function normalizeClientEmail(email: string) {
   return email.trim().toLowerCase();
+}
+
+type ProposalOwnerRef = { userId: string; clientEmail: string };
+
+function sharesProposalOwner(a: ProposalOwnerRef, b: ProposalOwnerRef) {
+  if (a.userId && a.userId === b.userId) return true;
+  const left = normalizeClientEmail(a.clientEmail);
+  const right = normalizeClientEmail(b.clientEmail);
+  return Boolean(left && right && left === right);
+}
+
+function ownerFromInterest(input: { userId: string; email: string }): ProposalOwnerRef {
+  return { userId: input.userId, clientEmail: input.email };
+}
+
+/** Cliente já tem proposta (qualquer status exceto cancelada) — não listar de novo em solicitações. */
+export async function filterInterestsWithoutProposal<
+  T extends { userId: string; email: string },
+>(interests: T[]) {
+  if (interests.length === 0) return interests;
+
+  const owners = await prisma.trafficProposal.findMany({
+    where: { status: { not: ProposalStatus.cancelled } },
+    select: { userId: true, clientEmail: true },
+  });
+
+  return interests.filter(
+    (interest) =>
+      !owners.some((owner) => sharesProposalOwner(ownerFromInterest(interest), owner)),
+  );
 }
 
 async function clientContactForUser(userId: string) {
@@ -320,9 +350,26 @@ export async function listRequestedProposals() {
     where: { status: ProposalStatus.requested },
     orderBy: { createdAt: "asc" },
   });
-  const names = await displayNamesForProposals(rows);
 
-  return rows.map((row, index) => ({
+  const pipeline = await prisma.trafficProposal.findMany({
+    where: {
+      status: {
+        in: [ProposalStatus.draft, ProposalStatus.sent, ProposalStatus.accepted],
+      },
+    },
+    select: { id: true, userId: true, clientEmail: true },
+  });
+
+  const pending = rows.filter(
+    (row) =>
+      !pipeline.some(
+        (other) => other.id !== row.id && sharesProposalOwner(row, other),
+      ),
+  );
+
+  const names = await displayNamesForProposals(pending);
+
+  return pending.map((row, index) => ({
     ...toProposalView(row),
     ...names[index],
   }));
@@ -416,21 +463,26 @@ export async function acceptProposal(
     ...device,
     acceptedAt: acceptedAt.toISOString(),
   };
+
+  const plan = await activateClientProPlan({
+    email: clientEmailNorm || row.clientEmail,
+    preferredIds: [userId, row.userId],
+  });
+  if ("error" in plan) {
+    return { error: plan.error } as const;
+  }
+
   const updated = await prisma.trafficProposal.update({
     where: { id: proposalId },
     data: {
       status: ProposalStatus.accepted,
       acceptedAt,
       acceptance,
+      userId: plan.clientId,
       clientEmail: clientEmailNorm || row.clientEmail,
       clientName: client.name.trim() || row.clientName,
     },
   });
-
-  const plan = await setClientPlanActive(userId, true);
-  if ("error" in plan) {
-    return { error: plan.error } as const;
-  }
 
   const proposal = toProposalView(updated);
   const mail = await sendAcceptedProposalEmail({
@@ -451,4 +503,31 @@ export async function acceptProposal(
 
 export function canAccept(proposal: TrafficProposalView) {
   return proposal.status === ProposalStatus.sent;
+}
+
+/** Repara aceites antigos em que a proposta ficou accepted mas o plano Pro não subiu. */
+export async function ensureProPlanForAcceptedProposal(input: {
+  proposal: TrafficProposalView;
+  sessionUserId: string;
+  sessionEmail: string;
+  planAlreadyActive: boolean;
+}) {
+  if (input.planAlreadyActive) return;
+  if (input.proposal.status !== ProposalStatus.accepted) return;
+
+  const plan = await activateClientProPlan({
+    email: input.sessionEmail,
+    preferredIds: [input.sessionUserId, input.proposal.userId],
+  });
+  if ("error" in plan) {
+    console.error("Falha ao sincronizar plano Pro após aceite:", plan.error);
+    return;
+  }
+
+  if (plan.clientId !== input.proposal.userId) {
+    await prisma.trafficProposal.update({
+      where: { id: input.proposal.id },
+      data: { userId: plan.clientId },
+    });
+  }
 }

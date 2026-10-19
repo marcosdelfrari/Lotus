@@ -4,9 +4,9 @@ import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import { useCallback, useEffect, useState, useTransition } from "react";
 import { acceptProposalAction } from "@/app/(workspace)/propostas/actions";
-import { collectAcceptanceDevice } from "@/lib/acceptance";
+import { ProposalAcceptedScreen } from "@/app/components/proposal-accepted-screen";
 import { ProposalFlowStepBody } from "@/app/components/proposal-flow-sections";
-import { analyticsDashboardUrl } from "@/lib/analytics-app";
+import { collectAcceptanceDevice } from "@/lib/acceptance";
 import { PROPOSAL_FLOW_STEPS } from "@/lib/commercial-defaults";
 import type { TrafficProposalView } from "@/lib/proposal-types";
 
@@ -14,16 +14,20 @@ export function ProposalClientFlow({
   proposal,
   planAlreadyActive,
   previewMode = false,
+  contractReviewOnly = false,
 }: {
   proposal: TrafficProposalView;
   planAlreadyActive?: boolean;
   previewMode?: boolean;
+  /** Abre direto no dossiê da proposta aceita (área do cliente). */
+  contractReviewOnly?: boolean;
 }) {
   const isAcceptedInitial = proposal.status === "accepted";
   const [step, setStep] = useState(isAcceptedInitial ? 6 : 1);
   const [direction, setDirection] = useState<1 | -1>(1);
   const [terms, setTerms] = useState(false);
   const [accepted, setAccepted] = useState(isAcceptedInitial);
+  const [reviewingProposal, setReviewingProposal] = useState(contractReviewOnly);
   const [error, setError] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
 
@@ -42,6 +46,8 @@ export function ProposalClientFlow({
   );
 
   useEffect(() => {
+    if (isAccepted && !previewMode && !reviewingProposal) return;
+
     function onKeyDown(e: KeyboardEvent) {
       const target = e.target as HTMLElement | null;
       if (
@@ -62,7 +68,20 @@ export function ProposalClientFlow({
     }
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [goToStep, step]);
+  }, [goToStep, isAccepted, previewMode, reviewingProposal, step]);
+
+  if (isAccepted && !previewMode && !reviewingProposal) {
+    return (
+      <ProposalAcceptedScreen
+        proposal={proposal}
+        emailWarning={error}
+        onReviewProposal={() => {
+          setStep(1);
+          setReviewingProposal(true);
+        }}
+      />
+    );
+  }
 
   const progressPct = (step / maxStep) * 100;
 
@@ -71,11 +90,30 @@ export function ProposalClientFlow({
       {/* Top Deck Bar */}
       <div className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-white/7 bg-[#111111]/90 px-4 py-3 backdrop-blur-md sm:px-5">
         <div className="flex items-center gap-3">
-          <span
-            className={`h-2 w-2 rounded-full ${
-              isAccepted ? "bg-positive" : "bg-foreground"
-            }`}
-          />
+          {isAccepted && !previewMode ? (
+            contractReviewOnly ? (
+              <Link
+                href="/servicos"
+                className="inline-flex items-center gap-1.5 rounded-full border border-positive/30 bg-positive/10 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.18em] text-positive transition-colors hover:bg-positive/20"
+              >
+                ← Serviços contratados
+              </Link>
+            ) : (
+              <button
+                type="button"
+                onClick={() => setReviewingProposal(false)}
+                className="inline-flex items-center gap-1.5 rounded-full border border-positive/30 bg-positive/10 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.18em] text-positive transition-colors hover:bg-positive/20"
+              >
+                ← Voltar para confirmação
+              </button>
+            )
+          ) : (
+            <span
+              className={`h-2 w-2 rounded-full ${
+                isAccepted ? "bg-positive" : "bg-foreground"
+              }`}
+            />
+          )}
           <div className="flex items-center gap-2">
             <span className="font-mono text-[10px] uppercase tracking-[0.24em] text-muted">
               Proposta
@@ -127,35 +165,6 @@ export function ProposalClientFlow({
           <span>{String(maxStep).padStart(2, "0")}</span>
         </div>
       </div>
-
-      {/* Accepted Status Banner */}
-      {isAccepted ? (
-        <div className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-positive/30 bg-positive/6 px-5 py-4">
-          <div className="flex items-center gap-3">
-            <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-positive/40 bg-positive/10 text-xs text-positive">
-              ✓
-            </span>
-            <div>
-              <p className="text-xs font-medium uppercase tracking-[0.18em] text-positive">
-                Proposta aceita
-              </p>
-              <p className="mt-0.5 text-xs font-light text-muted-foreground">
-                Contratação registrada. Nossa equipe inicia o alinhamento e a implantação das
-                campanhas conforme o escopo acordado.
-              </p>
-            </div>
-          </div>
-          {!previewMode ? (
-            <Link
-              href={analyticsDashboardUrl()}
-              className="inline-flex shrink-0 items-center gap-2 rounded-full bg-foreground px-5 py-2 text-xs font-medium text-background transition-opacity hover:opacity-90"
-            >
-              Abrir Lótus Analytics
-              <span aria-hidden>→</span>
-            </Link>
-          ) : null}
-        </div>
-      ) : null}
 
       {/* Main Widescreen Slide Stage */}
       <div className="relative flex min-h-135 flex-col justify-between overflow-hidden rounded-[28px] border border-white/9 bg-linear-to-b from-[#161616] via-[#101010] to-[#0b0b0b] shadow-[0_32px_90px_-20px_rgba(0,0,0,0.85)] sm:min-h-147.5">

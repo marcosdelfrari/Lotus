@@ -6,7 +6,10 @@ import { WhatsappNextStep } from "@/app/components/whatsapp-next-step";
 import { getSession } from "@/lib/auth";
 import { getInterestForUser } from "@/lib/interests-store";
 import { hasActivePlan } from "@/lib/plan";
-import { getLatestProposalForUser } from "@/lib/proposals-store";
+import {
+  ensureProPlanForAcceptedProposal,
+  getLatestProposalForUser,
+} from "@/lib/proposals-store";
 
 export const instant = false;
 
@@ -24,10 +27,24 @@ export default async function PropostasPage() {
   ]);
 
   if (proposal && (proposal.status === "sent" || proposal.status === "accepted")) {
+    let planAlreadyActive = hasActivePlan(session);
+    if (proposal.status === "accepted" && !planAlreadyActive) {
+      await ensureProPlanForAcceptedProposal({
+        proposal,
+        sessionUserId: session.userId,
+        sessionEmail: session.email,
+        planAlreadyActive,
+      });
+      const refreshed = await getSession();
+      if (refreshed) planAlreadyActive = hasActivePlan(refreshed);
+    }
+    if (proposal.status === "accepted" && planAlreadyActive) {
+      redirect("/servicos");
+    }
     return (
       <ProposalAcceptPanel
         proposal={proposal}
-        planAlreadyActive={hasActivePlan(session)}
+        planAlreadyActive={planAlreadyActive}
       />
     );
   }

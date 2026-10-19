@@ -15,7 +15,11 @@ export function AppShell({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-  const bare = pathname === "/propostas" || pathname.includes("/propostas/");
+  const bare =
+    pathname === "/propostas" ||
+    pathname.includes("/propostas/") ||
+    pathname === "/servicos" ||
+    pathname.startsWith("/servicos/");
   const fullBleed = pathname === "/admin" || bare;
   const frame = fullBleed
     ? "w-full px-5 sm:px-8 lg:px-10"

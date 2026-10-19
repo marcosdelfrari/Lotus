@@ -9,6 +9,7 @@ import { formatDate } from "@/lib/format";
 import { formatInterestWhen, formatWhatsapp } from "@/lib/whatsapp";
 import { getInterestForUser, listInterests } from "@/lib/interests-store";
 import {
+  filterInterestsWithoutProposal,
   getLatestProposalForUser,
   getProposalById,
   listRequestedProposals,
@@ -39,13 +40,14 @@ export default async function AdminPage({
   const { cliente, lista, proposta } = await searchParams;
   const view =
     lista === "enviadas" ? "enviadas" : lista === "solicitacoes" ? "solicitacoes" : "clientes";
-  const [clients, pending, published, interests, selectedProposal] = await Promise.all([
+  const [clients, pending, published, interestsRaw, selectedProposal] = await Promise.all([
     listClients(),
     listRequestedProposals(),
     listSentAndAcceptedProposals(),
     listInterests(),
     proposta ? getProposalById(proposta) : Promise.resolve(null),
   ]);
+  const interests = await filterInterestsWithoutProposal(interestsRaw);
   const clientId = selectedProposal?.userId ?? cliente;
   const client = clientId ? (clients.find((row) => row.id === clientId) ?? null) : null;
 
