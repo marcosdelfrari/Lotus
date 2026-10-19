@@ -1,5 +1,8 @@
 export const LOTUS_WHATSAPP_URL = "https://wa.me/5531994369932";
 export const LOTUS_WHATSAPP_LABEL = "(31) 99436-9932";
+/** Chave PIX (celular) para pagamentos da Lótus */
+export const LOTUS_PIX_KEY = "5531994369932";
+export const LOTUS_PIX_LABEL = LOTUS_WHATSAPP_LABEL;
 
 export function normalizeWhatsapp(raw: string): string | null {
   let digits = raw.replace(/\D/g, "");

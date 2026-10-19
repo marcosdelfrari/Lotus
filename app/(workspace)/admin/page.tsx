@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { AdminBillingPanel } from "@/app/components/admin-billing-panel";
 import { AdminDeleteProposalButton } from "@/app/components/admin-delete-proposal-button";
 import { AdminProposalWizard } from "@/app/components/admin-proposal-wizard";
 import { AdminProposalsPanel } from "@/app/components/admin-proposals-panel";
@@ -15,6 +16,11 @@ import {
   listRequestedProposals,
   listSentAndAcceptedProposals,
 } from "@/lib/proposals-store";
+import {
+  ensureBillingForAcceptedProposals,
+  listAllBillingForAdmin,
+  listPendingBillingForAdmin,
+} from "@/lib/billing-store";
 import { listClients } from "@/lib/users-store";
 
 export const instant = false;
@@ -39,14 +45,25 @@ export default async function AdminPage({
 
   const { cliente, lista, proposta } = await searchParams;
   const view =
-    lista === "enviadas" ? "enviadas" : lista === "solicitacoes" ? "solicitacoes" : "clientes";
-  const [clients, pending, published, interestsRaw, selectedProposal] = await Promise.all([
+    lista === "enviadas"
+      ? "enviadas"
+      : lista === "solicitacoes"
+        ? "solicitacoes"
+        : lista === "faturamento"
+          ? "faturamento"
+          : "clientes";
+  const [clients, pending, published, interestsRaw, selectedProposal, billingPending] =
+    await Promise.all([
     listClients(),
     listRequestedProposals(),
     listSentAndAcceptedProposals(),
     listInterests(),
     proposta ? getProposalById(proposta) : Promise.resolve(null),
+    listPendingBillingForAdmin(),
   ]);
+  if (view === "faturamento") {
+    await ensureBillingForAcceptedProposals();
+  }
   const interests = await filterInterestsWithoutProposal(interestsRaw);
   const clientId = selectedProposal?.userId ?? cliente;
   const client = clientId ? (clients.find((row) => row.id === clientId) ?? null) : null;
@@ -64,6 +81,20 @@ export default async function AdminPage({
 
   const editableProposal =
     proposal && proposal.status !== "cancelled" ? proposal : null;
+
+  const proposalBilling =
+    proposal?.status === "accepted"
+      ? await listAllBillingForAdmin(proposal.id)
+      : [];
+  const proposalBillingRows =
+    proposalBilling.length > 0
+      ? proposalBilling.map((row) => ({
+          ...row,
+          companyName: proposal!.companyName,
+          clientName: client?.name ?? "",
+          clientEmail: client?.email ?? "",
+        }))
+      : [];
 
   return (
     <>
@@ -102,11 +133,23 @@ export default async function AdminPage({
             >
               Enviadas e aceitas
             </Link>
+            <Link
+              href="/admin?lista=faturamento"
+              className={`rounded-full border px-4 py-1.5 text-[12px] ${
+                view === "faturamento"
+                  ? "border-foreground bg-foreground text-background"
+                  : "border-border text-muted-foreground"
+              }`}
+            >
+              Faturamento
+            </Link>
           </>
         }
       />
 
-      {view === "solicitacoes" ? (
+      {view === "faturamento" ? (
+        <AdminBillingPanel pending={billingPending} />
+      ) : view === "solicitacoes" ? (
         <section>
           {interests.length === 0 ? (
             <p className="rounded-xl border border-dashed border-border px-4 py-8 text-center text-sm text-muted-foreground">
@@ -259,6 +302,18 @@ export default async function AdminPage({
                 <p className="text-[12px] font-medium uppercase tracking-wide text-muted">
                   Status: {statusLabel[proposal.status] ?? proposal.status}
                 </p>
+              ) : null}
+
+              {proposal?.status === "accepted" && proposalBillingRows.length > 0 ? (
+                <section className="rounded-xl border border-border bg-surface p-5">
+                  <AdminBillingPanel
+                    pending={billingPending.filter(
+                      (row) => row.proposalId === proposal.id,
+                    )}
+                    proposalItems={proposalBillingRows}
+                    proposalCompanyName={proposal.companyName}
+                  />
+                </section>
               ) : null}
 
               {editableProposal || !proposal ? (

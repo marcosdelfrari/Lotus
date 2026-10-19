@@ -15,6 +15,16 @@ enum ProposalStatus {
   cancelled
 }
 
+enum BillingItemKind {
+  setup
+  monthly
+}
+
+enum BillingItemStatus {
+  pending
+  paid
+}
+
 // Propostas ficam só no banco da Lótus. userId aponta para users.id no banco do Analytics, sem FK.
 // clientEmail espelha o login (Analytics) no save — evita join só para listar/enviar e permite achar proposta pelo e-mail.
 model TrafficProposal {
@@ -49,9 +59,33 @@ model TrafficProposal {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
+  billingItems ProposalBillingItem[]
+
   @@index([userId])
   @@index([clientEmail])
   @@map("traffic_proposals")
+}
+
+model ProposalBillingItem {
+  id         String @id @default(uuid())
+  proposalId String @map("proposal_id")
+
+  kind     BillingItemKind
+  label    String
+  amount   Int
+  dueDate  DateTime?         @db.Date @map("due_date")
+  status   BillingItemStatus @default(pending)
+  paidAt   DateTime?         @map("paid_at")
+  sequence Int               @default(0)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  proposal TrafficProposal @relation(fields: [proposalId], references: [id], onDelete: Cascade)
+
+  @@index([proposalId])
+  @@index([status])
+  @@map("proposal_billing_items")
 }
 
 // Lead que deixou o WhatsApp depois do login com Google.

@@ -1,5 +1,9 @@
 import { redirect } from "next/navigation";
 import { ContractedServicesScreen } from "@/app/components/contracted-services-screen";
+import {
+  ensureInitialBillingForProposal,
+  listBillingForProposal,
+} from "@/lib/billing-store";
 import { getSession } from "@/lib/auth";
 import { hasActivePlan } from "@/lib/plan";
 import {
@@ -39,5 +43,10 @@ export default async function ServicosContratadosPage() {
     redirect("/propostas");
   }
 
-  return <ContractedServicesScreen proposal={proposal} />;
+  await ensureInitialBillingForProposal(proposal.id);
+  const billingItems = await listBillingForProposal(proposal.id);
+
+  return (
+    <ContractedServicesScreen proposal={proposal} billingItems={billingItems} />
+  );
 }

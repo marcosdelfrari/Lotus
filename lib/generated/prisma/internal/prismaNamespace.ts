@@ -398,6 +398,7 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 export const ModelName = {
   TrafficProposal: 'TrafficProposal',
+  ProposalBillingItem: 'ProposalBillingItem',
   Interest: 'Interest'
 } as const
 
@@ -414,7 +415,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "trafficProposal" | "interest"
+    modelProps: "trafficProposal" | "proposalBillingItem" | "interest"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -489,6 +490,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.TrafficProposalCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.TrafficProposalCountAggregateOutputType> | number
+        }
+      }
+    }
+    ProposalBillingItem: {
+      payload: Prisma.$ProposalBillingItemPayload<ExtArgs>
+      fields: Prisma.ProposalBillingItemFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ProposalBillingItemFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProposalBillingItemPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ProposalBillingItemFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProposalBillingItemPayload>
+        }
+        findFirst: {
+          args: Prisma.ProposalBillingItemFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProposalBillingItemPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ProposalBillingItemFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProposalBillingItemPayload>
+        }
+        findMany: {
+          args: Prisma.ProposalBillingItemFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProposalBillingItemPayload>[]
+        }
+        create: {
+          args: Prisma.ProposalBillingItemCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProposalBillingItemPayload>
+        }
+        createMany: {
+          args: Prisma.ProposalBillingItemCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ProposalBillingItemCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProposalBillingItemPayload>[]
+        }
+        delete: {
+          args: Prisma.ProposalBillingItemDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProposalBillingItemPayload>
+        }
+        update: {
+          args: Prisma.ProposalBillingItemUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProposalBillingItemPayload>
+        }
+        deleteMany: {
+          args: Prisma.ProposalBillingItemDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ProposalBillingItemUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ProposalBillingItemUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProposalBillingItemPayload>[]
+        }
+        upsert: {
+          args: Prisma.ProposalBillingItemUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProposalBillingItemPayload>
+        }
+        aggregate: {
+          args: Prisma.ProposalBillingItemAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateProposalBillingItem>
+        }
+        groupBy: {
+          args: Prisma.ProposalBillingItemGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProposalBillingItemGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ProposalBillingItemCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProposalBillingItemCountAggregateOutputType> | number
         }
       }
     }
@@ -636,6 +711,23 @@ export const TrafficProposalScalarFieldEnum = {
 export type TrafficProposalScalarFieldEnum = (typeof TrafficProposalScalarFieldEnum)[keyof typeof TrafficProposalScalarFieldEnum]
 
 
+export const ProposalBillingItemScalarFieldEnum = {
+  id: 'id',
+  proposalId: 'proposalId',
+  kind: 'kind',
+  label: 'label',
+  amount: 'amount',
+  dueDate: 'dueDate',
+  status: 'status',
+  paidAt: 'paidAt',
+  sequence: 'sequence',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ProposalBillingItemScalarFieldEnum = (typeof ProposalBillingItemScalarFieldEnum)[keyof typeof ProposalBillingItemScalarFieldEnum]
+
+
 export const InterestScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
@@ -769,6 +861,34 @@ export type EnumProposalStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$P
  * Reference to a field of type 'ProposalStatus[]'
  */
 export type ListEnumProposalStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProposalStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'BillingItemKind'
+ */
+export type EnumBillingItemKindFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BillingItemKind'>
+    
+
+
+/**
+ * Reference to a field of type 'BillingItemKind[]'
+ */
+export type ListEnumBillingItemKindFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BillingItemKind[]'>
+    
+
+
+/**
+ * Reference to a field of type 'BillingItemStatus'
+ */
+export type EnumBillingItemStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BillingItemStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'BillingItemStatus[]'
+ */
+export type ListEnumBillingItemStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BillingItemStatus[]'>
     
 
 
@@ -937,6 +1057,7 @@ export interface PrismaClientOptionsWithAdapter extends PrismaClientBaseOptions 
 export type PrismaClientOptions = PrismaClientOptionsWithAccelerateUrl | PrismaClientOptionsWithAdapter
 export type GlobalOmitConfig = {
   trafficProposal?: Prisma.TrafficProposalOmit
+  proposalBillingItem?: Prisma.ProposalBillingItemOmit
   interest?: Prisma.InterestOmit
 }
 

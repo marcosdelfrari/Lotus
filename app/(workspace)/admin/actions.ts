@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { getSession } from "@/lib/auth";
 import type { ProposalCommercialPayload } from "@/lib/proposal-types";
+import { confirmBillingPayment } from "@/lib/billing-store";
 import {
   adminCreateAndSendProposal,
   adminDeleteProposal,
@@ -111,5 +112,14 @@ export async function adminDeleteProposalAction(proposalId: string) {
   if ("error" in result) return result;
   revalidatePath("/admin");
   revalidatePath("/propostas");
+  return { ok: true as const };
+}
+
+export async function adminConfirmBillingPaymentAction(billingItemId: string) {
+  await requireAdmin();
+  const result = await confirmBillingPayment(billingItemId);
+  if ("error" in result) return result;
+  revalidatePath("/admin");
+  revalidatePath("/servicos");
   return { ok: true as const };
 }

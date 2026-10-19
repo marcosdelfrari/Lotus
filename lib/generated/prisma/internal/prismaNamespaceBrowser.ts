@@ -52,6 +52,7 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   TrafficProposal: 'TrafficProposal',
+  ProposalBillingItem: 'ProposalBillingItem',
   Interest: 'Interest'
 } as const
 
@@ -100,6 +101,23 @@ export const TrafficProposalScalarFieldEnum = {
 } as const
 
 export type TrafficProposalScalarFieldEnum = (typeof TrafficProposalScalarFieldEnum)[keyof typeof TrafficProposalScalarFieldEnum]
+
+
+export const ProposalBillingItemScalarFieldEnum = {
+  id: 'id',
+  proposalId: 'proposalId',
+  kind: 'kind',
+  label: 'label',
+  amount: 'amount',
+  dueDate: 'dueDate',
+  status: 'status',
+  paidAt: 'paidAt',
+  sequence: 'sequence',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ProposalBillingItemScalarFieldEnum = (typeof ProposalBillingItemScalarFieldEnum)[keyof typeof ProposalBillingItemScalarFieldEnum]
 
 
 export const InterestScalarFieldEnum = {

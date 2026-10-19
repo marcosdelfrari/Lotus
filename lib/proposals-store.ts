@@ -10,6 +10,7 @@ import {
   type ProposalCommercialPayload,
   type TrafficProposalView,
 } from "@/lib/proposal-types";
+import { ensureInitialBillingForProposal } from "@/lib/billing-store";
 import { activateClientProPlan, setClientPlanActive } from "@/lib/users-store";
 
 const OPEN_PROPOSAL_STATUSES = [
@@ -485,6 +486,7 @@ export async function acceptProposal(
   });
 
   const proposal = toProposalView(updated);
+  await ensureInitialBillingForProposal(proposal.id);
   const mail = await sendAcceptedProposalEmail({
     to: client.email,
     name: client.name,

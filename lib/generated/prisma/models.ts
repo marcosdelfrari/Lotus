@@ -9,5 +9,6 @@
  * 🟢 You can import this file directly.
  */
 export type * from './models/TrafficProposal'
+export type * from './models/ProposalBillingItem'
 export type * from './models/Interest'
 export type * from './commonInputTypes'

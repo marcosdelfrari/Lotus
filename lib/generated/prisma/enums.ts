@@ -18,3 +18,19 @@ export const ProposalStatus = {
 } as const
 
 export type ProposalStatus = (typeof ProposalStatus)[keyof typeof ProposalStatus]
+
+
+export const BillingItemKind = {
+  setup: 'setup',
+  monthly: 'monthly'
+} as const
+
+export type BillingItemKind = (typeof BillingItemKind)[keyof typeof BillingItemKind]
+
+
+export const BillingItemStatus = {
+  pending: 'pending',
+  paid: 'paid'
+} as const
+
+export type BillingItemStatus = (typeof BillingItemStatus)[keyof typeof BillingItemStatus]

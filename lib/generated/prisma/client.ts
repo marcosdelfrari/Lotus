@@ -47,6 +47,11 @@ export { Prisma }
  */
 export type TrafficProposal = Prisma.TrafficProposalModel
 /**
+ * Model ProposalBillingItem
+ * 
+ */
+export type ProposalBillingItem = Prisma.ProposalBillingItemModel
+/**
  * Model Interest
  * 
  */

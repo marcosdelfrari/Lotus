@@ -2,23 +2,29 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { BillingSection } from "@/app/components/billing-section";
 import { BrandMark } from "@/app/components/brand-mark";
+import type { BillingItemView } from "@/lib/billing-store";
 import { LOTUS_ANALYTICS_URL } from "@/lib/analytics-app";
 import { formatCurrency, formatDate } from "@/lib/format";
 import {
   proposalTotalServices,
   type TrafficProposalView,
 } from "@/lib/proposal-types";
+import { LOTUS_WHATSAPP_LABEL, LOTUS_WHATSAPP_URL } from "@/lib/whatsapp";
 
 export function ContractedServicesScreen({
   proposal,
+  billingItems = [],
 }: {
   proposal: TrafficProposalView;
+  billingItems?: BillingItemView[];
 }) {
   const monthlyTotal = proposalTotalServices(proposal);
   const acceptedLabel = proposal.acceptedAt
     ? formatDate(proposal.acceptedAt)
     : null;
+  const hasBilling = billingItems.length > 0;
 
   return (
     <motion.div
@@ -65,7 +71,7 @@ export function ContractedServicesScreen({
       </div>
 
       <div className="overflow-hidden rounded-[28px] border border-white/10 bg-linear-to-b from-[#161616] via-[#101010] to-[#0a0a0a] p-6 shadow-[0_32px_90px_-20px_rgba(0,0,0,0.85)] sm:p-10">
-        <div className="border-b border-white/8 pb-8">
+        <div className="border-b border-white/8 pb-6 sm:pb-8">
           <p className="font-mono text-[10px] uppercase tracking-[0.26em] text-muted">
             Serviços contratados
           </p>
@@ -74,33 +80,48 @@ export function ContractedServicesScreen({
             <span className="font-normal text-white">Lótus</span>
           </h1>
           <p className="mt-3 max-w-xl text-sm font-light leading-relaxed text-muted-foreground">
-            Gestão de tráfego e serviços vinculados à proposta aceita por{" "}
+            Gestão de tráfego para{" "}
             <strong className="font-medium text-foreground">
               {proposal.companyName}
             </strong>
-            .
             {acceptedLabel ? (
               <>
                 {" "}
-                Aceite registrado em{" "}
-                <span className="text-foreground">{acceptedLabel}</span>.
+                · aceite em{" "}
+                <span className="text-foreground">{acceptedLabel}</span>
               </>
             ) : null}
           </p>
         </div>
 
+        {hasBilling ? (
+          <div className="mt-6 sm:mt-8">
+            <BillingSection items={billingItems} />
+          </div>
+        ) : null}
+
         <div className="mt-8 grid gap-6 lg:grid-cols-12">
-          <div className="lg:col-span-7">
+          <div className="lg:col-span-8">
             <div className="rounded-2xl border border-white/10 bg-white/2.5 p-5 sm:p-6">
-              <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted">
-                Itens do contrato
+              <div className="flex flex-wrap items-baseline justify-between gap-2">
+                <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted">
+                  Mensalidade recorrente
+                </p>
+                <p className="font-mono text-lg font-light tabular-nums text-foreground">
+                  {formatCurrency(monthlyTotal)}
+                  <span className="text-[11px] font-normal text-muted"> /mês</span>
+                </p>
+              </div>
+              <p className="mt-2 text-xs font-light text-muted-foreground">
+                Valores abaixo entram no faturamento mensal após a implantação.
               </p>
+
               {proposal.services.length > 0 ? (
-                <ul className="mt-4 divide-y divide-white/6">
+                <ul className="mt-5 divide-y divide-white/6">
                   {proposal.services.map((service) => (
                     <li
                       key={`${service.name}-${service.value}`}
-                      className="flex items-start justify-between gap-4 py-4 first:pt-0 last:pb-0"
+                      className="flex items-start justify-between gap-4 py-3.5 first:pt-0 last:pb-0"
                     >
                       <div className="min-w-0">
                         <p className="text-sm font-medium text-foreground">
@@ -112,92 +133,63 @@ export function ContractedServicesScreen({
                           </p>
                         ) : null}
                       </div>
-                      <p className="shrink-0 font-mono text-sm tabular-nums text-foreground">
+                      <p className="shrink-0 font-mono text-sm tabular-nums text-muted-foreground">
                         {formatCurrency(service.value)}
-                        <span className="text-[10px] font-normal text-muted">
-                          /mês
-                        </span>
                       </p>
                     </li>
                   ))}
                 </ul>
               ) : (
                 <p className="mt-4 text-sm font-light text-muted-foreground">
-                  Nenhum serviço detalhado na proposta. Consulte o contrato
-                  completo.
+                  Nenhum serviço detalhado. Consulte o contrato completo.
                 </p>
               )}
-
-              <div className="mt-6 flex flex-wrap items-baseline justify-between gap-3 border-t border-white/8 pt-5">
-                <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted">
-                  Total mensal de gestão
-                </span>
-                <span className="font-mono text-xl font-light tabular-nums text-foreground">
-                  {formatCurrency(monthlyTotal)}
-                </span>
-              </div>
-
-              {proposal.setupFee != null && proposal.setupFee > 0 ? (
-                <p className="mt-3 text-xs font-light text-muted-foreground">
-                  Taxa de setup (única):{" "}
-                  <span className="font-mono text-foreground">
-                    {formatCurrency(proposal.setupFee)}
-                  </span>
-                </p>
-              ) : null}
             </div>
           </div>
 
-          <div className="space-y-4 lg:col-span-5">
+          <div className="flex flex-col gap-4 lg:col-span-4">
             <div className="rounded-2xl border border-white/8 bg-white/2 p-5">
               <p className="font-mono text-[9px] uppercase tracking-[0.24em] text-muted">
-                Proposta comercial
+                Documentos
               </p>
               <p className="mt-2 text-sm font-medium text-foreground">
                 {proposal.title || "Gestão de tráfego pago"}
               </p>
               {proposal.scope.length > 0 ? (
-                <ul className="mt-4 space-y-2">
-                  {proposal.scope.slice(0, 4).map((line) => (
+                <ul className="mt-3 space-y-1.5">
+                  {proposal.scope.slice(0, 3).map((line) => (
                     <li
                       key={line}
-                      className="flex items-start gap-2 text-xs font-light leading-snug text-muted-foreground"
+                      className="flex items-start gap-2 text-[11px] font-light leading-snug text-muted-foreground"
                     >
-                      <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-positive" />
-                      {line}
+                      <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-white/25" />
+                      <span className="line-clamp-2">{line}</span>
                     </li>
                   ))}
-                  {proposal.scope.length > 4 ? (
-                    <li className="text-[11px] text-muted">
-                      + {proposal.scope.length - 4} itens no contrato completo
-                    </li>
-                  ) : null}
                 </ul>
               ) : null}
               <Link
                 href="/servicos/contrato"
-                className="mt-5 inline-flex w-full items-center justify-center rounded-full border border-white/12 bg-white/4 px-4 py-2.5 text-[11px] font-medium tracking-wide text-foreground transition-colors hover:border-white/25 hover:bg-white/6"
+                className="mt-4 inline-flex w-full items-center justify-center rounded-full border border-white/12 bg-white/4 px-4 py-2.5 text-[11px] font-medium tracking-wide text-foreground transition-colors hover:border-white/25 hover:bg-white/6"
               >
-                Abrir dossiê da proposta →
+                Dossiê da proposta
               </Link>
             </div>
 
             <div className="rounded-2xl border border-white/8 bg-white/1.5 px-5 py-4">
               <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-muted">
-                Suporte
+                Ajuda
               </p>
               <p className="mt-2 text-xs font-light leading-relaxed text-muted-foreground">
-                Dúvidas sobre escopo ou faturamento? Fale com nosso time
-                {proposal.contactPhone ? (
-                  <>
-                    {" "}
-                    (
-                    <span className="font-mono text-foreground">
-                      {proposal.contactPhone}
-                    </span>
-                    )
-                  </>
-                ) : null}
+                Escopo, prazos ou pagamento — fale no WhatsApp{" "}
+                <a
+                  href={LOTUS_WHATSAPP_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-mono text-foreground underline-offset-2 hover:underline"
+                >
+                  {proposal.contactPhone || LOTUS_WHATSAPP_LABEL}
+                </a>
                 .
               </p>
             </div>
