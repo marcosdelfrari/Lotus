@@ -1,0 +1,77 @@
+@import "tailwindcss";
+
+:root {
+  --background: #0c0c0c;
+  --foreground: #ededed;
+  --muted: #888888;
+  --muted-foreground: #a1a1a1;
+  --border: #2a2a2a;
+  --border-subtle: #1f1f1f;
+  --surface: #141414;
+  --surface-elevated: #1a1a1a;
+  --accent: #f5f5f5;
+  --accent-muted: #d4d4d4;
+  --positive: #4ade80;
+  --negative: #f87171;
+  --google: #4285f4;
+  --google-yellow: #fbbc04;
+  --meta: #0668e1;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-border-subtle: var(--border-subtle);
+  --color-surface: var(--surface);
+  --color-surface-elevated: var(--surface-elevated);
+  --color-accent: var(--accent);
+  --color-accent-muted: var(--accent-muted);
+  --color-positive: var(--positive);
+  --color-negative: var(--negative);
+  --color-google: var(--google);
+  --color-google-yellow: var(--google-yellow);
+  --color-meta: var(--meta);
+  --font-sans: var(--font-sora), sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --font-barlow: var(--font-barlow-condensed), sans-serif;
+  --font-roboto: var(--font-roboto-flex), sans-serif;
+  --font-saira: var(--font-saira-condensed), sans-serif;
+}
+
+* {
+  border-color: var(--border);
+}
+
+html {
+  overflow-x: clip;
+}
+
+body {
+  min-height: 100dvh;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sora), sans-serif;
+  overflow-x: clip;
+}
+
+button:not(:disabled),
+input[type="button"]:not(:disabled),
+input[type="submit"]:not(:disabled),
+input[type="reset"]:not(:disabled) {
+  cursor: pointer;
+}
+
+button:disabled,
+input[type="button"]:disabled,
+input[type="submit"]:disabled,
+input[type="reset"]:disabled {
+  cursor: not-allowed;
+}
+
+::selection {
+  background: #333;
+  color: #fff;
+}

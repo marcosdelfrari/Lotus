@@ -1,0 +1,3 @@
+(()=>{"use strict";module.exports=[81926,a=>{a.s(["q",0,function(a){return new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"}).format(a)},"C",0,function(a){return new Intl.DateTimeFormat("pt-BR",{day:"2-digit",month:"long",year:"numeric"}).format(new Date(a))}])},33354,(a,b,c)=>{c._=function(a){return a&&a.__esModule?a:{default:a}}},16644,a=>{var b=a.i(67161);a.s(["default",()=>b.Image])}]})();
+
+//# sourceMappingURL=_125jy9v-bkxe9._.js.map

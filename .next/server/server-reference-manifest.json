@@ -1,0 +1,46 @@
+{
+  "node": {
+    "00a9d1e58caf033aa55437d27f8127082ba5fbecb6": {
+      "workers": {
+        "app/(workspace)/propostas/page": {
+          "moduleId": 75992,
+          "async": true
+        }
+      },
+      "filename": "app/login/actions.ts",
+      "exportedName": "logout"
+    },
+    "400169356eeefbcccc65716238a645429a3c8cfef9": {
+      "workers": {
+        "app/(workspace)/propostas/page": {
+          "moduleId": 75992,
+          "async": true
+        }
+      },
+      "filename": "app/(workspace)/propostas/actions.ts",
+      "exportedName": "adminSendProposal"
+    },
+    "400bb3e36877a2b73a6807eb71a8d25bd5b7aef799": {
+      "workers": {
+        "app/(workspace)/propostas/page": {
+          "moduleId": 75992,
+          "async": true
+        }
+      },
+      "filename": "app/(workspace)/propostas/actions.ts",
+      "exportedName": "acceptProposalAction"
+    },
+    "4094293bdd4bbf6649117d382b9201df29b8a45ab1": {
+      "workers": {
+        "app/(workspace)/propostas/page": {
+          "moduleId": 75992,
+          "async": true
+        }
+      },
+      "filename": "app/(workspace)/propostas/actions.ts",
+      "exportedName": "submitProposalRequest"
+    }
+  },
+  "edge": {},
+  "encryptionKey": "ixD8XChWbs1RYBDzn8h7ZJJirpOhk4bJijzWUR8dlAk="
+}
