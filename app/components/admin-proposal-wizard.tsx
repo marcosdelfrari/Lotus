@@ -31,6 +31,30 @@ type Props = {
 const fieldClass =
   "mt-1.5 w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm outline-none focus:border-foreground/30";
 
+const removeButtonClass =
+  "inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-md text-muted transition-colors hover:bg-negative/10 hover:text-negative";
+
+function TrashIcon({ className = "h-4 w-4" }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden
+    >
+      <path d="M3 6h18" />
+      <path d="M8 6V4h8v2" />
+      <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
+      <line x1="10" y1="11" x2="10" y2="17" />
+      <line x1="14" y1="11" x2="14" y2="17" />
+    </svg>
+  );
+}
+
 function linesToText(lines: string[]) {
   return lines.join("\n");
 }
@@ -397,10 +421,12 @@ export function AdminProposalWizard({
                       />
                       <button
                         type="button"
-                        className="text-[12px] text-muted hover:text-negative"
+                        className={removeButtonClass}
+                        aria-label="Remover serviço"
+                        title="Remover serviço"
                         onClick={() => setServices(services.filter((_, i) => i !== index))}
                       >
-                        Remover
+                        <TrashIcon />
                       </button>
                     </li>
                   ))}
@@ -432,16 +458,29 @@ export function AdminProposalWizard({
                     key={index}
                     className="space-y-2 rounded-lg border border-border-subtle p-3"
                   >
-                    <input
-                      value={item.title}
-                      placeholder="Etapa"
-                      onChange={(e) => {
-                        const next = [...implementationPlan];
-                        next[index] = { ...next[index], title: e.target.value };
-                        setImplementationPlan(next);
-                      }}
-                      className="w-full rounded-md border border-border bg-background px-2 py-2 text-sm font-medium"
-                    />
+                    <div className="flex items-start gap-2">
+                      <input
+                        value={item.title}
+                        placeholder="Etapa"
+                        onChange={(e) => {
+                          const next = [...implementationPlan];
+                          next[index] = { ...next[index], title: e.target.value };
+                          setImplementationPlan(next);
+                        }}
+                        className="min-w-0 flex-1 rounded-md border border-border bg-background px-2 py-2 text-sm font-medium"
+                      />
+                      <button
+                        type="button"
+                        className={removeButtonClass}
+                        aria-label="Remover etapa"
+                        title="Remover etapa"
+                        onClick={() =>
+                          setImplementationPlan(implementationPlan.filter((_, i) => i !== index))
+                        }
+                      >
+                        <TrashIcon />
+                      </button>
+                    </div>
                     <textarea
                       value={item.description}
                       rows={2}
@@ -453,15 +492,6 @@ export function AdminProposalWizard({
                       }}
                       className="w-full rounded-md border border-border bg-background px-2 py-2 text-sm"
                     />
-                    <button
-                      type="button"
-                      className="text-[12px] text-muted hover:text-negative"
-                      onClick={() =>
-                        setImplementationPlan(implementationPlan.filter((_, i) => i !== index))
-                      }
-                    >
-                      Remover etapa
-                    </button>
                   </li>
                 ))}
               </ul>

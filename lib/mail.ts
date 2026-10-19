@@ -1,4 +1,5 @@
 import type { AcceptanceDevice } from "@/lib/acceptance";
+import { adminEmail } from "@/lib/access-code";
 import { formatCurrency } from "@/lib/format";
 import { buildProposalPdf } from "@/lib/proposal-pdf";
 import { proposalTotalServices, type TrafficProposalView } from "@/lib/proposal-types";
@@ -110,6 +111,7 @@ export async function sendAcceptedProposalEmail(input: {
   }).format(input.acceptedAt);
   const from = process.env.EMAIL_FROM || "Lótus <onboarding@resend.dev>";
   const company = escapeHtml(input.proposal.companyName);
+  const recipients = [...new Set([input.to.trim(), adminEmail].filter(Boolean))];
 
   const response = await fetch("https://api.resend.com/emails", {
     method: "POST",
@@ -119,7 +121,7 @@ export async function sendAcceptedProposalEmail(input: {
     },
     body: JSON.stringify({
       from,
-      to: [input.to],
+      to: recipients,
       subject: `Cópia da proposta aceita — ${input.proposal.companyName}`,
       html: `
         <div style="background:#0c0c0c;color:#ededed;font-family:Georgia,serif;padding:40px 16px;">

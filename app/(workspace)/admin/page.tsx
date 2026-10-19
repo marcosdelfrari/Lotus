@@ -1,12 +1,13 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { AdminDeleteProposalButton } from "@/app/components/admin-delete-proposal-button";
 import { AdminProposalWizard } from "@/app/components/admin-proposal-wizard";
 import { AdminProposalsPanel } from "@/app/components/admin-proposals-panel";
 import { PageHeader } from "@/app/components/page-header";
 import { getSession } from "@/lib/auth";
 import { formatDate } from "@/lib/format";
-import { formatWhatsapp } from "@/lib/whatsapp";
-import { getInterestForUser } from "@/lib/interests-store";
+import { formatInterestWhen, formatWhatsapp } from "@/lib/whatsapp";
+import { getInterestForUser, listInterests } from "@/lib/interests-store";
 import {
   getLatestProposalForUser,
   getProposalById,
@@ -36,11 +37,13 @@ export default async function AdminPage({
   }
 
   const { cliente, lista, proposta } = await searchParams;
-  const showingSent = lista === "enviadas";
-  const [clients, pending, published, selectedProposal] = await Promise.all([
+  const view =
+    lista === "enviadas" ? "enviadas" : lista === "solicitacoes" ? "solicitacoes" : "clientes";
+  const [clients, pending, published, interests, selectedProposal] = await Promise.all([
     listClients(),
     listRequestedProposals(),
     listSentAndAcceptedProposals(),
+    listInterests(),
     proposta ? getProposalById(proposta) : Promise.resolve(null),
   ]);
   const clientId = selectedProposal?.userId ?? cliente;
@@ -70,17 +73,27 @@ export default async function AdminPage({
             <Link
               href="/admin"
               className={`rounded-full border px-4 py-1.5 text-[12px] ${
-                showingSent
-                  ? "border-border text-muted-foreground"
-                  : "border-foreground bg-foreground text-background"
+                view === "clientes"
+                  ? "border-foreground bg-foreground text-background"
+                  : "border-border text-muted-foreground"
               }`}
             >
               Clientes
             </Link>
             <Link
+              href="/admin?lista=solicitacoes"
+              className={`rounded-full border px-4 py-1.5 text-[12px] ${
+                view === "solicitacoes"
+                  ? "border-foreground bg-foreground text-background"
+                  : "border-border text-muted-foreground"
+              }`}
+            >
+              Solicitações
+            </Link>
+            <Link
               href="/admin?lista=enviadas"
               className={`rounded-full border px-4 py-1.5 text-[12px] ${
-                showingSent
+                view === "enviadas"
                   ? "border-foreground bg-foreground text-background"
                   : "border-border text-muted-foreground"
               }`}
@@ -91,7 +104,38 @@ export default async function AdminPage({
         }
       />
 
-      {showingSent ? (
+      {view === "solicitacoes" ? (
+        <section>
+          {interests.length === 0 ? (
+            <p className="rounded-xl border border-dashed border-border px-4 py-8 text-center text-sm text-muted-foreground">
+              Nenhuma solicitação ainda. Aparecem aqui quando alguém entra com Google e informa o WhatsApp.
+            </p>
+          ) : (
+            <ul className="divide-y divide-border-subtle rounded-xl border border-border bg-surface">
+              {interests.map((row) => (
+                <li
+                  key={row.id}
+                  className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center"
+                >
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm font-medium">{row.name}</p>
+                    <p className="text-[12px] text-muted-foreground">{row.email}</p>
+                    <p className="mt-1 text-[12px] text-muted">
+                      {formatWhatsapp(row.whatsapp)} · {formatInterestWhen(row.createdAt)}
+                    </p>
+                  </div>
+                  <Link
+                    href={`/admin?cliente=${row.userId}`}
+                    className="shrink-0 rounded-full bg-foreground px-4 py-2 text-center text-[12px] font-medium text-background"
+                  >
+                    Montar proposta
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+      ) : view === "enviadas" ? (
         <section>
           {published.length === 0 ? (
             <p className="rounded-xl border border-dashed border-border px-4 py-8 text-center text-sm text-muted-foreground">
@@ -118,12 +162,18 @@ export default async function AdminPage({
                       {row.title || "Proposta comercial"} · {formatDate(row.createdAt)}
                     </p>
                   </div>
-                  <Link
-                    href={`/admin?proposta=${row.id}`}
-                    className="shrink-0 rounded-full bg-foreground px-4 py-2 text-center text-[12px] font-medium text-background"
-                  >
-                    Editar
-                  </Link>
+                  <div className="flex shrink-0 items-center gap-2">
+                    <Link
+                      href={`/admin?proposta=${row.id}`}
+                      className="rounded-full bg-foreground px-4 py-2 text-center text-[12px] font-medium text-background"
+                    >
+                      Editar
+                    </Link>
+                    <AdminDeleteProposalButton
+                      proposalId={row.id}
+                      companyName={row.companyName}
+                    />
+                  </div>
                 </li>
               ))}
             </ul>

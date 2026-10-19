@@ -27,8 +27,8 @@ export default function LoginPage({
           <div className="border-b border-border px-4 py-3">
             <h1 className="text-sm font-medium">Entrar</h1>
             <p className="mt-1 text-[12px] leading-5 text-muted">
-              Use a mesma conta Google do Lótus Analytics. Em seguida, continue
-              sua solicitação de gestão de tráfego.
+              Use uma conta Google válida. Em seguida, continue sua solicitação
+              de gestão de tráfego.
             </p>
           </div>
           <Suspense>
@@ -48,11 +48,15 @@ async function LoginBody({
   const { erro, next } = await searchParams;
   const message = erro ? errors[erro] : null;
   const returnTo =
-    next && next.startsWith("/") && !next.startsWith("//") ? next : "/propostas";
+    next && next.startsWith("/") && !next.startsWith("//")
+      ? next
+      : "/propostas";
 
   return (
     <>
-      {message ? <p className="px-4 pt-4 text-[12px] text-negative">{message}</p> : null}
+      {message ? (
+        <p className="px-4 pt-4 text-[12px] text-negative">{message}</p>
+      ) : null}
       <div className="border-t border-border px-4 py-3">
         <a
           href={`/api/auth/google?next=${encodeURIComponent(returnTo)}`}

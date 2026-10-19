@@ -275,6 +275,33 @@ async function displayNamesForProposals(
   });
 }
 
+export async function adminDeleteProposal(proposalId: string) {
+  const row = await prisma.trafficProposal.findUnique({
+    where: { id: proposalId },
+  });
+  if (!row) return { error: "Proposta não encontrada." } as const;
+  if (row.status !== ProposalStatus.sent && row.status !== ProposalStatus.accepted) {
+    return { error: "Só é possível remover propostas enviadas ou aceitas." } as const;
+  }
+
+  const wasAccepted = row.status === ProposalStatus.accepted;
+  const userId = row.userId;
+
+  await prisma.trafficProposal.delete({ where: { id: proposalId } });
+
+  if (wasAccepted) {
+    const otherAccepted = await prisma.trafficProposal.findFirst({
+      where: { userId, status: ProposalStatus.accepted },
+    });
+    if (!otherAccepted) {
+      const plan = await setClientPlanActive(userId, false);
+      if ("error" in plan) return { error: plan.error } as const;
+    }
+  }
+
+  return { ok: true as const };
+}
+
 export async function listSentAndAcceptedProposals() {
   const rows = await prisma.trafficProposal.findMany({
     where: { status: { in: [ProposalStatus.sent, ProposalStatus.accepted] } },

@@ -6,6 +6,7 @@ import { getSession } from "@/lib/auth";
 import type { ProposalCommercialPayload } from "@/lib/proposal-types";
 import {
   adminCreateAndSendProposal,
+  adminDeleteProposal,
   adminPublishProposal,
   adminSaveProposalDraft,
   sendProposalToClient,
@@ -101,5 +102,14 @@ export async function adminSendProposalAction(proposalId: string) {
   const result = await sendProposalToClient(proposalId);
   if ("error" in result) return result;
   revalidatePath("/admin");
+  return { ok: true as const };
+}
+
+export async function adminDeleteProposalAction(proposalId: string) {
+  await requireAdmin();
+  const result = await adminDeleteProposal(proposalId);
+  if ("error" in result) return result;
+  revalidatePath("/admin");
+  revalidatePath("/propostas");
   return { ok: true as const };
 }
