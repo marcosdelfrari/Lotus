@@ -1,21 +1,24 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { AdminCreateProposalForm } from "@/app/components/admin-create-proposal-form";
+import { AdminProposalWizard } from "@/app/components/admin-proposal-wizard";
 import { AdminProposalsPanel } from "@/app/components/admin-proposals-panel";
 import { PageHeader } from "@/app/components/page-header";
-import { ProposalSummary } from "@/app/components/proposal-summary";
 import { getSession } from "@/lib/auth";
+import { formatDate } from "@/lib/format";
 import { formatWhatsapp } from "@/lib/whatsapp";
 import { getInterestForUser } from "@/lib/interests-store";
 import {
   getLatestProposalForUser,
+  getProposalById,
   listRequestedProposals,
+  listSentAndAcceptedProposals,
 } from "@/lib/proposals-store";
 import { listClients } from "@/lib/users-store";
 
 export const instant = false;
 
 const statusLabel: Record<string, string> = {
+  draft: "Rascunho",
   requested: "Solicitada",
   sent: "Enviada — aguardando aceite",
   accepted: "Aceita",
@@ -25,42 +28,115 @@ const statusLabel: Record<string, string> = {
 export default async function AdminPage({
   searchParams,
 }: {
-  searchParams: Promise<{ cliente?: string }>;
+  searchParams: Promise<{ cliente?: string; lista?: string; proposta?: string }>;
 }) {
   const session = await getSession();
   if (!session || session.role !== "admin") {
     redirect("/login?next=/admin");
   }
 
-  const { cliente } = await searchParams;
-  const [clients, pending] = await Promise.all([listClients(), listRequestedProposals()]);
-  const client = cliente ? (clients.find((row) => row.id === cliente) ?? null) : null;
+  const { cliente, lista, proposta } = await searchParams;
+  const showingSent = lista === "enviadas";
+  const [clients, pending, published, selectedProposal] = await Promise.all([
+    listClients(),
+    listRequestedProposals(),
+    listSentAndAcceptedProposals(),
+    proposta ? getProposalById(proposta) : Promise.resolve(null),
+  ]);
+  const clientId = selectedProposal?.userId ?? cliente;
+  const client = clientId ? (clients.find((row) => row.id === clientId) ?? null) : null;
 
-  const [interest, proposal] = client
+  const [interest, latestProposal] = client
     ? await Promise.all([
         getInterestForUser(client.id),
-        getLatestProposalForUser(client.id),
+        getLatestProposalForUser(client.id, client.email),
       ])
     : [null, null];
+  const proposal =
+    selectedProposal && selectedProposal.userId === client?.id
+      ? selectedProposal
+      : latestProposal;
 
-  const openProposal =
-    proposal && (proposal.status === "requested" || proposal.status === "sent")
-      ? proposal
-      : null;
+  const editableProposal =
+    proposal && proposal.status !== "cancelled" ? proposal : null;
 
   return (
     <>
       <PageHeader
         title="Propostas de tráfego"
-        description="Clientes cadastrados no mesmo login do Analytics. Crie e envie propostas para aceite."
+        description="Clientes cadastrados no mesmo login do Analytics. Crie, envie e edite propostas."
+        actions={
+          <>
+            <Link
+              href="/admin"
+              className={`rounded-full border px-4 py-1.5 text-[12px] ${
+                showingSent
+                  ? "border-border text-muted-foreground"
+                  : "border-foreground bg-foreground text-background"
+              }`}
+            >
+              Clientes
+            </Link>
+            <Link
+              href="/admin?lista=enviadas"
+              className={`rounded-full border px-4 py-1.5 text-[12px] ${
+                showingSent
+                  ? "border-foreground bg-foreground text-background"
+                  : "border-border text-muted-foreground"
+              }`}
+            >
+              Enviadas e aceitas
+            </Link>
+          </>
+        }
       />
+
+      {showingSent ? (
+        <section>
+          {published.length === 0 ? (
+            <p className="rounded-xl border border-dashed border-border px-4 py-8 text-center text-sm text-muted-foreground">
+              Nenhuma proposta enviada ou aceita ainda.
+            </p>
+          ) : (
+            <ul className="divide-y divide-border-subtle rounded-xl border border-border bg-surface">
+              {published.map((row) => (
+                <li
+                  key={row.id}
+                  className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center"
+                >
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm font-medium">
+                      {row.companyName}
+                      <span className="ml-2 text-[11px] font-normal uppercase tracking-wide text-muted">
+                        {statusLabel[row.status] ?? row.status}
+                      </span>
+                    </p>
+                    <p className="text-[12px] text-muted-foreground">
+                      {row.userName} · {row.userEmail}
+                    </p>
+                    <p className="mt-1 text-[12px] text-muted">
+                      {row.title || "Proposta comercial"} · {formatDate(row.createdAt)}
+                    </p>
+                  </div>
+                  <Link
+                    href={`/admin?proposta=${row.id}`}
+                    className="shrink-0 rounded-full bg-foreground px-4 py-2 text-center text-[12px] font-medium text-background"
+                  >
+                    Editar
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+      ) : (
+        <>
 
       {pending.length > 0 ? (
         <section className="mb-10">
           <h2 className="text-sm font-medium">Solicitações do formulário</h2>
           <p className="mt-1 text-[12px] text-muted-foreground">
-            Pedidos com status solicitado — use o pacote comercial padrão ou crie manualmente
-            por cliente.
+            Pedidos do formulário — monte a proposta em etapas ou envie o pacote padrão.
           </p>
           <div className="mt-4">
             <AdminProposalsPanel rows={pending} />
@@ -128,43 +204,27 @@ export default async function AdminPage({
               </section>
 
               {proposal ? (
-                <section className="space-y-4">
-                  <p className="text-[12px] font-medium uppercase tracking-wide text-muted">
-                    Status: {statusLabel[proposal.status] ?? proposal.status}
-                  </p>
-                  {proposal.status === "sent" || proposal.status === "accepted" ? (
-                    <ProposalSummary proposal={proposal} />
-                  ) : null}
-                </section>
-              ) : null}
-
-              {openProposal?.status === "requested" ? (
-                <p className="rounded-lg border border-border-subtle bg-background/50 px-4 py-3 text-[13px] text-muted-foreground">
-                  Há uma solicitação aberta para {openProposal.companyName}. Use a lista acima
-                  para enviar o pacote padrão ou aguarde e edite pelo fluxo manual abaixo após
-                  cancelar.
+                <p className="text-[12px] font-medium uppercase tracking-wide text-muted">
+                  Status: {statusLabel[proposal.status] ?? proposal.status}
                 </p>
               ) : null}
 
-              {!openProposal ? (
-                <AdminCreateProposalForm
+              {editableProposal || !proposal ? (
+                <AdminProposalWizard
                   userId={client.id}
+                  clientEmail={client.email}
+                  clientName={client.name}
                   defaultCompanyName={client.name}
                   defaultContactPhone={interest ? formatWhatsapp(interest.whatsapp) : ""}
+                  initialProposal={editableProposal}
                 />
-              ) : openProposal.status === "sent" ? (
-                <p className="text-[13px] text-muted-foreground">
-                  Proposta enviada. O cliente aceita em{" "}
-                  <Link href="/propostas" className="underline underline-offset-2">
-                    /propostas
-                  </Link>
-                  .
-                </p>
               ) : null}
             </>
           )}
         </div>
       </div>
+        </>
+      )}
     </>
   );
 }

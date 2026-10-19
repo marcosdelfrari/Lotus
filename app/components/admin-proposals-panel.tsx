@@ -1,11 +1,13 @@
 "use client";
 
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { adminSendProposal } from "@/app/(workspace)/propostas/actions";
 
 type Row = {
   id: string;
+  userId: string;
   companyName: string;
   userName: string;
   userEmail: string;
@@ -38,19 +40,27 @@ export function AdminProposalsPanel({ rows }: { rows: Row[] }) {
               <p className="mt-1 text-[12px] text-muted">{row.segment}</p>
             ) : null}
           </div>
-          <button
-            type="button"
-            disabled={pending}
-            className="shrink-0 rounded-md border border-border px-4 py-2 text-[13px] hover:bg-background disabled:opacity-50"
-            onClick={() => {
-              startTransition(async () => {
-                await adminSendProposal(row.id);
-                router.refresh();
-              });
-            }}
-          >
-            Enviar proposta
-          </button>
+          <div className="flex shrink-0 flex-wrap gap-2">
+            <Link
+              href={`/admin?cliente=${row.userId}`}
+              className="rounded-md bg-foreground px-4 py-2 text-[13px] font-medium text-background"
+            >
+              Montar proposta
+            </Link>
+            <button
+              type="button"
+              disabled={pending}
+              className="rounded-md border border-border px-4 py-2 text-[13px] hover:bg-background disabled:opacity-50"
+              onClick={() => {
+                startTransition(async () => {
+                  await adminSendProposal(row.id);
+                  router.refresh();
+                });
+              }}
+            >
+              Enviar padrão
+            </button>
+          </div>
         </li>
       ))}
     </ul>

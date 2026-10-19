@@ -3,8 +3,11 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { getSession } from "@/lib/auth";
+import type { ProposalCommercialPayload } from "@/lib/proposal-types";
 import {
   adminCreateAndSendProposal,
+  adminPublishProposal,
+  adminSaveProposalDraft,
   sendProposalToClient,
 } from "@/lib/proposals-store";
 
@@ -48,6 +51,49 @@ export async function adminCreateProposalAction(
   revalidatePath("/admin");
   revalidatePath("/propostas");
   return { ok: true };
+}
+
+export async function adminSaveProposalWizardAction(input: {
+  proposalId?: string;
+  userId: string;
+  clientEmail?: string;
+  clientName?: string;
+  companyName: string;
+  segment?: string;
+  goals?: string;
+  contactPhone?: string;
+  monthlyMediaBudget?: number | null;
+  commercial: ProposalCommercialPayload;
+}) {
+  await requireAdmin();
+
+  const result = await adminSaveProposalDraft({
+    proposalId: input.proposalId,
+    userId: input.userId,
+    clientEmail: input.clientEmail,
+    clientName: input.clientName,
+    companyName: input.companyName,
+    segment: input.segment,
+    goals: input.goals,
+    contactPhone: input.contactPhone,
+    monthlyMediaBudget: input.monthlyMediaBudget,
+    commercial: input.commercial,
+  });
+
+  if ("error" in result) return result;
+  revalidatePath("/admin");
+  revalidatePath(`/admin/propostas/${result.proposal.id}/preview`);
+  return result;
+}
+
+export async function adminPublishProposalAction(proposalId: string) {
+  await requireAdmin();
+  const result = await adminPublishProposal(proposalId);
+  if ("error" in result) return result;
+  revalidatePath("/admin");
+  revalidatePath("/propostas");
+  revalidatePath(`/admin/propostas/${proposalId}/preview`);
+  return result;
 }
 
 export async function adminSendProposalAction(proposalId: string) {

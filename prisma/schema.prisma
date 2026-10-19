@@ -8,6 +8,7 @@ datasource db {
 }
 
 enum ProposalStatus {
+  draft
   requested
   sent
   accepted
@@ -15,9 +16,13 @@ enum ProposalStatus {
 }
 
 // Propostas ficam só no banco da Lótus. userId aponta para users.id no banco do Analytics, sem FK.
+// clientEmail espelha o login (Analytics) no save — evita join só para listar/enviar e permite achar proposta pelo e-mail.
 model TrafficProposal {
   id     String @id @default(uuid())
   userId String @map("user_id")
+
+  clientEmail String @default("") @map("client_email")
+  clientName  String @default("") @map("client_name")
 
   companyName        String  @map("company_name")
   segment            String  @default("")
@@ -25,21 +30,27 @@ model TrafficProposal {
   goals              String  @default("")
   contactPhone       String  @default("") @map("contact_phone")
 
+  intro              String  @default("")
   title              String?
   scope              Json    @default("[]")
   services           Json    @default("[]")
+  setupFee           Int?    @map("setup_fee")
   adBudgetSuggestion Int?    @map("ad_budget_suggestion")
   deadlineDays       Int?    @map("deadline_days")
+  implementationPlan Json    @default("[]") @map("implementation_plan")
   conditions         Json    @default("[]")
+  terms              Json    @default("[]")
   validUntil         DateTime? @map("valid_until") @db.Date
 
   status     ProposalStatus @default(requested)
   acceptedAt DateTime?      @map("accepted_at")
+  acceptance Json?
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@index([userId])
+  @@index([clientEmail])
   @@map("traffic_proposals")
 }
 

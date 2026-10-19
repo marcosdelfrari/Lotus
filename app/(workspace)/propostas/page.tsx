@@ -20,21 +20,15 @@ export default async function PropostasPage() {
 
   const [interest, proposal] = await Promise.all([
     getInterestForUser(session.userId),
-    getLatestProposalForUser(session.userId),
+    getLatestProposalForUser(session.userId, session.email),
   ]);
 
   if (proposal && (proposal.status === "sent" || proposal.status === "accepted")) {
     return (
-      <>
-        <PageHeader
-          title="Sua proposta"
-          description="Revise escopo, valores e condições. Ao aceitar, ativamos o plano no painel vinculado ao seu e-mail."
-        />
-        <ProposalAcceptPanel
-          proposal={proposal}
-          planAlreadyActive={hasActivePlan(session)}
-        />
-      </>
+      <ProposalAcceptPanel
+        proposal={proposal}
+        planAlreadyActive={hasActivePlan(session)}
+      />
     );
   }
 

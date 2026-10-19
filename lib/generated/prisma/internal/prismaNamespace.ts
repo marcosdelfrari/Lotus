@@ -608,20 +608,27 @@ export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof
 export const TrafficProposalScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
+  clientEmail: 'clientEmail',
+  clientName: 'clientName',
   companyName: 'companyName',
   segment: 'segment',
   monthlyMediaBudget: 'monthlyMediaBudget',
   goals: 'goals',
   contactPhone: 'contactPhone',
+  intro: 'intro',
   title: 'title',
   scope: 'scope',
   services: 'services',
+  setupFee: 'setupFee',
   adBudgetSuggestion: 'adBudgetSuggestion',
   deadlineDays: 'deadlineDays',
+  implementationPlan: 'implementationPlan',
   conditions: 'conditions',
+  terms: 'terms',
   validUntil: 'validUntil',
   status: 'status',
   acceptedAt: 'acceptedAt',
+  acceptance: 'acceptance',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -654,6 +661,14 @@ export const JsonNullValueInput = {
 } as const
 
 export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
+
+
+export const NullableJsonNullValueInput = {
+  DbNull: DbNull,
+  JsonNull: JsonNull
+} as const
+
+export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
 
 
 export const QueryMode = {

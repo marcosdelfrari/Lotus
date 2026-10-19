@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import type { AcceptanceDevice } from "@/lib/acceptance";
 import { getSession } from "@/lib/auth";
 import { createInterest } from "@/lib/interests-store";
 import {
@@ -46,6 +47,8 @@ export async function submitProposalRequest(formData: FormData) {
 
   const result = await createProposalRequest({
     userId: session.userId,
+    clientEmail: session.email,
+    clientName: session.name,
     companyName,
     segment,
     goals,
@@ -58,16 +61,29 @@ export async function submitProposalRequest(formData: FormData) {
   return { ok: true as const };
 }
 
-export async function acceptProposalAction(proposalId: string) {
+export async function acceptProposalAction(proposalId: string, device: AcceptanceDevice) {
   const session = await getSession();
   if (!session || session.role !== "client") {
     return { error: "Faça login para aceitar a proposta." };
   }
+  if (!device?.hash || !device.userAgent) {
+    return { error: "Não foi possível identificar o navegador deste aceite." };
+  }
 
-  const result = await acceptProposal(proposalId, session.userId);
+  const result = await acceptProposal(
+    proposalId,
+    session.userId,
+    { name: session.name, email: session.email },
+    device,
+  );
   if ("error" in result) return result;
   revalidatePath("/propostas");
-  return { ok: true as const, planActive: result.planActive };
+  return {
+    ok: true as const,
+    planActive: result.planActive,
+    emailSent: result.emailSent,
+    emailError: result.emailError,
+  };
 }
 
 export async function adminSendProposal(proposalId: string) {

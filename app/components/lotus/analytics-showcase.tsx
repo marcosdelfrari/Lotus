@@ -67,7 +67,7 @@ const features = [
     index: "04",
     title: "Investimento x resultado",
     description:
-      "No mesmo calendário, o painel cruza o que foi investido no Google Ads e no Meta Ads com visitas, leads e eventos captados pelo tracking no seu site. Você enxerga qual canal puxa demanda de verdade, onde o budget está pesado demais e se o custo por lead ainda fecha com ticket e margem — sem juntar planilha, print de plataforma e relatório solto em três abas.",
+      "No mesmo período, o painel cruza o investimento em Google Ads e Meta Ads com visitas, leads e eventos do site. Dá para ver qual canal gera resultado, onde o gasto está alto e se o custo por lead cabe no ticket.",
     points: [
       "Mesmo período",
       "Gasto x leads",

@@ -10,6 +10,7 @@
 */
 
 export const ProposalStatus = {
+  draft: 'draft',
   requested: 'requested',
   sent: 'sent',
   accepted: 'accepted',

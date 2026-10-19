@@ -8,6 +8,7 @@ import {
   googleStateCookie,
   publicOrigin,
 } from "@/lib/google-oauth";
+import { getLatestProposalForUser } from "@/lib/proposals-store";
 import { sessionCookie, sessionCookieOptions, signSession } from "@/lib/session";
 import { createClient, ensureAdminFromEnv, findAccountByEmail } from "@/lib/users-store";
 
@@ -63,12 +64,15 @@ export async function GET(request: NextRequest) {
       email: account.email,
     });
 
-    const destination =
-      account.role === "admin"
-        ? returnTo.startsWith("/admin")
-          ? returnTo
-          : "/admin"
-        : returnTo;
+    let destination = returnTo;
+    if (account.role === "admin") {
+      destination = returnTo.startsWith("/admin") ? returnTo : "/admin";
+    } else {
+      const proposal = await getLatestProposalForUser(account.id);
+      if (proposal?.status === "sent" || proposal?.status === "accepted") {
+        destination = "/propostas";
+      }
+    }
     const response = NextResponse.redirect(new URL(destination, origin));
     response.cookies.set(sessionCookie, token, sessionCookieOptions(origin));
     response.cookies.delete(googleStateCookie);

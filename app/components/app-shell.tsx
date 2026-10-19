@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { BrandMark } from "@/app/components/brand-mark";
 import { logout } from "@/app/login/actions";
 import { analyticsDashboardUrl } from "@/lib/analytics-app";
@@ -13,10 +14,18 @@ export function AppShell({
   session: Session;
   children: React.ReactNode;
 }) {
+  const pathname = usePathname();
+  const bare = pathname === "/propostas" || pathname.includes("/propostas/");
+  const fullBleed = pathname === "/admin" || bare;
+  const frame = fullBleed
+    ? "w-full px-5 sm:px-8 lg:px-10"
+    : "mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8";
+
   return (
     <div className="flex min-h-dvh flex-col">
+      {bare ? null : (
       <header className="border-b border-border bg-surface/40">
-        <div className="mx-auto flex h-14 max-w-5xl items-center gap-4 px-4 sm:px-6">
+        <div className={`flex h-14 items-center gap-4 ${frame}`}>
           <BrandMark compact href="/" />
           <div className="min-w-0 flex-1">
             <p className="truncate text-[13px] font-medium">{session.name}</p>
@@ -47,7 +56,8 @@ export function AppShell({
           </form>
         </div>
       </header>
-      <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-8 sm:px-6">{children}</main>
+      )}
+      <main className={`flex-1 ${bare ? "py-6 sm:py-10" : "py-8"} ${frame}`}>{children}</main>
     </div>
   );
 }

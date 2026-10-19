@@ -28,12 +28,14 @@ export type AggregateTrafficProposal = {
 
 export type TrafficProposalAvgAggregateOutputType = {
   monthlyMediaBudget: number | null
+  setupFee: number | null
   adBudgetSuggestion: number | null
   deadlineDays: number | null
 }
 
 export type TrafficProposalSumAggregateOutputType = {
   monthlyMediaBudget: number | null
+  setupFee: number | null
   adBudgetSuggestion: number | null
   deadlineDays: number | null
 }
@@ -41,12 +43,16 @@ export type TrafficProposalSumAggregateOutputType = {
 export type TrafficProposalMinAggregateOutputType = {
   id: string | null
   userId: string | null
+  clientEmail: string | null
+  clientName: string | null
   companyName: string | null
   segment: string | null
   monthlyMediaBudget: number | null
   goals: string | null
   contactPhone: string | null
+  intro: string | null
   title: string | null
+  setupFee: number | null
   adBudgetSuggestion: number | null
   deadlineDays: number | null
   validUntil: Date | null
@@ -59,12 +65,16 @@ export type TrafficProposalMinAggregateOutputType = {
 export type TrafficProposalMaxAggregateOutputType = {
   id: string | null
   userId: string | null
+  clientEmail: string | null
+  clientName: string | null
   companyName: string | null
   segment: string | null
   monthlyMediaBudget: number | null
   goals: string | null
   contactPhone: string | null
+  intro: string | null
   title: string | null
+  setupFee: number | null
   adBudgetSuggestion: number | null
   deadlineDays: number | null
   validUntil: Date | null
@@ -77,20 +87,27 @@ export type TrafficProposalMaxAggregateOutputType = {
 export type TrafficProposalCountAggregateOutputType = {
   id: number
   userId: number
+  clientEmail: number
+  clientName: number
   companyName: number
   segment: number
   monthlyMediaBudget: number
   goals: number
   contactPhone: number
+  intro: number
   title: number
   scope: number
   services: number
+  setupFee: number
   adBudgetSuggestion: number
   deadlineDays: number
+  implementationPlan: number
   conditions: number
+  terms: number
   validUntil: number
   status: number
   acceptedAt: number
+  acceptance: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -99,12 +116,14 @@ export type TrafficProposalCountAggregateOutputType = {
 
 export type TrafficProposalAvgAggregateInputType = {
   monthlyMediaBudget?: true
+  setupFee?: true
   adBudgetSuggestion?: true
   deadlineDays?: true
 }
 
 export type TrafficProposalSumAggregateInputType = {
   monthlyMediaBudget?: true
+  setupFee?: true
   adBudgetSuggestion?: true
   deadlineDays?: true
 }
@@ -112,12 +131,16 @@ export type TrafficProposalSumAggregateInputType = {
 export type TrafficProposalMinAggregateInputType = {
   id?: true
   userId?: true
+  clientEmail?: true
+  clientName?: true
   companyName?: true
   segment?: true
   monthlyMediaBudget?: true
   goals?: true
   contactPhone?: true
+  intro?: true
   title?: true
+  setupFee?: true
   adBudgetSuggestion?: true
   deadlineDays?: true
   validUntil?: true
@@ -130,12 +153,16 @@ export type TrafficProposalMinAggregateInputType = {
 export type TrafficProposalMaxAggregateInputType = {
   id?: true
   userId?: true
+  clientEmail?: true
+  clientName?: true
   companyName?: true
   segment?: true
   monthlyMediaBudget?: true
   goals?: true
   contactPhone?: true
+  intro?: true
   title?: true
+  setupFee?: true
   adBudgetSuggestion?: true
   deadlineDays?: true
   validUntil?: true
@@ -148,20 +175,27 @@ export type TrafficProposalMaxAggregateInputType = {
 export type TrafficProposalCountAggregateInputType = {
   id?: true
   userId?: true
+  clientEmail?: true
+  clientName?: true
   companyName?: true
   segment?: true
   monthlyMediaBudget?: true
   goals?: true
   contactPhone?: true
+  intro?: true
   title?: true
   scope?: true
   services?: true
+  setupFee?: true
   adBudgetSuggestion?: true
   deadlineDays?: true
+  implementationPlan?: true
   conditions?: true
+  terms?: true
   validUntil?: true
   status?: true
   acceptedAt?: true
+  acceptance?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -256,20 +290,27 @@ export type TrafficProposalGroupByArgs<ExtArgs extends runtime.Types.Extensions.
 export type TrafficProposalGroupByOutputType = {
   id: string
   userId: string
+  clientEmail: string
+  clientName: string
   companyName: string
   segment: string
   monthlyMediaBudget: number | null
   goals: string
   contactPhone: string
+  intro: string
   title: string | null
   scope: runtime.JsonValue
   services: runtime.JsonValue
+  setupFee: number | null
   adBudgetSuggestion: number | null
   deadlineDays: number | null
+  implementationPlan: runtime.JsonValue
   conditions: runtime.JsonValue
+  terms: runtime.JsonValue
   validUntil: Date | null
   status: $Enums.ProposalStatus
   acceptedAt: Date | null
+  acceptance: runtime.JsonValue | null
   createdAt: Date
   updatedAt: Date
   _count: TrafficProposalCountAggregateOutputType | null
@@ -300,20 +341,27 @@ export type TrafficProposalWhereInput = {
   NOT?: Prisma.TrafficProposalWhereInput | Prisma.TrafficProposalWhereInput[]
   id?: Prisma.StringFilter<"TrafficProposal"> | string
   userId?: Prisma.StringFilter<"TrafficProposal"> | string
+  clientEmail?: Prisma.StringFilter<"TrafficProposal"> | string
+  clientName?: Prisma.StringFilter<"TrafficProposal"> | string
   companyName?: Prisma.StringFilter<"TrafficProposal"> | string
   segment?: Prisma.StringFilter<"TrafficProposal"> | string
   monthlyMediaBudget?: Prisma.IntNullableFilter<"TrafficProposal"> | number | null
   goals?: Prisma.StringFilter<"TrafficProposal"> | string
   contactPhone?: Prisma.StringFilter<"TrafficProposal"> | string
+  intro?: Prisma.StringFilter<"TrafficProposal"> | string
   title?: Prisma.StringNullableFilter<"TrafficProposal"> | string | null
   scope?: Prisma.JsonFilter<"TrafficProposal">
   services?: Prisma.JsonFilter<"TrafficProposal">
+  setupFee?: Prisma.IntNullableFilter<"TrafficProposal"> | number | null
   adBudgetSuggestion?: Prisma.IntNullableFilter<"TrafficProposal"> | number | null
   deadlineDays?: Prisma.IntNullableFilter<"TrafficProposal"> | number | null
+  implementationPlan?: Prisma.JsonFilter<"TrafficProposal">
   conditions?: Prisma.JsonFilter<"TrafficProposal">
+  terms?: Prisma.JsonFilter<"TrafficProposal">
   validUntil?: Prisma.DateTimeNullableFilter<"TrafficProposal"> | Date | string | null
   status?: Prisma.EnumProposalStatusFilter<"TrafficProposal"> | $Enums.ProposalStatus
   acceptedAt?: Prisma.DateTimeNullableFilter<"TrafficProposal"> | Date | string | null
+  acceptance?: Prisma.JsonNullableFilter<"TrafficProposal">
   createdAt?: Prisma.DateTimeFilter<"TrafficProposal"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"TrafficProposal"> | Date | string
 }
@@ -321,20 +369,27 @@ export type TrafficProposalWhereInput = {
 export type TrafficProposalOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  clientEmail?: Prisma.SortOrder
+  clientName?: Prisma.SortOrder
   companyName?: Prisma.SortOrder
   segment?: Prisma.SortOrder
   monthlyMediaBudget?: Prisma.SortOrderInput | Prisma.SortOrder
   goals?: Prisma.SortOrder
   contactPhone?: Prisma.SortOrder
+  intro?: Prisma.SortOrder
   title?: Prisma.SortOrderInput | Prisma.SortOrder
   scope?: Prisma.SortOrder
   services?: Prisma.SortOrder
+  setupFee?: Prisma.SortOrderInput | Prisma.SortOrder
   adBudgetSuggestion?: Prisma.SortOrderInput | Prisma.SortOrder
   deadlineDays?: Prisma.SortOrderInput | Prisma.SortOrder
+  implementationPlan?: Prisma.SortOrder
   conditions?: Prisma.SortOrder
+  terms?: Prisma.SortOrder
   validUntil?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   acceptedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  acceptance?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -345,20 +400,27 @@ export type TrafficProposalWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.TrafficProposalWhereInput[]
   NOT?: Prisma.TrafficProposalWhereInput | Prisma.TrafficProposalWhereInput[]
   userId?: Prisma.StringFilter<"TrafficProposal"> | string
+  clientEmail?: Prisma.StringFilter<"TrafficProposal"> | string
+  clientName?: Prisma.StringFilter<"TrafficProposal"> | string
   companyName?: Prisma.StringFilter<"TrafficProposal"> | string
   segment?: Prisma.StringFilter<"TrafficProposal"> | string
   monthlyMediaBudget?: Prisma.IntNullableFilter<"TrafficProposal"> | number | null
   goals?: Prisma.StringFilter<"TrafficProposal"> | string
   contactPhone?: Prisma.StringFilter<"TrafficProposal"> | string
+  intro?: Prisma.StringFilter<"TrafficProposal"> | string
   title?: Prisma.StringNullableFilter<"TrafficProposal"> | string | null
   scope?: Prisma.JsonFilter<"TrafficProposal">
   services?: Prisma.JsonFilter<"TrafficProposal">
+  setupFee?: Prisma.IntNullableFilter<"TrafficProposal"> | number | null
   adBudgetSuggestion?: Prisma.IntNullableFilter<"TrafficProposal"> | number | null
   deadlineDays?: Prisma.IntNullableFilter<"TrafficProposal"> | number | null
+  implementationPlan?: Prisma.JsonFilter<"TrafficProposal">
   conditions?: Prisma.JsonFilter<"TrafficProposal">
+  terms?: Prisma.JsonFilter<"TrafficProposal">
   validUntil?: Prisma.DateTimeNullableFilter<"TrafficProposal"> | Date | string | null
   status?: Prisma.EnumProposalStatusFilter<"TrafficProposal"> | $Enums.ProposalStatus
   acceptedAt?: Prisma.DateTimeNullableFilter<"TrafficProposal"> | Date | string | null
+  acceptance?: Prisma.JsonNullableFilter<"TrafficProposal">
   createdAt?: Prisma.DateTimeFilter<"TrafficProposal"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"TrafficProposal"> | Date | string
 }, "id">
@@ -366,20 +428,27 @@ export type TrafficProposalWhereUniqueInput = Prisma.AtLeast<{
 export type TrafficProposalOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  clientEmail?: Prisma.SortOrder
+  clientName?: Prisma.SortOrder
   companyName?: Prisma.SortOrder
   segment?: Prisma.SortOrder
   monthlyMediaBudget?: Prisma.SortOrderInput | Prisma.SortOrder
   goals?: Prisma.SortOrder
   contactPhone?: Prisma.SortOrder
+  intro?: Prisma.SortOrder
   title?: Prisma.SortOrderInput | Prisma.SortOrder
   scope?: Prisma.SortOrder
   services?: Prisma.SortOrder
+  setupFee?: Prisma.SortOrderInput | Prisma.SortOrder
   adBudgetSuggestion?: Prisma.SortOrderInput | Prisma.SortOrder
   deadlineDays?: Prisma.SortOrderInput | Prisma.SortOrder
+  implementationPlan?: Prisma.SortOrder
   conditions?: Prisma.SortOrder
+  terms?: Prisma.SortOrder
   validUntil?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   acceptedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  acceptance?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.TrafficProposalCountOrderByAggregateInput
@@ -395,20 +464,27 @@ export type TrafficProposalScalarWhereWithAggregatesInput = {
   NOT?: Prisma.TrafficProposalScalarWhereWithAggregatesInput | Prisma.TrafficProposalScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"TrafficProposal"> | string
   userId?: Prisma.StringWithAggregatesFilter<"TrafficProposal"> | string
+  clientEmail?: Prisma.StringWithAggregatesFilter<"TrafficProposal"> | string
+  clientName?: Prisma.StringWithAggregatesFilter<"TrafficProposal"> | string
   companyName?: Prisma.StringWithAggregatesFilter<"TrafficProposal"> | string
   segment?: Prisma.StringWithAggregatesFilter<"TrafficProposal"> | string
   monthlyMediaBudget?: Prisma.IntNullableWithAggregatesFilter<"TrafficProposal"> | number | null
   goals?: Prisma.StringWithAggregatesFilter<"TrafficProposal"> | string
   contactPhone?: Prisma.StringWithAggregatesFilter<"TrafficProposal"> | string
+  intro?: Prisma.StringWithAggregatesFilter<"TrafficProposal"> | string
   title?: Prisma.StringNullableWithAggregatesFilter<"TrafficProposal"> | string | null
   scope?: Prisma.JsonWithAggregatesFilter<"TrafficProposal">
   services?: Prisma.JsonWithAggregatesFilter<"TrafficProposal">
+  setupFee?: Prisma.IntNullableWithAggregatesFilter<"TrafficProposal"> | number | null
   adBudgetSuggestion?: Prisma.IntNullableWithAggregatesFilter<"TrafficProposal"> | number | null
   deadlineDays?: Prisma.IntNullableWithAggregatesFilter<"TrafficProposal"> | number | null
+  implementationPlan?: Prisma.JsonWithAggregatesFilter<"TrafficProposal">
   conditions?: Prisma.JsonWithAggregatesFilter<"TrafficProposal">
+  terms?: Prisma.JsonWithAggregatesFilter<"TrafficProposal">
   validUntil?: Prisma.DateTimeNullableWithAggregatesFilter<"TrafficProposal"> | Date | string | null
   status?: Prisma.EnumProposalStatusWithAggregatesFilter<"TrafficProposal"> | $Enums.ProposalStatus
   acceptedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"TrafficProposal"> | Date | string | null
+  acceptance?: Prisma.JsonNullableWithAggregatesFilter<"TrafficProposal">
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"TrafficProposal"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"TrafficProposal"> | Date | string
 }
@@ -416,20 +492,27 @@ export type TrafficProposalScalarWhereWithAggregatesInput = {
 export type TrafficProposalCreateInput = {
   id?: string
   userId: string
+  clientEmail?: string
+  clientName?: string
   companyName: string
   segment?: string
   monthlyMediaBudget?: number | null
   goals?: string
   contactPhone?: string
+  intro?: string
   title?: string | null
   scope?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   services?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  setupFee?: number | null
   adBudgetSuggestion?: number | null
   deadlineDays?: number | null
+  implementationPlan?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   conditions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  terms?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   validUntil?: Date | string | null
   status?: $Enums.ProposalStatus
   acceptedAt?: Date | string | null
+  acceptance?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -437,20 +520,27 @@ export type TrafficProposalCreateInput = {
 export type TrafficProposalUncheckedCreateInput = {
   id?: string
   userId: string
+  clientEmail?: string
+  clientName?: string
   companyName: string
   segment?: string
   monthlyMediaBudget?: number | null
   goals?: string
   contactPhone?: string
+  intro?: string
   title?: string | null
   scope?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   services?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  setupFee?: number | null
   adBudgetSuggestion?: number | null
   deadlineDays?: number | null
+  implementationPlan?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   conditions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  terms?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   validUntil?: Date | string | null
   status?: $Enums.ProposalStatus
   acceptedAt?: Date | string | null
+  acceptance?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -458,20 +548,27 @@ export type TrafficProposalUncheckedCreateInput = {
 export type TrafficProposalUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  clientEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  clientName?: Prisma.StringFieldUpdateOperationsInput | string
   companyName?: Prisma.StringFieldUpdateOperationsInput | string
   segment?: Prisma.StringFieldUpdateOperationsInput | string
   monthlyMediaBudget?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   goals?: Prisma.StringFieldUpdateOperationsInput | string
   contactPhone?: Prisma.StringFieldUpdateOperationsInput | string
+  intro?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   scope?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   services?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  setupFee?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   adBudgetSuggestion?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   deadlineDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  implementationPlan?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   conditions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  terms?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   validUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumProposalStatusFieldUpdateOperationsInput | $Enums.ProposalStatus
   acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  acceptance?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -479,20 +576,27 @@ export type TrafficProposalUpdateInput = {
 export type TrafficProposalUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  clientEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  clientName?: Prisma.StringFieldUpdateOperationsInput | string
   companyName?: Prisma.StringFieldUpdateOperationsInput | string
   segment?: Prisma.StringFieldUpdateOperationsInput | string
   monthlyMediaBudget?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   goals?: Prisma.StringFieldUpdateOperationsInput | string
   contactPhone?: Prisma.StringFieldUpdateOperationsInput | string
+  intro?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   scope?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   services?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  setupFee?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   adBudgetSuggestion?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   deadlineDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  implementationPlan?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   conditions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  terms?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   validUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumProposalStatusFieldUpdateOperationsInput | $Enums.ProposalStatus
   acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  acceptance?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -500,20 +604,27 @@ export type TrafficProposalUncheckedUpdateInput = {
 export type TrafficProposalCreateManyInput = {
   id?: string
   userId: string
+  clientEmail?: string
+  clientName?: string
   companyName: string
   segment?: string
   monthlyMediaBudget?: number | null
   goals?: string
   contactPhone?: string
+  intro?: string
   title?: string | null
   scope?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   services?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  setupFee?: number | null
   adBudgetSuggestion?: number | null
   deadlineDays?: number | null
+  implementationPlan?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   conditions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  terms?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   validUntil?: Date | string | null
   status?: $Enums.ProposalStatus
   acceptedAt?: Date | string | null
+  acceptance?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -521,20 +632,27 @@ export type TrafficProposalCreateManyInput = {
 export type TrafficProposalUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  clientEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  clientName?: Prisma.StringFieldUpdateOperationsInput | string
   companyName?: Prisma.StringFieldUpdateOperationsInput | string
   segment?: Prisma.StringFieldUpdateOperationsInput | string
   monthlyMediaBudget?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   goals?: Prisma.StringFieldUpdateOperationsInput | string
   contactPhone?: Prisma.StringFieldUpdateOperationsInput | string
+  intro?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   scope?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   services?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  setupFee?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   adBudgetSuggestion?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   deadlineDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  implementationPlan?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   conditions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  terms?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   validUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumProposalStatusFieldUpdateOperationsInput | $Enums.ProposalStatus
   acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  acceptance?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -542,20 +660,27 @@ export type TrafficProposalUpdateManyMutationInput = {
 export type TrafficProposalUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  clientEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  clientName?: Prisma.StringFieldUpdateOperationsInput | string
   companyName?: Prisma.StringFieldUpdateOperationsInput | string
   segment?: Prisma.StringFieldUpdateOperationsInput | string
   monthlyMediaBudget?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   goals?: Prisma.StringFieldUpdateOperationsInput | string
   contactPhone?: Prisma.StringFieldUpdateOperationsInput | string
+  intro?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   scope?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   services?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  setupFee?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   adBudgetSuggestion?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   deadlineDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  implementationPlan?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   conditions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  terms?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   validUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumProposalStatusFieldUpdateOperationsInput | $Enums.ProposalStatus
   acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  acceptance?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -563,26 +688,34 @@ export type TrafficProposalUncheckedUpdateManyInput = {
 export type TrafficProposalCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  clientEmail?: Prisma.SortOrder
+  clientName?: Prisma.SortOrder
   companyName?: Prisma.SortOrder
   segment?: Prisma.SortOrder
   monthlyMediaBudget?: Prisma.SortOrder
   goals?: Prisma.SortOrder
   contactPhone?: Prisma.SortOrder
+  intro?: Prisma.SortOrder
   title?: Prisma.SortOrder
   scope?: Prisma.SortOrder
   services?: Prisma.SortOrder
+  setupFee?: Prisma.SortOrder
   adBudgetSuggestion?: Prisma.SortOrder
   deadlineDays?: Prisma.SortOrder
+  implementationPlan?: Prisma.SortOrder
   conditions?: Prisma.SortOrder
+  terms?: Prisma.SortOrder
   validUntil?: Prisma.SortOrder
   status?: Prisma.SortOrder
   acceptedAt?: Prisma.SortOrder
+  acceptance?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
 export type TrafficProposalAvgOrderByAggregateInput = {
   monthlyMediaBudget?: Prisma.SortOrder
+  setupFee?: Prisma.SortOrder
   adBudgetSuggestion?: Prisma.SortOrder
   deadlineDays?: Prisma.SortOrder
 }
@@ -590,12 +723,16 @@ export type TrafficProposalAvgOrderByAggregateInput = {
 export type TrafficProposalMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  clientEmail?: Prisma.SortOrder
+  clientName?: Prisma.SortOrder
   companyName?: Prisma.SortOrder
   segment?: Prisma.SortOrder
   monthlyMediaBudget?: Prisma.SortOrder
   goals?: Prisma.SortOrder
   contactPhone?: Prisma.SortOrder
+  intro?: Prisma.SortOrder
   title?: Prisma.SortOrder
+  setupFee?: Prisma.SortOrder
   adBudgetSuggestion?: Prisma.SortOrder
   deadlineDays?: Prisma.SortOrder
   validUntil?: Prisma.SortOrder
@@ -608,12 +745,16 @@ export type TrafficProposalMaxOrderByAggregateInput = {
 export type TrafficProposalMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  clientEmail?: Prisma.SortOrder
+  clientName?: Prisma.SortOrder
   companyName?: Prisma.SortOrder
   segment?: Prisma.SortOrder
   monthlyMediaBudget?: Prisma.SortOrder
   goals?: Prisma.SortOrder
   contactPhone?: Prisma.SortOrder
+  intro?: Prisma.SortOrder
   title?: Prisma.SortOrder
+  setupFee?: Prisma.SortOrder
   adBudgetSuggestion?: Prisma.SortOrder
   deadlineDays?: Prisma.SortOrder
   validUntil?: Prisma.SortOrder
@@ -625,6 +766,7 @@ export type TrafficProposalMinOrderByAggregateInput = {
 
 export type TrafficProposalSumOrderByAggregateInput = {
   monthlyMediaBudget?: Prisma.SortOrder
+  setupFee?: Prisma.SortOrder
   adBudgetSuggestion?: Prisma.SortOrder
   deadlineDays?: Prisma.SortOrder
 }
@@ -662,20 +804,27 @@ export type DateTimeFieldUpdateOperationsInput = {
 export type TrafficProposalSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   userId?: boolean
+  clientEmail?: boolean
+  clientName?: boolean
   companyName?: boolean
   segment?: boolean
   monthlyMediaBudget?: boolean
   goals?: boolean
   contactPhone?: boolean
+  intro?: boolean
   title?: boolean
   scope?: boolean
   services?: boolean
+  setupFee?: boolean
   adBudgetSuggestion?: boolean
   deadlineDays?: boolean
+  implementationPlan?: boolean
   conditions?: boolean
+  terms?: boolean
   validUntil?: boolean
   status?: boolean
   acceptedAt?: boolean
+  acceptance?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["trafficProposal"]>
@@ -683,20 +832,27 @@ export type TrafficProposalSelect<ExtArgs extends runtime.Types.Extensions.Inter
 export type TrafficProposalSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   userId?: boolean
+  clientEmail?: boolean
+  clientName?: boolean
   companyName?: boolean
   segment?: boolean
   monthlyMediaBudget?: boolean
   goals?: boolean
   contactPhone?: boolean
+  intro?: boolean
   title?: boolean
   scope?: boolean
   services?: boolean
+  setupFee?: boolean
   adBudgetSuggestion?: boolean
   deadlineDays?: boolean
+  implementationPlan?: boolean
   conditions?: boolean
+  terms?: boolean
   validUntil?: boolean
   status?: boolean
   acceptedAt?: boolean
+  acceptance?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["trafficProposal"]>
@@ -704,20 +860,27 @@ export type TrafficProposalSelectCreateManyAndReturn<ExtArgs extends runtime.Typ
 export type TrafficProposalSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   userId?: boolean
+  clientEmail?: boolean
+  clientName?: boolean
   companyName?: boolean
   segment?: boolean
   monthlyMediaBudget?: boolean
   goals?: boolean
   contactPhone?: boolean
+  intro?: boolean
   title?: boolean
   scope?: boolean
   services?: boolean
+  setupFee?: boolean
   adBudgetSuggestion?: boolean
   deadlineDays?: boolean
+  implementationPlan?: boolean
   conditions?: boolean
+  terms?: boolean
   validUntil?: boolean
   status?: boolean
   acceptedAt?: boolean
+  acceptance?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["trafficProposal"]>
@@ -725,25 +888,32 @@ export type TrafficProposalSelectUpdateManyAndReturn<ExtArgs extends runtime.Typ
 export type TrafficProposalSelectScalar = {
   id?: boolean
   userId?: boolean
+  clientEmail?: boolean
+  clientName?: boolean
   companyName?: boolean
   segment?: boolean
   monthlyMediaBudget?: boolean
   goals?: boolean
   contactPhone?: boolean
+  intro?: boolean
   title?: boolean
   scope?: boolean
   services?: boolean
+  setupFee?: boolean
   adBudgetSuggestion?: boolean
   deadlineDays?: boolean
+  implementationPlan?: boolean
   conditions?: boolean
+  terms?: boolean
   validUntil?: boolean
   status?: boolean
   acceptedAt?: boolean
+  acceptance?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type TrafficProposalOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "companyName" | "segment" | "monthlyMediaBudget" | "goals" | "contactPhone" | "title" | "scope" | "services" | "adBudgetSuggestion" | "deadlineDays" | "conditions" | "validUntil" | "status" | "acceptedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["trafficProposal"]>
+export type TrafficProposalOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "clientEmail" | "clientName" | "companyName" | "segment" | "monthlyMediaBudget" | "goals" | "contactPhone" | "intro" | "title" | "scope" | "services" | "setupFee" | "adBudgetSuggestion" | "deadlineDays" | "implementationPlan" | "conditions" | "terms" | "validUntil" | "status" | "acceptedAt" | "acceptance" | "createdAt" | "updatedAt", ExtArgs["result"]["trafficProposal"]>
 
 export type $TrafficProposalPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "TrafficProposal"
@@ -751,20 +921,27 @@ export type $TrafficProposalPayload<ExtArgs extends runtime.Types.Extensions.Int
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     userId: string
+    clientEmail: string
+    clientName: string
     companyName: string
     segment: string
     monthlyMediaBudget: number | null
     goals: string
     contactPhone: string
+    intro: string
     title: string | null
     scope: runtime.JsonValue
     services: runtime.JsonValue
+    setupFee: number | null
     adBudgetSuggestion: number | null
     deadlineDays: number | null
+    implementationPlan: runtime.JsonValue
     conditions: runtime.JsonValue
+    terms: runtime.JsonValue
     validUntil: Date | null
     status: $Enums.ProposalStatus
     acceptedAt: Date | null
+    acceptance: runtime.JsonValue | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["trafficProposal"]>
@@ -1192,20 +1369,27 @@ export interface Prisma__TrafficProposalClient<T, Null = never, ExtArgs extends 
 export interface TrafficProposalFieldRefs {
   readonly id: Prisma.FieldRef<"TrafficProposal", 'String'>
   readonly userId: Prisma.FieldRef<"TrafficProposal", 'String'>
+  readonly clientEmail: Prisma.FieldRef<"TrafficProposal", 'String'>
+  readonly clientName: Prisma.FieldRef<"TrafficProposal", 'String'>
   readonly companyName: Prisma.FieldRef<"TrafficProposal", 'String'>
   readonly segment: Prisma.FieldRef<"TrafficProposal", 'String'>
   readonly monthlyMediaBudget: Prisma.FieldRef<"TrafficProposal", 'Int'>
   readonly goals: Prisma.FieldRef<"TrafficProposal", 'String'>
   readonly contactPhone: Prisma.FieldRef<"TrafficProposal", 'String'>
+  readonly intro: Prisma.FieldRef<"TrafficProposal", 'String'>
   readonly title: Prisma.FieldRef<"TrafficProposal", 'String'>
   readonly scope: Prisma.FieldRef<"TrafficProposal", 'Json'>
   readonly services: Prisma.FieldRef<"TrafficProposal", 'Json'>
+  readonly setupFee: Prisma.FieldRef<"TrafficProposal", 'Int'>
   readonly adBudgetSuggestion: Prisma.FieldRef<"TrafficProposal", 'Int'>
   readonly deadlineDays: Prisma.FieldRef<"TrafficProposal", 'Int'>
+  readonly implementationPlan: Prisma.FieldRef<"TrafficProposal", 'Json'>
   readonly conditions: Prisma.FieldRef<"TrafficProposal", 'Json'>
+  readonly terms: Prisma.FieldRef<"TrafficProposal", 'Json'>
   readonly validUntil: Prisma.FieldRef<"TrafficProposal", 'DateTime'>
   readonly status: Prisma.FieldRef<"TrafficProposal", 'ProposalStatus'>
   readonly acceptedAt: Prisma.FieldRef<"TrafficProposal", 'DateTime'>
+  readonly acceptance: Prisma.FieldRef<"TrafficProposal", 'Json'>
   readonly createdAt: Prisma.FieldRef<"TrafficProposal", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"TrafficProposal", 'DateTime'>
 }

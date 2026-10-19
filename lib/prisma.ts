@@ -3,9 +3,13 @@ import { Pool } from "pg";
 import { PrismaClient } from "@/lib/generated/prisma/client";
 import { pgConnectionString } from "@/lib/pg-connection";
 
+/** Bump quando o schema Lotus mudar — força novo PrismaClient no hot reload. */
+const PRISMA_SCHEMA_TOKEN = "20261019200000_proposal_client_email";
+
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
   pgPool: Pool | undefined;
+  prismaSchemaToken?: string;
 };
 
 function createPrismaClient() {
@@ -30,7 +34,13 @@ function hasCurrentModels(client: PrismaClient) {
 }
 
 function getPrismaClient() {
-  if (!globalForPrisma.prisma || !hasCurrentModels(globalForPrisma.prisma)) {
+  const staleToken = globalForPrisma.prismaSchemaToken !== PRISMA_SCHEMA_TOKEN;
+  if (
+    !globalForPrisma.prisma ||
+    staleToken ||
+    !hasCurrentModels(globalForPrisma.prisma)
+  ) {
+    globalForPrisma.prismaSchemaToken = PRISMA_SCHEMA_TOKEN;
     globalForPrisma.prisma = createPrismaClient();
   }
   return globalForPrisma.prisma;
