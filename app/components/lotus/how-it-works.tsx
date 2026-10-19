@@ -5,8 +5,8 @@ import { SectionShell } from "@/app/components/lotus/section-shell";
 const steps = [
   {
     step: "01",
-    title: "Entre com o Google",
-    text: "Mesma conta do Lótus Analytics. Entrada rápida, sem formulário de cadastro.",
+    title: "Faça Login",
+    text: "Entrada rápida, sem formulário de cadastro.",
   },
   {
     step: "02",
@@ -59,7 +59,15 @@ export function LotusHowItWorks() {
           className="inline-flex items-center gap-2 rounded-lg bg-foreground px-8 py-4 text-sm font-semibold text-background transition-all hover:scale-[1.02] active:scale-[0.98]"
         >
           Começar agora
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="h-4 w-4"
+          >
             <path d="M5 12h14" />
             <path d="m12 5 7 7-7 7" />
           </svg>
