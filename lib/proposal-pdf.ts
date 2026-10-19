@@ -95,6 +95,12 @@ export async function buildProposalPdf(input: {
       gap(4);
     }
     write(`Mensalidade: ${formatCurrency(proposalTotalServices(proposal))}`, 12, bold);
+    write(
+      proposal.deadlineDays
+        ? `Primeira mensalidade somente apos ${proposal.deadlineDays} dias de setup.`
+        : "Primeira mensalidade somente apos o periodo de setup.",
+      10,
+    );
     gap(16);
   }
 
@@ -115,7 +121,7 @@ export async function buildProposalPdf(input: {
   write(
     `Taxa de implantacao: ${
       proposal.setupFee ? formatCurrency(proposal.setupFee) : "Isento"
-    }`,
+    } (paga na contratacao)`,
     11,
   );
   write(

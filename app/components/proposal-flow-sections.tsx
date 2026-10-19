@@ -53,8 +53,6 @@ function SlideHeader({
 }
 
 export function ProposalStep1Content({ proposal }: { proposal: TrafficProposalView }) {
-  const monthlyTotal = proposalTotalServices(proposal);
-
   return (
     <div className="flex h-full flex-col justify-between gap-5 sm:gap-8">
       <div className="space-y-2.5 sm:space-y-6">
@@ -104,7 +102,7 @@ export function ProposalStep1Content({ proposal }: { proposal: TrafficProposalVi
           </div>
         ) : null}
 
-        <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-white/8 bg-white/7 sm:rounded-2xl lg:grid-cols-4">
+        <dl className="grid grid-cols-1 gap-px overflow-hidden rounded-xl border border-white/8 bg-white/7 sm:grid-cols-3 sm:rounded-2xl">
           <div className="bg-[#111111] px-3.5 py-2.5 sm:px-5 sm:py-4">
             <dt className="font-mono text-[8.5px] uppercase tracking-[0.2em] text-muted sm:text-[9px] sm:tracking-[0.24em]">
               Contratante
@@ -123,21 +121,10 @@ export function ProposalStep1Content({ proposal }: { proposal: TrafficProposalVi
           </div>
           <div className="bg-[#111111] px-3.5 py-2.5 sm:px-5 sm:py-4">
             <dt className="font-mono text-[8.5px] uppercase tracking-[0.2em] text-muted sm:text-[9px] sm:tracking-[0.24em]">
-              Fee Mensal
-            </dt>
-            <dd className="mt-1 font-mono text-xs tabular-nums text-foreground sm:mt-1.5 sm:text-sm">
-              {formatCurrency(monthlyTotal)}
-              <span className="text-[10px] text-muted sm:text-[11px]">/mês</span>
-            </dd>
-          </div>
-          <div className="bg-[#111111] px-3.5 py-2.5 sm:px-5 sm:py-4">
-            <dt className="font-mono text-[8.5px] uppercase tracking-[0.2em] text-muted sm:text-[9px] sm:tracking-[0.24em]">
-              Ciclo / Contato
+              Tempo de setup
             </dt>
             <dd className="mt-1 truncate font-mono text-[11px] text-foreground/85 sm:mt-1.5 sm:text-xs">
-              {proposal.deadlineDays
-                ? `${proposal.deadlineDays} dias`
-                : proposal.contactPhone || "Ativação imediata"}
+              {proposal.deadlineDays ? `${proposal.deadlineDays} dias` : "Imediato"}
             </dd>
           </div>
         </dl>
@@ -306,7 +293,9 @@ export function ProposalStep4Content({ proposal }: { proposal: TrafficProposalVi
               <span className="ml-1 font-sans text-xs font-light text-muted-foreground">/mês</span>
             </p>
             <p className="mt-2 text-[11.5px] font-light text-muted-foreground">
-              Inclui operação completa + Lótus Analytics Pro
+              {proposal.deadlineDays
+                ? `Primeira cobrança só após ${proposal.deadlineDays} dias de setup`
+                : "Primeira cobrança só após o período de setup"}
             </p>
           </section>
 
@@ -320,7 +309,7 @@ export function ProposalStep4Content({ proposal }: { proposal: TrafficProposalVi
                 : "Isento"}
             </p>
             <p className="mt-2 text-[11.5px] font-light text-muted-foreground">
-              Pagamento único na ativação do contrato
+              Paga na contratação, em parcela única
             </p>
           </section>
 
@@ -435,7 +424,9 @@ export function ProposalStep6Review({
             <span className="text-[10px] text-muted sm:text-xs">/mês</span>
           </p>
           <p className="mt-0.5 text-[10px] text-muted-foreground sm:mt-1 sm:text-[11px]">
-            {proposal.services.length} serviços incluídos
+            {proposal.deadlineDays
+              ? `Primeira cobrança após ${proposal.deadlineDays} dias`
+              : "Primeira cobrança após o setup"}
           </p>
         </div>
 
@@ -449,7 +440,7 @@ export function ProposalStep6Review({
               : "Isento"}
           </p>
           <p className="mt-0.5 text-[10px] text-muted-foreground sm:mt-1 sm:text-[11px]">
-            Taxa única de ativação
+            Paga na contratação
           </p>
         </div>
 

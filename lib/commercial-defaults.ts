@@ -106,8 +106,8 @@ export function defaultCommercialPayload(): ProposalCommercialPayload {
     deadlineDays: 90,
     implementationPlan: defaultImplementationPlan,
     conditions: [
-      "Taxa de implantação única, faturada na assinatura do aceite",
-      "Mensalidade de gestão conforme serviços listados, faturamento recorrente",
+      "Taxa de implantação única, paga na contratação",
+      "Primeira mensalidade somente após o período de setup; as seguintes seguem o faturamento recorrente",
       "Investimento em mídia pago diretamente às plataformas (Google e Meta)",
       "Pagamento da gestão via boleto ou PIX, vencimento no 5º dia útil",
       "Cancelamento com aviso prévio de 30 dias; verba de mídia permanece sob controle do cliente",
