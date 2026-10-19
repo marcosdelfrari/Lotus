@@ -1,6 +1,6 @@
 import { adminEmail, roleForEmail } from "@/lib/access-code";
-import type { User } from "@/lib/generated/prisma/client";
-import { prisma } from "@/lib/prisma";
+import type { User } from "@/lib/generated/analytics/client";
+import { analyticsPrisma as prisma } from "@/lib/analytics-db";
 import type { Account, Role } from "@/lib/types";
 
 function toAccount(user: User): Account {
@@ -44,6 +44,12 @@ export async function findAccountByEmail(email: string) {
 export async function findAccountById(id: string) {
   const user = await prisma.user.findUnique({ where: { id } });
   return user ? toAccount(user) : null;
+}
+
+export async function listClients() {
+  await ensureAdminUser();
+  const users = await prisma.user.findMany({ orderBy: { createdAt: "asc" } });
+  return users.map(toAccount).filter((user) => user.role === "client");
 }
 
 export async function createClient(input: { name: string; email: string }) {

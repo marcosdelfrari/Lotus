@@ -1,6 +1,5 @@
 import { timingSafeEqual } from "node:crypto";
 import { NextResponse, type NextRequest } from "next/server";
-import { analyticsAppUrl } from "@/lib/analytics-app";
 import {
   exchangeGoogleCode,
   googleLegacyRedirectUri,
@@ -64,10 +63,13 @@ export async function GET(request: NextRequest) {
       email: account.email,
     });
 
-    const response =
-      account.role === "admin" && returnTo !== "/propostas"
-        ? NextResponse.redirect(new URL("/admin", analyticsAppUrl()))
-        : NextResponse.redirect(new URL(returnTo, origin));
+    const destination =
+      account.role === "admin"
+        ? returnTo.startsWith("/admin")
+          ? returnTo
+          : "/admin"
+        : returnTo;
+    const response = NextResponse.redirect(new URL(destination, origin));
     response.cookies.set(sessionCookie, token, sessionCookieOptions(origin));
     response.cookies.delete(googleStateCookie);
     response.cookies.delete(googleReturnCookie);

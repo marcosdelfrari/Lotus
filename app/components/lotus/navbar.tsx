@@ -6,6 +6,7 @@ import Link from "next/link";
 
 const links = [
   { href: "#servicos", label: "O que fazemos" },
+  { href: "#analytics", label: "Analytics" },
   { href: "#como-funciona", label: "Como funciona" },
   { href: "#contato", label: "Contato" },
 ];
@@ -48,7 +49,7 @@ export function LotusNavbar() {
               href="/login?next=/propostas"
               className="rounded-md bg-foreground px-4 py-2 text-[13px] font-medium text-background transition-opacity hover:opacity-90"
             >
-              Solicitar proposta
+              Começar agora
             </Link>
           </div>
         </div>

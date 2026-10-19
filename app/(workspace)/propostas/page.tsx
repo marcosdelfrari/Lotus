@@ -1,41 +1,50 @@
-import { AdminProposalsPanel } from "@/app/components/admin-proposals-panel";
+import { redirect } from "next/navigation";
 import { PageHeader } from "@/app/components/page-header";
 import { ProposalAcceptPanel } from "@/app/components/proposal-accept-panel";
 import { ProposalRequestForm } from "@/app/components/proposal-request-form";
+import { WhatsappNextStep } from "@/app/components/whatsapp-next-step";
 import { getSession } from "@/lib/auth";
-import { getLatestProposalForUser, listRequestedProposals } from "@/lib/proposals-store";
+import { getInterestForUser } from "@/lib/interests-store";
+import { hasActivePlan } from "@/lib/plan";
+import { getLatestProposalForUser } from "@/lib/proposals-store";
+
+export const instant = false;
 
 export default async function PropostasPage() {
   const session = await getSession();
   if (!session) return null;
 
   if (session.role === "admin") {
-    const rows = await listRequestedProposals();
+    redirect("/admin");
+  }
+
+  const [interest, proposal] = await Promise.all([
+    getInterestForUser(session.userId),
+    getLatestProposalForUser(session.userId),
+  ]);
+
+  if (proposal && (proposal.status === "sent" || proposal.status === "accepted")) {
     return (
       <>
         <PageHeader
-          title="Solicitações de tráfego pago"
-          description="Envie a proposta comercial para o cliente aceitar online. O aceite ativa plan_active (Plano Pro) no cadastro compartilhado com o Analytics."
+          title="Sua proposta"
+          description="Revise escopo, valores e condições. Ao aceitar, ativamos o plano no painel vinculado ao seu e-mail."
         />
-        <AdminProposalsPanel rows={rows} />
+        <ProposalAcceptPanel
+          proposal={proposal}
+          planAlreadyActive={hasActivePlan(session)}
+        />
       </>
     );
   }
 
-  const proposal = await getLatestProposalForUser(session.userId);
-
   return (
     <>
       <PageHeader
-        title="Sua proposta"
-        description="Solicite gestão de tráfego pago, acompanhe a proposta personalizada e aceite online para liberar o Plano Pro no Lótus Analytics."
+        title="Um último detalhe."
+        description="Precisamos do seu WhatsApp para enviar o diagnóstico da sua operação e alinhar os próximos passos."
       />
-
-      {!proposal ? <ProposalRequestForm /> : null}
-
-      {proposal ? (
-        <ProposalAcceptPanel proposal={proposal} planAlreadyActive={session.planActive} />
-      ) : null}
+      {interest ? <WhatsappNextStep /> : <ProposalRequestForm />}
     </>
   );
 }

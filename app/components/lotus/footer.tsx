@@ -18,7 +18,14 @@ export function LotusFooter() {
           </Link>
           <p className="mt-4 max-w-sm text-sm leading-6 text-muted-foreground">
             Gestão de tráfego pago para empresas que querem vender com método —
-            Google Ads, Meta Ads e leitura clara do resultado.
+            Google Ads, Meta Ads e leitura clara do resultado. Uma tecnologia{" "}
+            <a
+              href="https://marcosdelfrari.com"
+              className="text-foreground underline-offset-2 hover:underline"
+            >
+              marcosdelfrari.com
+            </a>
+            .
           </p>
         </div>
         <div className="flex flex-col gap-2 text-sm text-muted-foreground">
@@ -29,7 +36,7 @@ export function LotusFooter() {
             Como funciona
           </a>
           <Link href="/login?next=/propostas" className="hover:text-foreground">
-            Solicitar proposta
+            Começar agora
           </Link>
         </div>
       </div>

@@ -1,3 +1,4 @@
+import { analyticsPrisma } from "@/lib/analytics-db";
 import { prisma } from "@/lib/prisma";
 import { toProposalView, type TrafficProposalView } from "@/lib/proposal-types";
 import { setClientPlanActive } from "@/lib/users-store";
@@ -45,17 +46,83 @@ export async function getLatestProposalForUser(userId: string) {
   return row ? toProposalView(row) : null;
 }
 
+export async function getOpenProposalForUser(userId: string) {
+  const row = await prisma.trafficProposal.findFirst({
+    where: {
+      userId,
+      status: { in: ["requested", "sent"] },
+    },
+    orderBy: { createdAt: "desc" },
+  });
+  return row ? toProposalView(row) : null;
+}
+
+export async function adminCreateAndSendProposal(input: {
+  userId: string;
+  companyName: string;
+  segment?: string;
+  goals?: string;
+  contactPhone?: string;
+  monthlyMediaBudget?: number | null;
+}) {
+  const open = await prisma.trafficProposal.findFirst({
+    where: {
+      userId: input.userId,
+      status: { in: ["requested", "sent"] },
+    },
+  });
+  if (open) {
+    return {
+      error: "Este cliente já tem uma proposta em andamento.",
+    } as const;
+  }
+
+  const validUntil = new Date();
+  validUntil.setDate(validUntil.getDate() + 30);
+
+  const row = await prisma.trafficProposal.create({
+    data: {
+      userId: input.userId,
+      companyName: input.companyName.trim(),
+      segment: (input.segment ?? "").trim(),
+      goals: (input.goals ?? "").trim(),
+      contactPhone: (input.contactPhone ?? "").trim(),
+      monthlyMediaBudget: input.monthlyMediaBudget ?? null,
+      status: "sent",
+      title: defaultCommercial.title,
+      scope: defaultCommercial.scope,
+      services: defaultCommercial.services,
+      adBudgetSuggestion: defaultCommercial.adBudgetSuggestion,
+      deadlineDays: defaultCommercial.deadlineDays,
+      conditions: defaultCommercial.conditions,
+      validUntil,
+    },
+  });
+  return { proposal: toProposalView(row) } as const;
+}
+
 export async function listRequestedProposals() {
   const rows = await prisma.trafficProposal.findMany({
     where: { status: "requested" },
     orderBy: { createdAt: "asc" },
-    include: { user: { select: { name: true, email: true } } },
   });
-  return rows.map((row) => ({
-    ...toProposalView(row),
-    userName: row.user.name,
-    userEmail: row.user.email,
-  }));
+  const userIds = [...new Set(rows.map((row) => row.userId))];
+  const users = userIds.length
+    ? await analyticsPrisma.user.findMany({
+        where: { id: { in: userIds } },
+        select: { id: true, name: true, email: true },
+      })
+    : [];
+  const byId = new Map(users.map((user) => [user.id, user]));
+
+  return rows.map((row) => {
+    const user = byId.get(row.userId);
+    return {
+      ...toProposalView(row),
+      userName: user?.name ?? "Cliente",
+      userEmail: user?.email ?? "",
+    };
+  });
 }
 
 export async function createProposalRequest(input: {
@@ -73,7 +140,9 @@ export async function createProposalRequest(input: {
     },
   });
   if (open) {
-    return { error: "Você já tem uma solicitação ou proposta em andamento." } as const;
+    return {
+      error: "Você já tem uma solicitação ou proposta em andamento.",
+    } as const;
   }
 
   const row = await prisma.trafficProposal.create({
@@ -91,7 +160,9 @@ export async function createProposalRequest(input: {
 }
 
 export async function sendProposalToClient(proposalId: string) {
-  const row = await prisma.trafficProposal.findUnique({ where: { id: proposalId } });
+  const row = await prisma.trafficProposal.findUnique({
+    where: { id: proposalId },
+  });
   if (!row || row.status !== "requested") {
     return { error: "Solicitação não encontrada ou já enviada." } as const;
   }
@@ -116,7 +187,9 @@ export async function sendProposalToClient(proposalId: string) {
 }
 
 export async function acceptProposal(proposalId: string, userId: string) {
-  const row = await prisma.trafficProposal.findUnique({ where: { id: proposalId } });
+  const row = await prisma.trafficProposal.findUnique({
+    where: { id: proposalId },
+  });
   if (!row || row.userId !== userId) {
     return { error: "Proposta não encontrada." } as const;
   }

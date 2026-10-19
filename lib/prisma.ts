@@ -22,8 +22,15 @@ function createPrismaClient() {
   return new PrismaClient({ adapter });
 }
 
+function hasCurrentModels(client: PrismaClient) {
+  return (
+    typeof client.trafficProposal?.findFirst === "function" &&
+    typeof client.interest?.findFirst === "function"
+  );
+}
+
 function getPrismaClient() {
-  if (!globalForPrisma.prisma) {
+  if (!globalForPrisma.prisma || !hasCurrentModels(globalForPrisma.prisma)) {
     globalForPrisma.prisma = createPrismaClient();
   }
   return globalForPrisma.prisma;

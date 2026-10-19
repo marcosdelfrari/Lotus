@@ -2,13 +2,13 @@
 
 import { useRouter } from "next/navigation";
 import { useActionState, useEffect } from "react";
-import { submitProposalRequest } from "@/app/(workspace)/propostas/actions";
+import { submitInterest } from "@/app/(workspace)/propostas/actions";
 
 export function ProposalRequestForm() {
   const router = useRouter();
   const [state, action, pending] = useActionState(
     async (_prev: { error?: string; ok?: boolean } | null, formData: FormData) => {
-      return submitProposalRequest(formData);
+      return submitInterest(formData);
     },
     null,
   );
@@ -20,72 +20,58 @@ export function ProposalRequestForm() {
   }, [state, router]);
 
   return (
-    <form action={action} className="rounded-xl border border-border bg-surface p-5 sm:p-6">
-      <h2 className="text-sm font-medium">Solicitar proposta de tráfego pago</h2>
-      <p className="mt-1 text-[12px] leading-5 text-muted-foreground">
-        Conte sobre seu negócio. Montamos escopo, valores, prazo e investimento sugerido em
-        anúncios; você recebe tudo aqui para aceitar online.
-      </p>
-
-      <div className="mt-5 grid gap-4 sm:grid-cols-2">
-        <label className="block sm:col-span-2">
-          <span className="text-[12px] text-muted-foreground">Empresa</span>
-          <input
-            name="companyName"
-            required
-            className="mt-1 w-full rounded-md border border-border bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-foreground/20"
-          />
-        </label>
-        <label className="block">
-          <span className="text-[12px] text-muted-foreground">Segmento</span>
-          <input
-            name="segment"
-            placeholder="Ex.: clínica, e-commerce"
-            className="mt-1 w-full rounded-md border border-border bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-foreground/20"
-          />
-        </label>
-        <label className="block">
-          <span className="text-[12px] text-muted-foreground">Orçamento mensal em mídia (R$)</span>
-          <input
-            name="monthlyMediaBudget"
-            type="number"
-            min={0}
-            step={100}
-            placeholder="4500"
-            className="mt-1 w-full rounded-md border border-border bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-foreground/20"
-          />
-        </label>
-        <label className="block sm:col-span-2">
-          <span className="text-[12px] text-muted-foreground">Objetivos e contexto</span>
-          <textarea
-            name="goals"
-            rows={4}
-            required
-            placeholder="O que você quer gerar com os anúncios? Região, ticket, sazonalidade..."
-            className="mt-1 w-full rounded-md border border-border bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-foreground/20"
-          />
-        </label>
-        <label className="block sm:col-span-2">
-          <span className="text-[12px] text-muted-foreground">WhatsApp / telefone</span>
-          <input
-            name="contactPhone"
-            required
-            className="mt-1 w-full rounded-md border border-border bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-foreground/20"
-          />
-        </label>
-      </div>
-
-      {state?.error ? (
-        <p className="mt-4 text-[13px] text-negative">{state.error}</p>
-      ) : null}
-
-      <button
-        type="submit"
-        disabled={pending}
-        className="mt-5 rounded-md bg-foreground px-5 py-2.5 text-sm font-medium text-background disabled:opacity-50"
+    <div className="max-w-xl">
+      <form
+        action={action}
+        className="overflow-hidden rounded-2xl border border-border bg-surface shadow-sm"
       >
-        {pending ? "Enviando..." : "Enviar solicitação"}
-      </button>
-    </form>
+        <div className="border-b border-border bg-background/30 px-6 py-5 sm:px-8">
+          <h2 className="text-base font-semibold tracking-tight">Qual o seu melhor contato?</h2>
+          <p className="mt-1 text-[13px] leading-relaxed text-muted-foreground">
+            Seu nome e e-mail já estão seguros conosco. Falta apenas o número para iniciarmos a
+            estratégia.
+          </p>
+        </div>
+
+        <div className="px-6 py-8 sm:px-8">
+          <label className="block">
+            <span className="text-[12px] font-medium uppercase tracking-wider text-muted-foreground">
+              WhatsApp com DDD
+            </span>
+            <input
+              name="whatsapp"
+              type="tel"
+              inputMode="tel"
+              autoComplete="tel"
+              required
+              placeholder="(00) 00000-0000"
+              className="mt-2 w-full rounded-xl border border-border bg-background px-4 py-3.5 text-base outline-none transition focus:border-foreground/30 focus:ring-4 focus:ring-foreground/5"
+            />
+          </label>
+
+          {state?.error ? (
+            <div className="mt-4 rounded-lg bg-negative/5 px-4 py-3 text-[13px] text-negative">
+              {state.error}
+            </div>
+          ) : null}
+
+          <button
+            type="submit"
+            disabled={pending}
+            className="group mt-8 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-foreground px-6 py-4 text-sm font-bold text-background transition-all hover:opacity-90 disabled:opacity-50"
+          >
+            {pending ? "Salvando..." : "Confirmar e prosseguir"}
+            {!pending && (
+              <span className="transition-transform group-hover:translate-x-0.5">→</span>
+            )}
+          </button>
+        </div>
+      </form>
+
+      <p className="mt-6 px-2 text-[11px] leading-relaxed text-muted">
+        Ao prosseguir, você concorda que entraremos em contato para tratar da sua operação de
+        tráfego. Sem spam, apenas negócio.
+      </p>
+    </div>
   );
 }

@@ -51,14 +51,8 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
-  User: 'User',
   TrafficProposal: 'TrafficProposal',
-  TrackingSite: 'TrackingSite',
-  TrackingAllowedDomain: 'TrackingAllowedDomain',
-  TrackingHit: 'TrackingHit',
-  TrackingDailyMetric: 'TrackingDailyMetric',
-  TrackingEventDailyMetric: 'TrackingEventDailyMetric',
-  TrackingCampaignDailyMetric: 'TrackingCampaignDailyMetric'
+  Interest: 'Interest'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -75,19 +69,6 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 } as const)
 
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
-
-
-export const UserScalarFieldEnum = {
-  id: 'id',
-  email: 'email',
-  name: 'name',
-  role: 'role',
-  planActive: 'planActive',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
 export const TrafficProposalScalarFieldEnum = {
@@ -114,73 +95,16 @@ export const TrafficProposalScalarFieldEnum = {
 export type TrafficProposalScalarFieldEnum = (typeof TrafficProposalScalarFieldEnum)[keyof typeof TrafficProposalScalarFieldEnum]
 
 
-export const TrackingSiteScalarFieldEnum = {
+export const InterestScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
-  publicKey: 'publicKey',
-  createdAt: 'createdAt'
-} as const
-
-export type TrackingSiteScalarFieldEnum = (typeof TrackingSiteScalarFieldEnum)[keyof typeof TrackingSiteScalarFieldEnum]
-
-
-export const TrackingAllowedDomainScalarFieldEnum = {
-  id: 'id',
-  siteId: 'siteId',
-  host: 'host',
-  createdAt: 'createdAt'
-} as const
-
-export type TrackingAllowedDomainScalarFieldEnum = (typeof TrackingAllowedDomainScalarFieldEnum)[keyof typeof TrackingAllowedDomainScalarFieldEnum]
-
-
-export const TrackingHitScalarFieldEnum = {
-  id: 'id',
-  clientEventId: 'clientEventId',
-  siteId: 'siteId',
-  kind: 'kind',
   name: 'name',
-  url: 'url',
-  path: 'path',
-  referrer: 'referrer',
-  params: 'params',
-  properties: 'properties',
-  processedAt: 'processedAt',
+  email: 'email',
+  whatsapp: 'whatsapp',
   createdAt: 'createdAt'
 } as const
 
-export type TrackingHitScalarFieldEnum = (typeof TrackingHitScalarFieldEnum)[keyof typeof TrackingHitScalarFieldEnum]
-
-
-export const TrackingDailyMetricScalarFieldEnum = {
-  siteId: 'siteId',
-  day: 'day',
-  pageviews: 'pageviews',
-  events: 'events'
-} as const
-
-export type TrackingDailyMetricScalarFieldEnum = (typeof TrackingDailyMetricScalarFieldEnum)[keyof typeof TrackingDailyMetricScalarFieldEnum]
-
-
-export const TrackingEventDailyMetricScalarFieldEnum = {
-  siteId: 'siteId',
-  day: 'day',
-  eventName: 'eventName',
-  count: 'count'
-} as const
-
-export type TrackingEventDailyMetricScalarFieldEnum = (typeof TrackingEventDailyMetricScalarFieldEnum)[keyof typeof TrackingEventDailyMetricScalarFieldEnum]
-
-
-export const TrackingCampaignDailyMetricScalarFieldEnum = {
-  siteId: 'siteId',
-  day: 'day',
-  campaign: 'campaign',
-  pageviews: 'pageviews',
-  events: 'events'
-} as const
-
-export type TrackingCampaignDailyMetricScalarFieldEnum = (typeof TrackingCampaignDailyMetricScalarFieldEnum)[keyof typeof TrackingCampaignDailyMetricScalarFieldEnum]
+export type InterestScalarFieldEnum = (typeof InterestScalarFieldEnum)[keyof typeof InterestScalarFieldEnum]
 
 
 export const SortOrder = {

@@ -9,14 +9,6 @@
 * 🟢 You can import this file directly.
 */
 
-export const Role = {
-  admin: 'admin',
-  client: 'client'
-} as const
-
-export type Role = (typeof Role)[keyof typeof Role]
-
-
 export const ProposalStatus = {
   requested: 'requested',
   sent: 'sent',

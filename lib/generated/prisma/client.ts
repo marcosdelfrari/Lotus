@@ -31,8 +31,8 @@ export * from "./enums"
  * const prisma = new PrismaClient({
  *   adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL })
  * })
- * // Fetch zero or more Users
- * const users = await prisma.user.findMany()
+ * // Fetch zero or more TrafficProposals
+ * const trafficProposals = await prisma.trafficProposal.findMany()
  * ```
  * 
  * Read more in our [docs](https://pris.ly/d/client).
@@ -42,42 +42,12 @@ export type PrismaClient<LogOpts extends Prisma.LogLevel = never, OmitOpts exten
 export { Prisma }
 
 /**
- * Model User
- * 
- */
-export type User = Prisma.UserModel
-/**
  * Model TrafficProposal
  * 
  */
 export type TrafficProposal = Prisma.TrafficProposalModel
 /**
- * Model TrackingSite
+ * Model Interest
  * 
  */
-export type TrackingSite = Prisma.TrackingSiteModel
-/**
- * Model TrackingAllowedDomain
- * 
- */
-export type TrackingAllowedDomain = Prisma.TrackingAllowedDomainModel
-/**
- * Model TrackingHit
- * 
- */
-export type TrackingHit = Prisma.TrackingHitModel
-/**
- * Model TrackingDailyMetric
- * 
- */
-export type TrackingDailyMetric = Prisma.TrackingDailyMetricModel
-/**
- * Model TrackingEventDailyMetric
- * 
- */
-export type TrackingEventDailyMetric = Prisma.TrackingEventDailyMetricModel
-/**
- * Model TrackingCampaignDailyMetric
- * 
- */
-export type TrackingCampaignDailyMetric = Prisma.TrackingCampaignDailyMetricModel
+export type Interest = Prisma.InterestModel

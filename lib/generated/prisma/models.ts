@@ -8,12 +8,6 @@
  *
  * 🟢 You can import this file directly.
  */
-export type * from './models/User'
 export type * from './models/TrafficProposal'
-export type * from './models/TrackingSite'
-export type * from './models/TrackingAllowedDomain'
-export type * from './models/TrackingHit'
-export type * from './models/TrackingDailyMetric'
-export type * from './models/TrackingEventDailyMetric'
-export type * from './models/TrackingCampaignDailyMetric'
+export type * from './models/Interest'
 export type * from './commonInputTypes'

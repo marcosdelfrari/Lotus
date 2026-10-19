@@ -1,7 +1,5 @@
--- CreateEnum
 CREATE TYPE "ProposalStatus" AS ENUM ('requested', 'sent', 'accepted', 'cancelled');
 
--- CreateTable
 CREATE TABLE "traffic_proposals" (
     "id" TEXT NOT NULL,
     "user_id" TEXT NOT NULL,
@@ -25,8 +23,4 @@ CREATE TABLE "traffic_proposals" (
     CONSTRAINT "traffic_proposals_pkey" PRIMARY KEY ("id")
 );
 
--- CreateIndex
 CREATE INDEX "traffic_proposals_user_id_idx" ON "traffic_proposals"("user_id");
-
--- AddForeignKey
-ALTER TABLE "traffic_proposals" ADD CONSTRAINT "traffic_proposals_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;

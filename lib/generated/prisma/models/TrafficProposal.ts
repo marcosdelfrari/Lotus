@@ -316,7 +316,6 @@ export type TrafficProposalWhereInput = {
   acceptedAt?: Prisma.DateTimeNullableFilter<"TrafficProposal"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"TrafficProposal"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"TrafficProposal"> | Date | string
-  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
 
 export type TrafficProposalOrderByWithRelationInput = {
@@ -338,7 +337,6 @@ export type TrafficProposalOrderByWithRelationInput = {
   acceptedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  user?: Prisma.UserOrderByWithRelationInput
 }
 
 export type TrafficProposalWhereUniqueInput = Prisma.AtLeast<{
@@ -363,7 +361,6 @@ export type TrafficProposalWhereUniqueInput = Prisma.AtLeast<{
   acceptedAt?: Prisma.DateTimeNullableFilter<"TrafficProposal"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"TrafficProposal"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"TrafficProposal"> | Date | string
-  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }, "id">
 
 export type TrafficProposalOrderByWithAggregationInput = {
@@ -418,6 +415,7 @@ export type TrafficProposalScalarWhereWithAggregatesInput = {
 
 export type TrafficProposalCreateInput = {
   id?: string
+  userId: string
   companyName: string
   segment?: string
   monthlyMediaBudget?: number | null
@@ -434,7 +432,6 @@ export type TrafficProposalCreateInput = {
   acceptedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  user: Prisma.UserCreateNestedOneWithoutTrafficProposalsInput
 }
 
 export type TrafficProposalUncheckedCreateInput = {
@@ -460,6 +457,7 @@ export type TrafficProposalUncheckedCreateInput = {
 
 export type TrafficProposalUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
   companyName?: Prisma.StringFieldUpdateOperationsInput | string
   segment?: Prisma.StringFieldUpdateOperationsInput | string
   monthlyMediaBudget?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -476,7 +474,6 @@ export type TrafficProposalUpdateInput = {
   acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  user?: Prisma.UserUpdateOneRequiredWithoutTrafficProposalsNestedInput
 }
 
 export type TrafficProposalUncheckedUpdateInput = {
@@ -523,6 +520,7 @@ export type TrafficProposalCreateManyInput = {
 
 export type TrafficProposalUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
   companyName?: Prisma.StringFieldUpdateOperationsInput | string
   segment?: Prisma.StringFieldUpdateOperationsInput | string
   monthlyMediaBudget?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -560,16 +558,6 @@ export type TrafficProposalUncheckedUpdateManyInput = {
   acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-}
-
-export type TrafficProposalListRelationFilter = {
-  every?: Prisma.TrafficProposalWhereInput
-  some?: Prisma.TrafficProposalWhereInput
-  none?: Prisma.TrafficProposalWhereInput
-}
-
-export type TrafficProposalOrderByRelationAggregateInput = {
-  _count?: Prisma.SortOrder
 }
 
 export type TrafficProposalCountOrderByAggregateInput = {
@@ -641,46 +629,8 @@ export type TrafficProposalSumOrderByAggregateInput = {
   deadlineDays?: Prisma.SortOrder
 }
 
-export type TrafficProposalCreateNestedManyWithoutUserInput = {
-  create?: Prisma.XOR<Prisma.TrafficProposalCreateWithoutUserInput, Prisma.TrafficProposalUncheckedCreateWithoutUserInput> | Prisma.TrafficProposalCreateWithoutUserInput[] | Prisma.TrafficProposalUncheckedCreateWithoutUserInput[]
-  connectOrCreate?: Prisma.TrafficProposalCreateOrConnectWithoutUserInput | Prisma.TrafficProposalCreateOrConnectWithoutUserInput[]
-  createMany?: Prisma.TrafficProposalCreateManyUserInputEnvelope
-  connect?: Prisma.TrafficProposalWhereUniqueInput | Prisma.TrafficProposalWhereUniqueInput[]
-}
-
-export type TrafficProposalUncheckedCreateNestedManyWithoutUserInput = {
-  create?: Prisma.XOR<Prisma.TrafficProposalCreateWithoutUserInput, Prisma.TrafficProposalUncheckedCreateWithoutUserInput> | Prisma.TrafficProposalCreateWithoutUserInput[] | Prisma.TrafficProposalUncheckedCreateWithoutUserInput[]
-  connectOrCreate?: Prisma.TrafficProposalCreateOrConnectWithoutUserInput | Prisma.TrafficProposalCreateOrConnectWithoutUserInput[]
-  createMany?: Prisma.TrafficProposalCreateManyUserInputEnvelope
-  connect?: Prisma.TrafficProposalWhereUniqueInput | Prisma.TrafficProposalWhereUniqueInput[]
-}
-
-export type TrafficProposalUpdateManyWithoutUserNestedInput = {
-  create?: Prisma.XOR<Prisma.TrafficProposalCreateWithoutUserInput, Prisma.TrafficProposalUncheckedCreateWithoutUserInput> | Prisma.TrafficProposalCreateWithoutUserInput[] | Prisma.TrafficProposalUncheckedCreateWithoutUserInput[]
-  connectOrCreate?: Prisma.TrafficProposalCreateOrConnectWithoutUserInput | Prisma.TrafficProposalCreateOrConnectWithoutUserInput[]
-  upsert?: Prisma.TrafficProposalUpsertWithWhereUniqueWithoutUserInput | Prisma.TrafficProposalUpsertWithWhereUniqueWithoutUserInput[]
-  createMany?: Prisma.TrafficProposalCreateManyUserInputEnvelope
-  set?: Prisma.TrafficProposalWhereUniqueInput | Prisma.TrafficProposalWhereUniqueInput[]
-  disconnect?: Prisma.TrafficProposalWhereUniqueInput | Prisma.TrafficProposalWhereUniqueInput[]
-  delete?: Prisma.TrafficProposalWhereUniqueInput | Prisma.TrafficProposalWhereUniqueInput[]
-  connect?: Prisma.TrafficProposalWhereUniqueInput | Prisma.TrafficProposalWhereUniqueInput[]
-  update?: Prisma.TrafficProposalUpdateWithWhereUniqueWithoutUserInput | Prisma.TrafficProposalUpdateWithWhereUniqueWithoutUserInput[]
-  updateMany?: Prisma.TrafficProposalUpdateManyWithWhereWithoutUserInput | Prisma.TrafficProposalUpdateManyWithWhereWithoutUserInput[]
-  deleteMany?: Prisma.TrafficProposalScalarWhereInput | Prisma.TrafficProposalScalarWhereInput[]
-}
-
-export type TrafficProposalUncheckedUpdateManyWithoutUserNestedInput = {
-  create?: Prisma.XOR<Prisma.TrafficProposalCreateWithoutUserInput, Prisma.TrafficProposalUncheckedCreateWithoutUserInput> | Prisma.TrafficProposalCreateWithoutUserInput[] | Prisma.TrafficProposalUncheckedCreateWithoutUserInput[]
-  connectOrCreate?: Prisma.TrafficProposalCreateOrConnectWithoutUserInput | Prisma.TrafficProposalCreateOrConnectWithoutUserInput[]
-  upsert?: Prisma.TrafficProposalUpsertWithWhereUniqueWithoutUserInput | Prisma.TrafficProposalUpsertWithWhereUniqueWithoutUserInput[]
-  createMany?: Prisma.TrafficProposalCreateManyUserInputEnvelope
-  set?: Prisma.TrafficProposalWhereUniqueInput | Prisma.TrafficProposalWhereUniqueInput[]
-  disconnect?: Prisma.TrafficProposalWhereUniqueInput | Prisma.TrafficProposalWhereUniqueInput[]
-  delete?: Prisma.TrafficProposalWhereUniqueInput | Prisma.TrafficProposalWhereUniqueInput[]
-  connect?: Prisma.TrafficProposalWhereUniqueInput | Prisma.TrafficProposalWhereUniqueInput[]
-  update?: Prisma.TrafficProposalUpdateWithWhereUniqueWithoutUserInput | Prisma.TrafficProposalUpdateWithWhereUniqueWithoutUserInput[]
-  updateMany?: Prisma.TrafficProposalUpdateManyWithWhereWithoutUserInput | Prisma.TrafficProposalUpdateManyWithWhereWithoutUserInput[]
-  deleteMany?: Prisma.TrafficProposalScalarWhereInput | Prisma.TrafficProposalScalarWhereInput[]
+export type StringFieldUpdateOperationsInput = {
+  set?: string
 }
 
 export type NullableIntFieldUpdateOperationsInput = {
@@ -703,174 +653,8 @@ export type EnumProposalStatusFieldUpdateOperationsInput = {
   set?: $Enums.ProposalStatus
 }
 
-export type TrafficProposalCreateWithoutUserInput = {
-  id?: string
-  companyName: string
-  segment?: string
-  monthlyMediaBudget?: number | null
-  goals?: string
-  contactPhone?: string
-  title?: string | null
-  scope?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  services?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  adBudgetSuggestion?: number | null
-  deadlineDays?: number | null
-  conditions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  validUntil?: Date | string | null
-  status?: $Enums.ProposalStatus
-  acceptedAt?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-}
-
-export type TrafficProposalUncheckedCreateWithoutUserInput = {
-  id?: string
-  companyName: string
-  segment?: string
-  monthlyMediaBudget?: number | null
-  goals?: string
-  contactPhone?: string
-  title?: string | null
-  scope?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  services?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  adBudgetSuggestion?: number | null
-  deadlineDays?: number | null
-  conditions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  validUntil?: Date | string | null
-  status?: $Enums.ProposalStatus
-  acceptedAt?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-}
-
-export type TrafficProposalCreateOrConnectWithoutUserInput = {
-  where: Prisma.TrafficProposalWhereUniqueInput
-  create: Prisma.XOR<Prisma.TrafficProposalCreateWithoutUserInput, Prisma.TrafficProposalUncheckedCreateWithoutUserInput>
-}
-
-export type TrafficProposalCreateManyUserInputEnvelope = {
-  data: Prisma.TrafficProposalCreateManyUserInput | Prisma.TrafficProposalCreateManyUserInput[]
-  skipDuplicates?: boolean
-}
-
-export type TrafficProposalUpsertWithWhereUniqueWithoutUserInput = {
-  where: Prisma.TrafficProposalWhereUniqueInput
-  update: Prisma.XOR<Prisma.TrafficProposalUpdateWithoutUserInput, Prisma.TrafficProposalUncheckedUpdateWithoutUserInput>
-  create: Prisma.XOR<Prisma.TrafficProposalCreateWithoutUserInput, Prisma.TrafficProposalUncheckedCreateWithoutUserInput>
-}
-
-export type TrafficProposalUpdateWithWhereUniqueWithoutUserInput = {
-  where: Prisma.TrafficProposalWhereUniqueInput
-  data: Prisma.XOR<Prisma.TrafficProposalUpdateWithoutUserInput, Prisma.TrafficProposalUncheckedUpdateWithoutUserInput>
-}
-
-export type TrafficProposalUpdateManyWithWhereWithoutUserInput = {
-  where: Prisma.TrafficProposalScalarWhereInput
-  data: Prisma.XOR<Prisma.TrafficProposalUpdateManyMutationInput, Prisma.TrafficProposalUncheckedUpdateManyWithoutUserInput>
-}
-
-export type TrafficProposalScalarWhereInput = {
-  AND?: Prisma.TrafficProposalScalarWhereInput | Prisma.TrafficProposalScalarWhereInput[]
-  OR?: Prisma.TrafficProposalScalarWhereInput[]
-  NOT?: Prisma.TrafficProposalScalarWhereInput | Prisma.TrafficProposalScalarWhereInput[]
-  id?: Prisma.StringFilter<"TrafficProposal"> | string
-  userId?: Prisma.StringFilter<"TrafficProposal"> | string
-  companyName?: Prisma.StringFilter<"TrafficProposal"> | string
-  segment?: Prisma.StringFilter<"TrafficProposal"> | string
-  monthlyMediaBudget?: Prisma.IntNullableFilter<"TrafficProposal"> | number | null
-  goals?: Prisma.StringFilter<"TrafficProposal"> | string
-  contactPhone?: Prisma.StringFilter<"TrafficProposal"> | string
-  title?: Prisma.StringNullableFilter<"TrafficProposal"> | string | null
-  scope?: Prisma.JsonFilter<"TrafficProposal">
-  services?: Prisma.JsonFilter<"TrafficProposal">
-  adBudgetSuggestion?: Prisma.IntNullableFilter<"TrafficProposal"> | number | null
-  deadlineDays?: Prisma.IntNullableFilter<"TrafficProposal"> | number | null
-  conditions?: Prisma.JsonFilter<"TrafficProposal">
-  validUntil?: Prisma.DateTimeNullableFilter<"TrafficProposal"> | Date | string | null
-  status?: Prisma.EnumProposalStatusFilter<"TrafficProposal"> | $Enums.ProposalStatus
-  acceptedAt?: Prisma.DateTimeNullableFilter<"TrafficProposal"> | Date | string | null
-  createdAt?: Prisma.DateTimeFilter<"TrafficProposal"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"TrafficProposal"> | Date | string
-}
-
-export type TrafficProposalCreateManyUserInput = {
-  id?: string
-  companyName: string
-  segment?: string
-  monthlyMediaBudget?: number | null
-  goals?: string
-  contactPhone?: string
-  title?: string | null
-  scope?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  services?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  adBudgetSuggestion?: number | null
-  deadlineDays?: number | null
-  conditions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  validUntil?: Date | string | null
-  status?: $Enums.ProposalStatus
-  acceptedAt?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-}
-
-export type TrafficProposalUpdateWithoutUserInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  companyName?: Prisma.StringFieldUpdateOperationsInput | string
-  segment?: Prisma.StringFieldUpdateOperationsInput | string
-  monthlyMediaBudget?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  goals?: Prisma.StringFieldUpdateOperationsInput | string
-  contactPhone?: Prisma.StringFieldUpdateOperationsInput | string
-  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  scope?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  services?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  adBudgetSuggestion?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  deadlineDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  conditions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  validUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  status?: Prisma.EnumProposalStatusFieldUpdateOperationsInput | $Enums.ProposalStatus
-  acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-}
-
-export type TrafficProposalUncheckedUpdateWithoutUserInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  companyName?: Prisma.StringFieldUpdateOperationsInput | string
-  segment?: Prisma.StringFieldUpdateOperationsInput | string
-  monthlyMediaBudget?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  goals?: Prisma.StringFieldUpdateOperationsInput | string
-  contactPhone?: Prisma.StringFieldUpdateOperationsInput | string
-  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  scope?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  services?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  adBudgetSuggestion?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  deadlineDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  conditions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  validUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  status?: Prisma.EnumProposalStatusFieldUpdateOperationsInput | $Enums.ProposalStatus
-  acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-}
-
-export type TrafficProposalUncheckedUpdateManyWithoutUserInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  companyName?: Prisma.StringFieldUpdateOperationsInput | string
-  segment?: Prisma.StringFieldUpdateOperationsInput | string
-  monthlyMediaBudget?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  goals?: Prisma.StringFieldUpdateOperationsInput | string
-  contactPhone?: Prisma.StringFieldUpdateOperationsInput | string
-  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  scope?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  services?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  adBudgetSuggestion?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  deadlineDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  conditions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  validUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  status?: Prisma.EnumProposalStatusFieldUpdateOperationsInput | $Enums.ProposalStatus
-  acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+export type DateTimeFieldUpdateOperationsInput = {
+  set?: Date | string
 }
 
 
@@ -894,7 +678,6 @@ export type TrafficProposalSelect<ExtArgs extends runtime.Types.Extensions.Inter
   acceptedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["trafficProposal"]>
 
 export type TrafficProposalSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -916,7 +699,6 @@ export type TrafficProposalSelectCreateManyAndReturn<ExtArgs extends runtime.Typ
   acceptedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["trafficProposal"]>
 
 export type TrafficProposalSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -938,7 +720,6 @@ export type TrafficProposalSelectUpdateManyAndReturn<ExtArgs extends runtime.Typ
   acceptedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["trafficProposal"]>
 
 export type TrafficProposalSelectScalar = {
@@ -963,21 +744,10 @@ export type TrafficProposalSelectScalar = {
 }
 
 export type TrafficProposalOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "companyName" | "segment" | "monthlyMediaBudget" | "goals" | "contactPhone" | "title" | "scope" | "services" | "adBudgetSuggestion" | "deadlineDays" | "conditions" | "validUntil" | "status" | "acceptedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["trafficProposal"]>
-export type TrafficProposalInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-}
-export type TrafficProposalIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-}
-export type TrafficProposalIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-}
 
 export type $TrafficProposalPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "TrafficProposal"
-  objects: {
-    user: Prisma.$UserPayload<ExtArgs>
-  }
+  objects: {}
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     userId: string
@@ -1391,7 +1161,6 @@ readonly fields: TrafficProposalFieldRefs;
  */
 export interface Prisma__TrafficProposalClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1456,10 +1225,6 @@ export type TrafficProposalFindUniqueArgs<ExtArgs extends runtime.Types.Extensio
    */
   omit?: Prisma.TrafficProposalOmit<ExtArgs> | null
   /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.TrafficProposalInclude<ExtArgs> | null
-  /**
    * Filter, which TrafficProposal to fetch.
    */
   where: Prisma.TrafficProposalWhereUniqueInput
@@ -1478,10 +1243,6 @@ export type TrafficProposalFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.E
    */
   omit?: Prisma.TrafficProposalOmit<ExtArgs> | null
   /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.TrafficProposalInclude<ExtArgs> | null
-  /**
    * Filter, which TrafficProposal to fetch.
    */
   where: Prisma.TrafficProposalWhereUniqueInput
@@ -1499,10 +1260,6 @@ export type TrafficProposalFindFirstArgs<ExtArgs extends runtime.Types.Extension
    * Omit specific fields from the TrafficProposal
    */
   omit?: Prisma.TrafficProposalOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.TrafficProposalInclude<ExtArgs> | null
   /**
    * Filter, which TrafficProposal to fetch.
    */
@@ -1552,10 +1309,6 @@ export type TrafficProposalFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Ex
    */
   omit?: Prisma.TrafficProposalOmit<ExtArgs> | null
   /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.TrafficProposalInclude<ExtArgs> | null
-  /**
    * Filter, which TrafficProposal to fetch.
    */
   where?: Prisma.TrafficProposalWhereInput
@@ -1603,10 +1356,6 @@ export type TrafficProposalFindManyArgs<ExtArgs extends runtime.Types.Extensions
    * Omit specific fields from the TrafficProposal
    */
   omit?: Prisma.TrafficProposalOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.TrafficProposalInclude<ExtArgs> | null
   /**
    * Filter, which TrafficProposals to fetch.
    */
@@ -1656,10 +1405,6 @@ export type TrafficProposalCreateArgs<ExtArgs extends runtime.Types.Extensions.I
    */
   omit?: Prisma.TrafficProposalOmit<ExtArgs> | null
   /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.TrafficProposalInclude<ExtArgs> | null
-  /**
    * The data needed to create a TrafficProposal.
    */
   data: Prisma.XOR<Prisma.TrafficProposalCreateInput, Prisma.TrafficProposalUncheckedCreateInput>
@@ -1693,10 +1438,6 @@ export type TrafficProposalCreateManyAndReturnArgs<ExtArgs extends runtime.Types
    */
   data: Prisma.TrafficProposalCreateManyInput | Prisma.TrafficProposalCreateManyInput[]
   skipDuplicates?: boolean
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.TrafficProposalIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1711,10 +1452,6 @@ export type TrafficProposalUpdateArgs<ExtArgs extends runtime.Types.Extensions.I
    * Omit specific fields from the TrafficProposal
    */
   omit?: Prisma.TrafficProposalOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.TrafficProposalInclude<ExtArgs> | null
   /**
    * The data needed to update a TrafficProposal.
    */
@@ -1767,10 +1504,6 @@ export type TrafficProposalUpdateManyAndReturnArgs<ExtArgs extends runtime.Types
    * Limit how many TrafficProposals to update.
    */
   limit?: number
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.TrafficProposalIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1785,10 +1518,6 @@ export type TrafficProposalUpsertArgs<ExtArgs extends runtime.Types.Extensions.I
    * Omit specific fields from the TrafficProposal
    */
   omit?: Prisma.TrafficProposalOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.TrafficProposalInclude<ExtArgs> | null
   /**
    * The filter to search for the TrafficProposal to update in case it exists.
    */
@@ -1815,10 +1544,6 @@ export type TrafficProposalDeleteArgs<ExtArgs extends runtime.Types.Extensions.I
    * Omit specific fields from the TrafficProposal
    */
   omit?: Prisma.TrafficProposalOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.TrafficProposalInclude<ExtArgs> | null
   /**
    * Filter which TrafficProposal to delete.
    */
@@ -1851,8 +1576,4 @@ export type TrafficProposalDefaultArgs<ExtArgs extends runtime.Types.Extensions.
    * Omit specific fields from the TrafficProposal
    */
   omit?: Prisma.TrafficProposalOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.TrafficProposalInclude<ExtArgs> | null
 }

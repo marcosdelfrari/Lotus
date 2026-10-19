@@ -5,23 +5,23 @@ import { SectionShell } from "@/app/components/lotus/section-shell";
 const steps = [
   {
     step: "01",
-    title: "Você conta o negócio",
-    text: "Empresa, oferta, região e quanto faz sentido investir em mídia. Avaliamos se a gestão encaixa no momento da sua venda.",
+    title: "Entre com o Google",
+    text: "Mesma conta do Lótus Analytics. Entrada rápida, sem formulário de cadastro.",
   },
   {
     step: "02",
-    title: "Recebe a proposta",
-    text: "Escopo, fee de gestão, prazo, condições e investimento sugerido em anúncios — escrito para decidir, não para adivinhar.",
+    title: "Solicite a gestão",
+    text: "No ambiente logado, você dá o próximo passo e a Lótus entende objetivo, segmento e momento do negócio.",
   },
   {
     step: "03",
-    title: "Aceita online",
-    text: "Um clique formaliza a contratação. O Plano Pro do painel Lótus Analytics é liberado no mesmo cadastro.",
+    title: "Receba a proposta",
+    text: "Escopo, serviços, fee de gestão e investimento sugerido em mídia — tudo explícito antes de começar.",
   },
   {
     step: "04",
-    title: "Campanhas no ar",
-    text: "Kickoff, acessos às contas de anúncio e otimização contínua com relatório do que o tráfego está gerando.",
+    title: "Coloque no ar",
+    text: "Aceite digital na proposta, painel de resultados liberado e kickoff de contas, criativos e otimização.",
   },
 ];
 
@@ -29,27 +29,40 @@ export function LotusHowItWorks() {
   return (
     <SectionShell
       id="como-funciona"
-      title="Do primeiro contato à campanha no ar."
-      subtitle="Poucas etapas. Você solicita, revisa a proposta e começa a gestão sem burocracia."
+      title="Contratação clara, do login à campanha."
+      subtitle="Poucas etapas, proposta transparente e operação de tráfego com prestação de contas no painel."
     >
-      <RevealGroup className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <RevealGroup className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
         {steps.map((item) => (
           <RevealItem
             key={item.step}
-            className="rounded-xl border border-border bg-surface p-6"
+            className="group relative rounded-2xl border border-border bg-surface p-8 transition-colors hover:bg-surface-elevated"
           >
-            <span className="font-mono text-xs text-muted">{item.step}</span>
-            <h3 className="mt-4 text-lg font-medium">{item.title}</h3>
-            <p className="mt-2 text-sm leading-6 text-muted-foreground">{item.text}</p>
+            <div className="flex items-center justify-between">
+              <span className="font-mono text-2xl font-bold text-muted/30 transition-colors group-hover:text-accent/20">
+                {item.step}
+              </span>
+              <div className="h-2 w-2 rounded-full bg-border-subtle group-hover:bg-accent/40" />
+            </div>
+            <h3 className="mt-6 min-h-[3.5rem] text-balance text-xl font-semibold leading-snug tracking-tight">
+              {item.title}
+            </h3>
+            <p className="mt-3 text-[13px] leading-relaxed text-muted-foreground group-hover:text-foreground/80">
+              {item.text}
+            </p>
           </RevealItem>
         ))}
       </RevealGroup>
-      <Reveal className="mt-10 text-center">
+      <Reveal className="mt-14 text-center">
         <Link
           href="/login?next=/propostas"
-          className="inline-flex rounded-md bg-foreground px-6 py-3 text-sm font-medium text-background transition-opacity hover:opacity-90"
+          className="inline-flex items-center gap-2 rounded-lg bg-foreground px-8 py-4 text-sm font-semibold text-background transition-all hover:scale-[1.02] active:scale-[0.98]"
         >
-          Solicitar proposta
+          Começar agora
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
+            <path d="M5 12h14" />
+            <path d="m12 5 7 7-7 7" />
+          </svg>
         </Link>
       </Reveal>
     </SectionShell>

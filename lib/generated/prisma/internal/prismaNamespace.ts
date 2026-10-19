@@ -397,14 +397,8 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 
 export const ModelName = {
-  User: 'User',
   TrafficProposal: 'TrafficProposal',
-  TrackingSite: 'TrackingSite',
-  TrackingAllowedDomain: 'TrackingAllowedDomain',
-  TrackingHit: 'TrackingHit',
-  TrackingDailyMetric: 'TrackingDailyMetric',
-  TrackingEventDailyMetric: 'TrackingEventDailyMetric',
-  TrackingCampaignDailyMetric: 'TrackingCampaignDailyMetric'
+  Interest: 'Interest'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -420,84 +414,10 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "trafficProposal" | "trackingSite" | "trackingAllowedDomain" | "trackingHit" | "trackingDailyMetric" | "trackingEventDailyMetric" | "trackingCampaignDailyMetric"
+    modelProps: "trafficProposal" | "interest"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
-    User: {
-      payload: Prisma.$UserPayload<ExtArgs>
-      fields: Prisma.UserFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.UserFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserPayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.UserFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserPayload>
-        }
-        findFirst: {
-          args: Prisma.UserFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserPayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.UserFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserPayload>
-        }
-        findMany: {
-          args: Prisma.UserFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserPayload>[]
-        }
-        create: {
-          args: Prisma.UserCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserPayload>
-        }
-        createMany: {
-          args: Prisma.UserCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        createManyAndReturn: {
-          args: Prisma.UserCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserPayload>[]
-        }
-        delete: {
-          args: Prisma.UserDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserPayload>
-        }
-        update: {
-          args: Prisma.UserUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserPayload>
-        }
-        deleteMany: {
-          args: Prisma.UserDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.UserUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateManyAndReturn: {
-          args: Prisma.UserUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserPayload>[]
-        }
-        upsert: {
-          args: Prisma.UserUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserPayload>
-        }
-        aggregate: {
-          args: Prisma.UserAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateUser>
-        }
-        groupBy: {
-          args: Prisma.UserGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.UserGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.UserCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.UserCountAggregateOutputType> | number
-        }
-      }
-    }
     TrafficProposal: {
       payload: Prisma.$TrafficProposalPayload<ExtArgs>
       fields: Prisma.TrafficProposalFieldRefs
@@ -572,447 +492,77 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
-    TrackingSite: {
-      payload: Prisma.$TrackingSitePayload<ExtArgs>
-      fields: Prisma.TrackingSiteFieldRefs
+    Interest: {
+      payload: Prisma.$InterestPayload<ExtArgs>
+      fields: Prisma.InterestFieldRefs
       operations: {
         findUnique: {
-          args: Prisma.TrackingSiteFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingSitePayload> | null
+          args: Prisma.InterestFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InterestPayload> | null
         }
         findUniqueOrThrow: {
-          args: Prisma.TrackingSiteFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingSitePayload>
+          args: Prisma.InterestFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InterestPayload>
         }
         findFirst: {
-          args: Prisma.TrackingSiteFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingSitePayload> | null
+          args: Prisma.InterestFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InterestPayload> | null
         }
         findFirstOrThrow: {
-          args: Prisma.TrackingSiteFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingSitePayload>
+          args: Prisma.InterestFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InterestPayload>
         }
         findMany: {
-          args: Prisma.TrackingSiteFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingSitePayload>[]
+          args: Prisma.InterestFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InterestPayload>[]
         }
         create: {
-          args: Prisma.TrackingSiteCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingSitePayload>
+          args: Prisma.InterestCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InterestPayload>
         }
         createMany: {
-          args: Prisma.TrackingSiteCreateManyArgs<ExtArgs>
+          args: Prisma.InterestCreateManyArgs<ExtArgs>
           result: BatchPayload
         }
         createManyAndReturn: {
-          args: Prisma.TrackingSiteCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingSitePayload>[]
+          args: Prisma.InterestCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InterestPayload>[]
         }
         delete: {
-          args: Prisma.TrackingSiteDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingSitePayload>
+          args: Prisma.InterestDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InterestPayload>
         }
         update: {
-          args: Prisma.TrackingSiteUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingSitePayload>
+          args: Prisma.InterestUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InterestPayload>
         }
         deleteMany: {
-          args: Prisma.TrackingSiteDeleteManyArgs<ExtArgs>
+          args: Prisma.InterestDeleteManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateMany: {
-          args: Prisma.TrackingSiteUpdateManyArgs<ExtArgs>
+          args: Prisma.InterestUpdateManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateManyAndReturn: {
-          args: Prisma.TrackingSiteUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingSitePayload>[]
+          args: Prisma.InterestUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InterestPayload>[]
         }
         upsert: {
-          args: Prisma.TrackingSiteUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingSitePayload>
+          args: Prisma.InterestUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InterestPayload>
         }
         aggregate: {
-          args: Prisma.TrackingSiteAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateTrackingSite>
+          args: Prisma.InterestAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateInterest>
         }
         groupBy: {
-          args: Prisma.TrackingSiteGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.TrackingSiteGroupByOutputType>[]
+          args: Prisma.InterestGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.InterestGroupByOutputType>[]
         }
         count: {
-          args: Prisma.TrackingSiteCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.TrackingSiteCountAggregateOutputType> | number
-        }
-      }
-    }
-    TrackingAllowedDomain: {
-      payload: Prisma.$TrackingAllowedDomainPayload<ExtArgs>
-      fields: Prisma.TrackingAllowedDomainFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.TrackingAllowedDomainFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingAllowedDomainPayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.TrackingAllowedDomainFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingAllowedDomainPayload>
-        }
-        findFirst: {
-          args: Prisma.TrackingAllowedDomainFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingAllowedDomainPayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.TrackingAllowedDomainFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingAllowedDomainPayload>
-        }
-        findMany: {
-          args: Prisma.TrackingAllowedDomainFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingAllowedDomainPayload>[]
-        }
-        create: {
-          args: Prisma.TrackingAllowedDomainCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingAllowedDomainPayload>
-        }
-        createMany: {
-          args: Prisma.TrackingAllowedDomainCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        createManyAndReturn: {
-          args: Prisma.TrackingAllowedDomainCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingAllowedDomainPayload>[]
-        }
-        delete: {
-          args: Prisma.TrackingAllowedDomainDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingAllowedDomainPayload>
-        }
-        update: {
-          args: Prisma.TrackingAllowedDomainUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingAllowedDomainPayload>
-        }
-        deleteMany: {
-          args: Prisma.TrackingAllowedDomainDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.TrackingAllowedDomainUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateManyAndReturn: {
-          args: Prisma.TrackingAllowedDomainUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingAllowedDomainPayload>[]
-        }
-        upsert: {
-          args: Prisma.TrackingAllowedDomainUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingAllowedDomainPayload>
-        }
-        aggregate: {
-          args: Prisma.TrackingAllowedDomainAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateTrackingAllowedDomain>
-        }
-        groupBy: {
-          args: Prisma.TrackingAllowedDomainGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.TrackingAllowedDomainGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.TrackingAllowedDomainCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.TrackingAllowedDomainCountAggregateOutputType> | number
-        }
-      }
-    }
-    TrackingHit: {
-      payload: Prisma.$TrackingHitPayload<ExtArgs>
-      fields: Prisma.TrackingHitFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.TrackingHitFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingHitPayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.TrackingHitFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingHitPayload>
-        }
-        findFirst: {
-          args: Prisma.TrackingHitFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingHitPayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.TrackingHitFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingHitPayload>
-        }
-        findMany: {
-          args: Prisma.TrackingHitFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingHitPayload>[]
-        }
-        create: {
-          args: Prisma.TrackingHitCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingHitPayload>
-        }
-        createMany: {
-          args: Prisma.TrackingHitCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        createManyAndReturn: {
-          args: Prisma.TrackingHitCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingHitPayload>[]
-        }
-        delete: {
-          args: Prisma.TrackingHitDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingHitPayload>
-        }
-        update: {
-          args: Prisma.TrackingHitUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingHitPayload>
-        }
-        deleteMany: {
-          args: Prisma.TrackingHitDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.TrackingHitUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateManyAndReturn: {
-          args: Prisma.TrackingHitUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingHitPayload>[]
-        }
-        upsert: {
-          args: Prisma.TrackingHitUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingHitPayload>
-        }
-        aggregate: {
-          args: Prisma.TrackingHitAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateTrackingHit>
-        }
-        groupBy: {
-          args: Prisma.TrackingHitGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.TrackingHitGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.TrackingHitCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.TrackingHitCountAggregateOutputType> | number
-        }
-      }
-    }
-    TrackingDailyMetric: {
-      payload: Prisma.$TrackingDailyMetricPayload<ExtArgs>
-      fields: Prisma.TrackingDailyMetricFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.TrackingDailyMetricFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingDailyMetricPayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.TrackingDailyMetricFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingDailyMetricPayload>
-        }
-        findFirst: {
-          args: Prisma.TrackingDailyMetricFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingDailyMetricPayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.TrackingDailyMetricFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingDailyMetricPayload>
-        }
-        findMany: {
-          args: Prisma.TrackingDailyMetricFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingDailyMetricPayload>[]
-        }
-        create: {
-          args: Prisma.TrackingDailyMetricCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingDailyMetricPayload>
-        }
-        createMany: {
-          args: Prisma.TrackingDailyMetricCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        createManyAndReturn: {
-          args: Prisma.TrackingDailyMetricCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingDailyMetricPayload>[]
-        }
-        delete: {
-          args: Prisma.TrackingDailyMetricDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingDailyMetricPayload>
-        }
-        update: {
-          args: Prisma.TrackingDailyMetricUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingDailyMetricPayload>
-        }
-        deleteMany: {
-          args: Prisma.TrackingDailyMetricDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.TrackingDailyMetricUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateManyAndReturn: {
-          args: Prisma.TrackingDailyMetricUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingDailyMetricPayload>[]
-        }
-        upsert: {
-          args: Prisma.TrackingDailyMetricUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingDailyMetricPayload>
-        }
-        aggregate: {
-          args: Prisma.TrackingDailyMetricAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateTrackingDailyMetric>
-        }
-        groupBy: {
-          args: Prisma.TrackingDailyMetricGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.TrackingDailyMetricGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.TrackingDailyMetricCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.TrackingDailyMetricCountAggregateOutputType> | number
-        }
-      }
-    }
-    TrackingEventDailyMetric: {
-      payload: Prisma.$TrackingEventDailyMetricPayload<ExtArgs>
-      fields: Prisma.TrackingEventDailyMetricFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.TrackingEventDailyMetricFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingEventDailyMetricPayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.TrackingEventDailyMetricFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingEventDailyMetricPayload>
-        }
-        findFirst: {
-          args: Prisma.TrackingEventDailyMetricFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingEventDailyMetricPayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.TrackingEventDailyMetricFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingEventDailyMetricPayload>
-        }
-        findMany: {
-          args: Prisma.TrackingEventDailyMetricFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingEventDailyMetricPayload>[]
-        }
-        create: {
-          args: Prisma.TrackingEventDailyMetricCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingEventDailyMetricPayload>
-        }
-        createMany: {
-          args: Prisma.TrackingEventDailyMetricCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        createManyAndReturn: {
-          args: Prisma.TrackingEventDailyMetricCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingEventDailyMetricPayload>[]
-        }
-        delete: {
-          args: Prisma.TrackingEventDailyMetricDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingEventDailyMetricPayload>
-        }
-        update: {
-          args: Prisma.TrackingEventDailyMetricUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingEventDailyMetricPayload>
-        }
-        deleteMany: {
-          args: Prisma.TrackingEventDailyMetricDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.TrackingEventDailyMetricUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateManyAndReturn: {
-          args: Prisma.TrackingEventDailyMetricUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingEventDailyMetricPayload>[]
-        }
-        upsert: {
-          args: Prisma.TrackingEventDailyMetricUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingEventDailyMetricPayload>
-        }
-        aggregate: {
-          args: Prisma.TrackingEventDailyMetricAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateTrackingEventDailyMetric>
-        }
-        groupBy: {
-          args: Prisma.TrackingEventDailyMetricGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.TrackingEventDailyMetricGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.TrackingEventDailyMetricCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.TrackingEventDailyMetricCountAggregateOutputType> | number
-        }
-      }
-    }
-    TrackingCampaignDailyMetric: {
-      payload: Prisma.$TrackingCampaignDailyMetricPayload<ExtArgs>
-      fields: Prisma.TrackingCampaignDailyMetricFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.TrackingCampaignDailyMetricFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingCampaignDailyMetricPayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.TrackingCampaignDailyMetricFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingCampaignDailyMetricPayload>
-        }
-        findFirst: {
-          args: Prisma.TrackingCampaignDailyMetricFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingCampaignDailyMetricPayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.TrackingCampaignDailyMetricFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingCampaignDailyMetricPayload>
-        }
-        findMany: {
-          args: Prisma.TrackingCampaignDailyMetricFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingCampaignDailyMetricPayload>[]
-        }
-        create: {
-          args: Prisma.TrackingCampaignDailyMetricCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingCampaignDailyMetricPayload>
-        }
-        createMany: {
-          args: Prisma.TrackingCampaignDailyMetricCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        createManyAndReturn: {
-          args: Prisma.TrackingCampaignDailyMetricCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingCampaignDailyMetricPayload>[]
-        }
-        delete: {
-          args: Prisma.TrackingCampaignDailyMetricDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingCampaignDailyMetricPayload>
-        }
-        update: {
-          args: Prisma.TrackingCampaignDailyMetricUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingCampaignDailyMetricPayload>
-        }
-        deleteMany: {
-          args: Prisma.TrackingCampaignDailyMetricDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.TrackingCampaignDailyMetricUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateManyAndReturn: {
-          args: Prisma.TrackingCampaignDailyMetricUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingCampaignDailyMetricPayload>[]
-        }
-        upsert: {
-          args: Prisma.TrackingCampaignDailyMetricUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrackingCampaignDailyMetricPayload>
-        }
-        aggregate: {
-          args: Prisma.TrackingCampaignDailyMetricAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateTrackingCampaignDailyMetric>
-        }
-        groupBy: {
-          args: Prisma.TrackingCampaignDailyMetricGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.TrackingCampaignDailyMetricGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.TrackingCampaignDailyMetricCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.TrackingCampaignDailyMetricCountAggregateOutputType> | number
+          args: Prisma.InterestCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.InterestCountAggregateOutputType> | number
         }
       }
     }
@@ -1055,19 +605,6 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
-export const UserScalarFieldEnum = {
-  id: 'id',
-  email: 'email',
-  name: 'name',
-  role: 'role',
-  planActive: 'planActive',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
-
-
 export const TrafficProposalScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
@@ -1092,73 +629,16 @@ export const TrafficProposalScalarFieldEnum = {
 export type TrafficProposalScalarFieldEnum = (typeof TrafficProposalScalarFieldEnum)[keyof typeof TrafficProposalScalarFieldEnum]
 
 
-export const TrackingSiteScalarFieldEnum = {
+export const InterestScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
-  publicKey: 'publicKey',
-  createdAt: 'createdAt'
-} as const
-
-export type TrackingSiteScalarFieldEnum = (typeof TrackingSiteScalarFieldEnum)[keyof typeof TrackingSiteScalarFieldEnum]
-
-
-export const TrackingAllowedDomainScalarFieldEnum = {
-  id: 'id',
-  siteId: 'siteId',
-  host: 'host',
-  createdAt: 'createdAt'
-} as const
-
-export type TrackingAllowedDomainScalarFieldEnum = (typeof TrackingAllowedDomainScalarFieldEnum)[keyof typeof TrackingAllowedDomainScalarFieldEnum]
-
-
-export const TrackingHitScalarFieldEnum = {
-  id: 'id',
-  clientEventId: 'clientEventId',
-  siteId: 'siteId',
-  kind: 'kind',
   name: 'name',
-  url: 'url',
-  path: 'path',
-  referrer: 'referrer',
-  params: 'params',
-  properties: 'properties',
-  processedAt: 'processedAt',
+  email: 'email',
+  whatsapp: 'whatsapp',
   createdAt: 'createdAt'
 } as const
 
-export type TrackingHitScalarFieldEnum = (typeof TrackingHitScalarFieldEnum)[keyof typeof TrackingHitScalarFieldEnum]
-
-
-export const TrackingDailyMetricScalarFieldEnum = {
-  siteId: 'siteId',
-  day: 'day',
-  pageviews: 'pageviews',
-  events: 'events'
-} as const
-
-export type TrackingDailyMetricScalarFieldEnum = (typeof TrackingDailyMetricScalarFieldEnum)[keyof typeof TrackingDailyMetricScalarFieldEnum]
-
-
-export const TrackingEventDailyMetricScalarFieldEnum = {
-  siteId: 'siteId',
-  day: 'day',
-  eventName: 'eventName',
-  count: 'count'
-} as const
-
-export type TrackingEventDailyMetricScalarFieldEnum = (typeof TrackingEventDailyMetricScalarFieldEnum)[keyof typeof TrackingEventDailyMetricScalarFieldEnum]
-
-
-export const TrackingCampaignDailyMetricScalarFieldEnum = {
-  siteId: 'siteId',
-  day: 'day',
-  campaign: 'campaign',
-  pageviews: 'pageviews',
-  events: 'events'
-} as const
-
-export type TrackingCampaignDailyMetricScalarFieldEnum = (typeof TrackingCampaignDailyMetricScalarFieldEnum)[keyof typeof TrackingCampaignDailyMetricScalarFieldEnum]
+export type InterestScalarFieldEnum = (typeof InterestScalarFieldEnum)[keyof typeof InterestScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1222,41 +702,6 @@ export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaMod
 
 
 /**
- * Reference to a field of type 'Role'
- */
-export type EnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Role'>
-    
-
-
-/**
- * Reference to a field of type 'Role[]'
- */
-export type ListEnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Role[]'>
-    
-
-
-/**
- * Reference to a field of type 'Boolean'
- */
-export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
-    
-
-
-/**
- * Reference to a field of type 'DateTime'
- */
-export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
-    
-
-
-/**
- * Reference to a field of type 'DateTime[]'
- */
-export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
-    
-
-
-/**
  * Reference to a field of type 'Int'
  */
 export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
@@ -1281,6 +726,20 @@ export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'J
  * Reference to a field of type 'QueryMode'
  */
 export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
+    
+
+
+/**
+ * Reference to a field of type 'DateTime'
+ */
+export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
+    
+
+
+/**
+ * Reference to a field of type 'DateTime[]'
+ */
+export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
     
 
 
@@ -1462,14 +921,8 @@ export interface PrismaClientOptionsWithAdapter extends PrismaClientBaseOptions 
  */
 export type PrismaClientOptions = PrismaClientOptionsWithAccelerateUrl | PrismaClientOptionsWithAdapter
 export type GlobalOmitConfig = {
-  user?: Prisma.UserOmit
   trafficProposal?: Prisma.TrafficProposalOmit
-  trackingSite?: Prisma.TrackingSiteOmit
-  trackingAllowedDomain?: Prisma.TrackingAllowedDomainOmit
-  trackingHit?: Prisma.TrackingHitOmit
-  trackingDailyMetric?: Prisma.TrackingDailyMetricOmit
-  trackingEventDailyMetric?: Prisma.TrackingEventDailyMetricOmit
-  trackingCampaignDailyMetric?: Prisma.TrackingCampaignDailyMetricOmit
+  interest?: Prisma.InterestOmit
 }
 
 /* Types for Logging */

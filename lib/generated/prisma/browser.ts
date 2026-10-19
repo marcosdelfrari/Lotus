@@ -18,42 +18,12 @@ export { Prisma }
 export * as $Enums from './enums'
 export * from './enums';
 /**
- * Model User
- * 
- */
-export type User = Prisma.UserModel
-/**
  * Model TrafficProposal
  * 
  */
 export type TrafficProposal = Prisma.TrafficProposalModel
 /**
- * Model TrackingSite
+ * Model Interest
  * 
  */
-export type TrackingSite = Prisma.TrackingSiteModel
-/**
- * Model TrackingAllowedDomain
- * 
- */
-export type TrackingAllowedDomain = Prisma.TrackingAllowedDomainModel
-/**
- * Model TrackingHit
- * 
- */
-export type TrackingHit = Prisma.TrackingHitModel
-/**
- * Model TrackingDailyMetric
- * 
- */
-export type TrackingDailyMetric = Prisma.TrackingDailyMetricModel
-/**
- * Model TrackingEventDailyMetric
- * 
- */
-export type TrackingEventDailyMetric = Prisma.TrackingEventDailyMetricModel
-/**
- * Model TrackingCampaignDailyMetric
- * 
- */
-export type TrackingCampaignDailyMetric = Prisma.TrackingCampaignDailyMetricModel
+export type Interest = Prisma.InterestModel

@@ -6,7 +6,7 @@ type PageHeaderProps = {
 
 export function PageHeader({ title, description, actions }: PageHeaderProps) {
   return (
-    <header className="border-b border-border bg-background/80 px-4 py-6 sm:px-8">
+    <header className="mb-10 border-b border-border pb-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div>
           <h1 className="text-xl font-semibold tracking-tight sm:text-2xl">{title}</h1>

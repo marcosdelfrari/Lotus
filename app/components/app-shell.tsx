@@ -22,7 +22,14 @@ export function AppShell({
             <p className="truncate text-[13px] font-medium">{session.name}</p>
             <p className="truncate text-[11px] text-muted">{session.email}</p>
           </div>
-          {session.planActive ? (
+          {session.role === "admin" ? (
+            <Link
+              href="/admin"
+              className="hidden rounded-md border border-border px-3 py-1.5 text-[12px] font-medium sm:inline-flex"
+            >
+              Admin
+            </Link>
+          ) : session.planActive ? (
             <Link
               href={analyticsDashboardUrl()}
               className="hidden rounded-md bg-foreground px-3 py-1.5 text-[12px] font-medium text-background sm:inline-flex"

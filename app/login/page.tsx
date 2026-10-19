@@ -27,9 +27,8 @@ export default function LoginPage({
           <div className="border-b border-border px-4 py-3">
             <h1 className="text-sm font-medium">Entrar</h1>
             <p className="mt-1 text-[12px] leading-5 text-muted">
-              Use a mesma conta Google do Lótus Analytics. Se ainda não houver
-              cadastro, criamos um interessado sem plano — o Plano Pro é liberado
-              ao aceitar a proposta de tráfego pago.
+              Use a mesma conta Google do Lótus Analytics. Em seguida, continue
+              sua solicitação de gestão de tráfego.
             </p>
           </div>
           <Suspense>

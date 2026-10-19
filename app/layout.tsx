@@ -47,7 +47,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Lótus — Gestão de tráfego pago",
   description:
-    "Gestão de Google Ads e Meta Ads para empresas que querem vender mais com método. Solicite uma proposta.",
+    "Gestão de Google Ads e Meta Ads para empresas que querem vender mais com método.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

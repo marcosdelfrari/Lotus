@@ -2,11 +2,30 @@
 
 import { revalidatePath } from "next/cache";
 import { getSession } from "@/lib/auth";
+import { createInterest } from "@/lib/interests-store";
 import {
   acceptProposal,
   createProposalRequest,
   sendProposalToClient,
 } from "@/lib/proposals-store";
+
+export async function submitInterest(formData: FormData) {
+  const session = await getSession();
+  if (!session || session.role !== "client") {
+    return { error: "Entre com o Google para continuar." };
+  }
+
+  const result = await createInterest({
+    userId: session.userId,
+    name: session.name,
+    email: session.email,
+    whatsapp: String(formData.get("whatsapp") ?? ""),
+  });
+
+  if ("error" in result) return result;
+  revalidatePath("/propostas");
+  return { ok: true as const };
+}
 
 export async function submitProposalRequest(formData: FormData) {
   const session = await getSession();
@@ -60,5 +79,6 @@ export async function adminSendProposal(proposalId: string) {
   const result = await sendProposalToClient(proposalId);
   if ("error" in result) return result;
   revalidatePath("/propostas");
+  revalidatePath("/admin");
   return { ok: true as const };
 }

@@ -1,0 +1,199 @@
+import Image from "next/image";
+import { BenefitsLeadsChart } from "@/app/components/lotus/benefits-leads-chart";
+import { RevealGroup, RevealItem } from "@/app/components/lotus/motion";
+import { SectionShell } from "@/app/components/lotus/section-shell";
+
+const series = [
+  {
+    id: "google",
+    name: "Google Ads",
+    value: "186",
+    logo: "/google-ads-icon.webp",
+    logoWidth: 16,
+    logoHeight: 16,
+    tone: "text-google-yellow",
+    stroke: "#fbbc04",
+    fill: "rgba(251, 188, 4, 0.1)",
+    shell:
+      "border-google-yellow/25 bg-background/60 bg-gradient-to-br from-google-yellow/20 via-google-yellow/10 to-transparent shadow-[inset_0_1px_0_rgba(251,188,4,0.28)]",
+    points: [22, 26, 24, 34, 30, 41, 38],
+  },
+  {
+    id: "meta",
+    name: "Meta Ads",
+    value: "214",
+    logo: "/META.webp",
+    logoWidth: 24,
+    logoHeight: 16,
+    tone: "text-meta",
+    stroke: "#0668e1",
+    fill: "rgba(6, 104, 225, 0.1)",
+    shell:
+      "border-meta/25 bg-background/60 bg-gradient-to-br from-meta/20 via-meta/10 to-transparent shadow-[inset_0_1px_0_rgba(6,104,225,0.28)]",
+    points: [18, 24, 29, 27, 36, 33, 42],
+  },
+  {
+    id: "custom",
+    name: "Personalizado",
+    value: "96",
+    logo: null,
+    logoWidth: 0,
+    logoHeight: 0,
+    tone: "text-positive",
+    stroke: "#4ade80",
+    fill: "rgba(74, 222, 128, 0.08)",
+    shell:
+      "border-positive/25 bg-background/60 bg-gradient-to-br from-positive/20 via-positive/10 to-transparent shadow-[inset_0_1px_0_rgba(74,222,128,0.28)]",
+    points: [8, 11, 9, 14, 12, 16, 15],
+  },
+];
+
+const features = [
+  {
+    index: "02",
+    title: "Script de rastreamento",
+    description:
+      "Um script leve no site liga cada visita à campanha que trouxe a pessoa e mantém a origem enquanto ela navega.",
+    points: ["Visitas", "UTMs", "Tempo real"],
+  },
+  {
+    index: "03",
+    title: "Eventos que importam",
+    description:
+      "Clique no WhatsApp, envio de formulário e outras ações — contados por campanha, sem depender só do pixel das plataformas.",
+    points: ["Eventos nomeados", "Por campanha", "No seu site"],
+  },
+  {
+    index: "04",
+    title: "Investimento x resultado",
+    description:
+      "No mesmo calendário, o painel cruza o que foi investido no Google Ads e no Meta Ads com visitas, leads e eventos captados pelo tracking no seu site. Você enxerga qual canal puxa demanda de verdade, onde o budget está pesado demais e se o custo por lead ainda fecha com ticket e margem — sem juntar planilha, print de plataforma e relatório solto em três abas.",
+    points: [
+      "Mesmo período",
+      "Gasto x leads",
+      "Google e Meta",
+      "Custo por lead",
+    ],
+    wide: true,
+  },
+];
+
+export function LotusAnalyticsShowcase() {
+  return (
+    <SectionShell
+      id="analytics"
+      title="Do clique ao lead, uma leitura só."
+      subtitle="Gasto em Google e Meta, origem de cada visita e conversões no mesmo painel — para decidir com método, não com feeling."
+      className="border-y border-border bg-surface/40"
+    >
+      <RevealGroup className="grid gap-4 sm:grid-cols-2">
+        <RevealItem className="flex flex-col rounded-2xl border border-border bg-surface p-6 sm:col-span-2 sm:p-8 lg:col-span-1 lg:row-span-2">
+          <p className="font-mono text-[11px] uppercase tracking-wide text-muted">
+            01 · Painel
+          </p>
+          <h3 className="mt-3 text-xl font-semibold tracking-tight">
+            Um painel para comparar tudo
+          </h3>
+          <p className="mt-2 text-sm leading-6 text-muted-foreground">
+            O que entrou de mídia, o desempenho dos anúncios e o que acontece no
+            site — reunidos para decidir com número na mão, não só print de
+            plataforma.
+          </p>
+          <div className="mt-6 flex min-h-0 flex-1 flex-col gap-3">
+            <BenefitsLeadsChart
+              series={series.map(({ id, stroke, fill, points }) => ({
+                id,
+                stroke,
+                fill,
+                points,
+              }))}
+            />
+            <ul className="grid grid-cols-3 gap-2">
+              {series.map((item) => (
+                <li
+                  key={item.id}
+                  className={`min-w-0 rounded-lg border px-2.5 py-3 sm:px-3 ${item.shell}`}
+                >
+                  <div className="flex items-center gap-1.5">
+                    {item.logo ? (
+                      <Image
+                        src={item.logo}
+                        alt=""
+                        width={item.logoWidth}
+                        height={item.logoHeight}
+                        className="h-3.5 w-auto shrink-0 mix-blend-lighten"
+                      />
+                    ) : (
+                      <span
+                        className="h-1.5 w-1.5 shrink-0 rounded-full bg-positive"
+                        aria-hidden
+                      />
+                    )}
+                    <p className={`truncate text-[11px] font-medium ${item.tone}`}>
+                      {item.name}
+                    </p>
+                  </div>
+                  <p className="mt-2 font-mono text-base tabular-nums sm:text-lg">
+                    {item.value}
+                  </p>
+                  <p className="text-[10px] uppercase tracking-wide text-muted">Leads</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </RevealItem>
+
+        {features.map((item) => (
+          <RevealItem
+            key={item.index}
+            className={`flex flex-col rounded-2xl border border-border bg-surface p-6 ${
+              item.wide ? "sm:col-span-2 sm:p-8" : ""
+            }`}
+          >
+            <div
+              className={
+                item.wide
+                  ? "flex flex-1 flex-col gap-6 lg:flex-row lg:items-end lg:justify-between lg:gap-12"
+                  : "flex flex-1 flex-col"
+              }
+            >
+              <div className={item.wide ? "min-w-0 lg:max-w-3xl" : undefined}>
+                <p className="font-mono text-[11px] text-muted">{item.index}</p>
+                <h3
+                  className={`mt-3 font-semibold tracking-tight ${
+                    item.wide ? "text-lg sm:text-xl" : "text-base"
+                  }`}
+                >
+                  {item.title}
+                </h3>
+                <p
+                  className={`mt-2 text-muted-foreground ${
+                    item.wide
+                      ? "text-sm leading-7 sm:text-[15px]"
+                      : "flex-1 text-sm leading-6"
+                  }`}
+                >
+                  {item.description}
+                </p>
+              </div>
+              <ul
+                className={`flex flex-wrap gap-1.5 ${
+                  item.wide ? "shrink-0 lg:max-w-md lg:justify-end" : "mt-4"
+                }`}
+              >
+                {item.points.map((point) => (
+                  <li
+                    key={point}
+                    className="rounded-full border border-border-subtle bg-background/60 px-2.5 py-1 text-[11px] text-muted-foreground"
+                  >
+                    {point}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </RevealItem>
+        ))}
+      </RevealGroup>
+    </SectionShell>
+  );
+}

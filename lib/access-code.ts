@@ -1,6 +1,8 @@
 import type { Role } from "@/lib/types";
 
-export const adminEmail = "afk.marcos@gmail.com";
+export const adminEmail = (process.env.ADMIN_EMAIL ?? "afk.marcos@gmail.com")
+  .trim()
+  .toLowerCase();
 
 const encoder = new TextEncoder();
 
