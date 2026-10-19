@@ -57,10 +57,9 @@ export function ContractedServicesScreen({
             href={LOTUS_ANALYTICS_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-full bg-foreground px-4 py-1.5 text-[11px] font-medium text-background transition-opacity hover:opacity-90"
+            className="rounded-md bg-foreground px-3 py-1.5 text-[12px] font-medium text-background transition-opacity hover:opacity-90"
           >
-            Lótus Analytics
-            <span aria-hidden>↗</span>
+            Analytics
           </a>
         </div>
       </div>

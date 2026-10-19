@@ -47,6 +47,8 @@
 
 html {
   overflow-x: clip;
+  min-height: 100dvh;
+  background-color: var(--background);
 }
 
 body {

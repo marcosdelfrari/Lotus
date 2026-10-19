@@ -54,7 +54,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="pt-BR"
-      className={`${sora.variable} ${barlowCondensed.variable} ${robotoFlex.variable} ${sairaCondensed.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${sora.variable} ${barlowCondensed.variable} ${robotoFlex.variable} ${sairaCondensed.variable} ${geistMono.variable} min-h-dvh bg-background antialiased`}
     >
       <body className="min-h-dvh overflow-x-clip bg-background text-foreground">
         {children}

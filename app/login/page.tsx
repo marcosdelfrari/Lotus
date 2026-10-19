@@ -18,7 +18,7 @@ export default function LoginPage({
   searchParams: Promise<{ erro?: string; next?: string }>;
 }) {
   return (
-    <main className="flex min-h-dvh items-center justify-center px-4 pb-[env(safe-area-inset-bottom)]">
+    <main className="flex min-h-dvh w-full items-center justify-center bg-background px-4 pb-[env(safe-area-inset-bottom)]">
       <div className="w-full max-w-sm">
         <div className="mb-6 flex justify-center">
           <BrandMark />
@@ -27,8 +27,7 @@ export default function LoginPage({
           <div className="border-b border-border px-4 py-3">
             <h1 className="text-sm font-medium">Entrar</h1>
             <p className="mt-1 text-[12px] leading-5 text-muted">
-              Use uma conta Google válida. Em seguida, continue sua solicitação
-              de gestão de tráfego.
+              Acesso com Google à proposta, contrato ou serviços já contratados.
             </p>
           </div>
           <Suspense>
