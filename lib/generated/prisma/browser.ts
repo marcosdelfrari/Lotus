@@ -23,6 +23,11 @@ export * from './enums';
  */
 export type TrafficProposal = Prisma.TrafficProposalModel
 /**
+ * Model MarketingPlan
+ * Plano de marketing / proposta de campanha — operação Lótus (por proposta + empresa Analytics).
+ */
+export type MarketingPlan = Prisma.MarketingPlanModel
+/**
  * Model ProposalBillingItem
  * 
  */

@@ -4,6 +4,8 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { getSession } from "@/lib/auth";
 import type { ProposalCommercialPayload } from "@/lib/proposal-types";
+import type { MarketingPlanFields } from "@/lib/campaign-marketing-options";
+import { saveMarketingPlan } from "@/lib/marketing-plans-store";
 import { confirmBillingPayment } from "@/lib/billing-store";
 import {
   adminCreateAndSendProposal,
@@ -21,6 +23,19 @@ async function requireAdmin() {
     redirect("/login?next=/admin");
   }
   return session;
+}
+
+function revalidateAdminRoutes() {
+  revalidatePath("/admin");
+  revalidatePath("/admin/prospeccao");
+  revalidatePath("/admin/financeiro");
+  revalidatePath("/admin/clientes-ativos");
+}
+
+function revalidateServicosRoutes() {
+  revalidatePath("/servicos");
+  revalidatePath("/servicos/financeiro");
+  revalidatePath("/servicos/marketing");
 }
 
 export async function adminCreateProposalAction(
@@ -50,7 +65,7 @@ export async function adminCreateProposalAction(
   });
 
   if ("error" in result) return { error: result.error };
-  revalidatePath("/admin");
+  revalidateAdminRoutes();
   revalidatePath("/propostas");
   return { ok: true };
 }
@@ -83,7 +98,7 @@ export async function adminSaveProposalWizardAction(input: {
   });
 
   if ("error" in result) return result;
-  revalidatePath("/admin");
+  revalidateAdminRoutes();
   revalidatePath(`/admin/propostas/${result.proposal.id}/preview`);
   return result;
 }
@@ -92,7 +107,7 @@ export async function adminPublishProposalAction(proposalId: string) {
   await requireAdmin();
   const result = await adminPublishProposal(proposalId);
   if ("error" in result) return result;
-  revalidatePath("/admin");
+  revalidateAdminRoutes();
   revalidatePath("/propostas");
   revalidatePath(`/admin/propostas/${proposalId}/preview`);
   return result;
@@ -102,7 +117,7 @@ export async function adminSendProposalAction(proposalId: string) {
   await requireAdmin();
   const result = await sendProposalToClient(proposalId);
   if ("error" in result) return result;
-  revalidatePath("/admin");
+  revalidateAdminRoutes();
   return { ok: true as const };
 }
 
@@ -110,7 +125,7 @@ export async function adminDeleteProposalAction(proposalId: string) {
   await requireAdmin();
   const result = await adminDeleteProposal(proposalId);
   if ("error" in result) return result;
-  revalidatePath("/admin");
+  revalidateAdminRoutes();
   revalidatePath("/propostas");
   return { ok: true as const };
 }
@@ -119,7 +134,26 @@ export async function adminConfirmBillingPaymentAction(billingItemId: string) {
   await requireAdmin();
   const result = await confirmBillingPayment(billingItemId);
   if ("error" in result) return result;
-  revalidatePath("/admin");
-  revalidatePath("/servicos");
+  revalidateAdminRoutes();
+  revalidateServicosRoutes();
   return { ok: true as const };
+}
+
+export async function adminSaveMarketingPlanAction(input: {
+  proposalId: string;
+  analyticsCompanyId: string;
+  plan: MarketingPlanFields;
+}) {
+  await requireAdmin();
+
+  const result = await saveMarketingPlan({
+    proposalId: input.proposalId,
+    analyticsCompanyId: input.analyticsCompanyId,
+    plan: input.plan,
+  });
+
+  if ("error" in result) return result;
+  revalidateAdminRoutes();
+  revalidateServicosRoutes();
+  return result;
 }

@@ -19,6 +19,26 @@ export * as $Enums from './enums'
 export * from './enums';
 /**
  * Model User
- * Espelho somente da tabela users do Analytics. Sem migrate neste schema.
+ * Espelho somente leitura/escrita nas tabelas do Analytics. Migrate roda no projeto Analytics.
  */
 export type User = Prisma.UserModel
+/**
+ * Model Organization
+ * 
+ */
+export type Organization = Prisma.OrganizationModel
+/**
+ * Model Company
+ * 
+ */
+export type Company = Prisma.CompanyModel
+/**
+ * Model AccessGrant
+ * 
+ */
+export type AccessGrant = Prisma.AccessGrantModel
+/**
+ * Model AccessGrantCompany
+ * 
+ */
+export type AccessGrantCompany = Prisma.AccessGrantCompanyModel

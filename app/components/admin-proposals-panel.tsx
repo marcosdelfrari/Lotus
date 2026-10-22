@@ -42,7 +42,7 @@ export function AdminProposalsPanel({ rows }: { rows: Row[] }) {
           </div>
           <div className="flex shrink-0 flex-wrap gap-2">
             <Link
-              href={`/admin?cliente=${row.userId}`}
+              href={`/admin/prospeccao?cliente=${row.userId}`}
               className="rounded-md bg-foreground px-4 py-2 text-[13px] font-medium text-background"
             >
               Montar proposta

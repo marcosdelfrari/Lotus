@@ -60,10 +60,38 @@ model TrafficProposal {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   billingItems ProposalBillingItem[]
+  marketingPlans MarketingPlan[]
 
   @@index([userId])
   @@index([clientEmail])
   @@map("traffic_proposals")
+}
+
+enum MarketingPlanStatus {
+  draft
+  saved
+}
+
+/// Plano de marketing / proposta de campanha — operação Lótus (por proposta + empresa Analytics).
+model MarketingPlan {
+  id                 String              @id @default(uuid())
+  proposalId         String              @map("proposal_id")
+  /// companies.id no banco Analytics (sem FK entre bancos).
+  analyticsCompanyId String              @map("analytics_company_id")
+  operationProposal  String              @map("operation_proposal")
+  funnelTouchpoints  String[]            @default([]) @map("funnel_touchpoints")
+  mediaChannels      String[]            @default([]) @map("media_channels")
+  adFormats          String[]            @default([]) @map("ad_formats")
+  notes              String              @default("")
+  customAssets       String              @default("") @map("custom_assets")
+  status             MarketingPlanStatus @default(saved)
+  createdAt          DateTime            @default(now()) @map("created_at")
+  updatedAt          DateTime            @updatedAt @map("updated_at")
+  proposal           TrafficProposal     @relation(fields: [proposalId], references: [id], onDelete: Cascade)
+
+  @@unique([proposalId, analyticsCompanyId])
+  @@index([proposalId])
+  @@map("marketing_plans")
 }
 
 model ProposalBillingItem {

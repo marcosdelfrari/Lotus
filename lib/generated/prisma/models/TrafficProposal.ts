@@ -365,6 +365,7 @@ export type TrafficProposalWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"TrafficProposal"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"TrafficProposal"> | Date | string
   billingItems?: Prisma.ProposalBillingItemListRelationFilter
+  marketingPlans?: Prisma.MarketingPlanListRelationFilter
 }
 
 export type TrafficProposalOrderByWithRelationInput = {
@@ -394,6 +395,7 @@ export type TrafficProposalOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   billingItems?: Prisma.ProposalBillingItemOrderByRelationAggregateInput
+  marketingPlans?: Prisma.MarketingPlanOrderByRelationAggregateInput
 }
 
 export type TrafficProposalWhereUniqueInput = Prisma.AtLeast<{
@@ -426,6 +428,7 @@ export type TrafficProposalWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"TrafficProposal"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"TrafficProposal"> | Date | string
   billingItems?: Prisma.ProposalBillingItemListRelationFilter
+  marketingPlans?: Prisma.MarketingPlanListRelationFilter
 }, "id">
 
 export type TrafficProposalOrderByWithAggregationInput = {
@@ -519,6 +522,7 @@ export type TrafficProposalCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   billingItems?: Prisma.ProposalBillingItemCreateNestedManyWithoutProposalInput
+  marketingPlans?: Prisma.MarketingPlanCreateNestedManyWithoutProposalInput
 }
 
 export type TrafficProposalUncheckedCreateInput = {
@@ -548,6 +552,7 @@ export type TrafficProposalUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   billingItems?: Prisma.ProposalBillingItemUncheckedCreateNestedManyWithoutProposalInput
+  marketingPlans?: Prisma.MarketingPlanUncheckedCreateNestedManyWithoutProposalInput
 }
 
 export type TrafficProposalUpdateInput = {
@@ -577,6 +582,7 @@ export type TrafficProposalUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   billingItems?: Prisma.ProposalBillingItemUpdateManyWithoutProposalNestedInput
+  marketingPlans?: Prisma.MarketingPlanUpdateManyWithoutProposalNestedInput
 }
 
 export type TrafficProposalUncheckedUpdateInput = {
@@ -606,6 +612,7 @@ export type TrafficProposalUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   billingItems?: Prisma.ProposalBillingItemUncheckedUpdateManyWithoutProposalNestedInput
+  marketingPlans?: Prisma.MarketingPlanUncheckedUpdateManyWithoutProposalNestedInput
 }
 
 export type TrafficProposalCreateManyInput = {
@@ -811,6 +818,20 @@ export type DateTimeFieldUpdateOperationsInput = {
   set?: Date | string
 }
 
+export type TrafficProposalCreateNestedOneWithoutMarketingPlansInput = {
+  create?: Prisma.XOR<Prisma.TrafficProposalCreateWithoutMarketingPlansInput, Prisma.TrafficProposalUncheckedCreateWithoutMarketingPlansInput>
+  connectOrCreate?: Prisma.TrafficProposalCreateOrConnectWithoutMarketingPlansInput
+  connect?: Prisma.TrafficProposalWhereUniqueInput
+}
+
+export type TrafficProposalUpdateOneRequiredWithoutMarketingPlansNestedInput = {
+  create?: Prisma.XOR<Prisma.TrafficProposalCreateWithoutMarketingPlansInput, Prisma.TrafficProposalUncheckedCreateWithoutMarketingPlansInput>
+  connectOrCreate?: Prisma.TrafficProposalCreateOrConnectWithoutMarketingPlansInput
+  upsert?: Prisma.TrafficProposalUpsertWithoutMarketingPlansInput
+  connect?: Prisma.TrafficProposalWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TrafficProposalUpdateToOneWithWhereWithoutMarketingPlansInput, Prisma.TrafficProposalUpdateWithoutMarketingPlansInput>, Prisma.TrafficProposalUncheckedUpdateWithoutMarketingPlansInput>
+}
+
 export type TrafficProposalCreateNestedOneWithoutBillingItemsInput = {
   create?: Prisma.XOR<Prisma.TrafficProposalCreateWithoutBillingItemsInput, Prisma.TrafficProposalUncheckedCreateWithoutBillingItemsInput>
   connectOrCreate?: Prisma.TrafficProposalCreateOrConnectWithoutBillingItemsInput
@@ -823,6 +844,138 @@ export type TrafficProposalUpdateOneRequiredWithoutBillingItemsNestedInput = {
   upsert?: Prisma.TrafficProposalUpsertWithoutBillingItemsInput
   connect?: Prisma.TrafficProposalWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.TrafficProposalUpdateToOneWithWhereWithoutBillingItemsInput, Prisma.TrafficProposalUpdateWithoutBillingItemsInput>, Prisma.TrafficProposalUncheckedUpdateWithoutBillingItemsInput>
+}
+
+export type TrafficProposalCreateWithoutMarketingPlansInput = {
+  id?: string
+  userId: string
+  clientEmail?: string
+  clientName?: string
+  companyName: string
+  segment?: string
+  monthlyMediaBudget?: number | null
+  goals?: string
+  contactPhone?: string
+  intro?: string
+  title?: string | null
+  scope?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  services?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  setupFee?: number | null
+  adBudgetSuggestion?: number | null
+  deadlineDays?: number | null
+  implementationPlan?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  conditions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  terms?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  validUntil?: Date | string | null
+  status?: $Enums.ProposalStatus
+  acceptedAt?: Date | string | null
+  acceptance?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  billingItems?: Prisma.ProposalBillingItemCreateNestedManyWithoutProposalInput
+}
+
+export type TrafficProposalUncheckedCreateWithoutMarketingPlansInput = {
+  id?: string
+  userId: string
+  clientEmail?: string
+  clientName?: string
+  companyName: string
+  segment?: string
+  monthlyMediaBudget?: number | null
+  goals?: string
+  contactPhone?: string
+  intro?: string
+  title?: string | null
+  scope?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  services?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  setupFee?: number | null
+  adBudgetSuggestion?: number | null
+  deadlineDays?: number | null
+  implementationPlan?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  conditions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  terms?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  validUntil?: Date | string | null
+  status?: $Enums.ProposalStatus
+  acceptedAt?: Date | string | null
+  acceptance?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  billingItems?: Prisma.ProposalBillingItemUncheckedCreateNestedManyWithoutProposalInput
+}
+
+export type TrafficProposalCreateOrConnectWithoutMarketingPlansInput = {
+  where: Prisma.TrafficProposalWhereUniqueInput
+  create: Prisma.XOR<Prisma.TrafficProposalCreateWithoutMarketingPlansInput, Prisma.TrafficProposalUncheckedCreateWithoutMarketingPlansInput>
+}
+
+export type TrafficProposalUpsertWithoutMarketingPlansInput = {
+  update: Prisma.XOR<Prisma.TrafficProposalUpdateWithoutMarketingPlansInput, Prisma.TrafficProposalUncheckedUpdateWithoutMarketingPlansInput>
+  create: Prisma.XOR<Prisma.TrafficProposalCreateWithoutMarketingPlansInput, Prisma.TrafficProposalUncheckedCreateWithoutMarketingPlansInput>
+  where?: Prisma.TrafficProposalWhereInput
+}
+
+export type TrafficProposalUpdateToOneWithWhereWithoutMarketingPlansInput = {
+  where?: Prisma.TrafficProposalWhereInput
+  data: Prisma.XOR<Prisma.TrafficProposalUpdateWithoutMarketingPlansInput, Prisma.TrafficProposalUncheckedUpdateWithoutMarketingPlansInput>
+}
+
+export type TrafficProposalUpdateWithoutMarketingPlansInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  clientEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  clientName?: Prisma.StringFieldUpdateOperationsInput | string
+  companyName?: Prisma.StringFieldUpdateOperationsInput | string
+  segment?: Prisma.StringFieldUpdateOperationsInput | string
+  monthlyMediaBudget?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  goals?: Prisma.StringFieldUpdateOperationsInput | string
+  contactPhone?: Prisma.StringFieldUpdateOperationsInput | string
+  intro?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  scope?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  services?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  setupFee?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  adBudgetSuggestion?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  deadlineDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  implementationPlan?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  conditions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  terms?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  validUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  status?: Prisma.EnumProposalStatusFieldUpdateOperationsInput | $Enums.ProposalStatus
+  acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  acceptance?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  billingItems?: Prisma.ProposalBillingItemUpdateManyWithoutProposalNestedInput
+}
+
+export type TrafficProposalUncheckedUpdateWithoutMarketingPlansInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  clientEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  clientName?: Prisma.StringFieldUpdateOperationsInput | string
+  companyName?: Prisma.StringFieldUpdateOperationsInput | string
+  segment?: Prisma.StringFieldUpdateOperationsInput | string
+  monthlyMediaBudget?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  goals?: Prisma.StringFieldUpdateOperationsInput | string
+  contactPhone?: Prisma.StringFieldUpdateOperationsInput | string
+  intro?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  scope?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  services?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  setupFee?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  adBudgetSuggestion?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  deadlineDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  implementationPlan?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  conditions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  terms?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  validUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  status?: Prisma.EnumProposalStatusFieldUpdateOperationsInput | $Enums.ProposalStatus
+  acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  acceptance?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  billingItems?: Prisma.ProposalBillingItemUncheckedUpdateManyWithoutProposalNestedInput
 }
 
 export type TrafficProposalCreateWithoutBillingItemsInput = {
@@ -851,6 +1004,7 @@ export type TrafficProposalCreateWithoutBillingItemsInput = {
   acceptance?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  marketingPlans?: Prisma.MarketingPlanCreateNestedManyWithoutProposalInput
 }
 
 export type TrafficProposalUncheckedCreateWithoutBillingItemsInput = {
@@ -879,6 +1033,7 @@ export type TrafficProposalUncheckedCreateWithoutBillingItemsInput = {
   acceptance?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  marketingPlans?: Prisma.MarketingPlanUncheckedCreateNestedManyWithoutProposalInput
 }
 
 export type TrafficProposalCreateOrConnectWithoutBillingItemsInput = {
@@ -923,6 +1078,7 @@ export type TrafficProposalUpdateWithoutBillingItemsInput = {
   acceptance?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  marketingPlans?: Prisma.MarketingPlanUpdateManyWithoutProposalNestedInput
 }
 
 export type TrafficProposalUncheckedUpdateWithoutBillingItemsInput = {
@@ -951,6 +1107,7 @@ export type TrafficProposalUncheckedUpdateWithoutBillingItemsInput = {
   acceptance?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  marketingPlans?: Prisma.MarketingPlanUncheckedUpdateManyWithoutProposalNestedInput
 }
 
 
@@ -960,10 +1117,12 @@ export type TrafficProposalUncheckedUpdateWithoutBillingItemsInput = {
 
 export type TrafficProposalCountOutputType = {
   billingItems: number
+  marketingPlans: number
 }
 
 export type TrafficProposalCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   billingItems?: boolean | TrafficProposalCountOutputTypeCountBillingItemsArgs
+  marketingPlans?: boolean | TrafficProposalCountOutputTypeCountMarketingPlansArgs
 }
 
 /**
@@ -981,6 +1140,13 @@ export type TrafficProposalCountOutputTypeDefaultArgs<ExtArgs extends runtime.Ty
  */
 export type TrafficProposalCountOutputTypeCountBillingItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.ProposalBillingItemWhereInput
+}
+
+/**
+ * TrafficProposalCountOutputType without action
+ */
+export type TrafficProposalCountOutputTypeCountMarketingPlansArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.MarketingPlanWhereInput
 }
 
 
@@ -1011,6 +1177,7 @@ export type TrafficProposalSelect<ExtArgs extends runtime.Types.Extensions.Inter
   createdAt?: boolean
   updatedAt?: boolean
   billingItems?: boolean | Prisma.TrafficProposal$billingItemsArgs<ExtArgs>
+  marketingPlans?: boolean | Prisma.TrafficProposal$marketingPlansArgs<ExtArgs>
   _count?: boolean | Prisma.TrafficProposalCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["trafficProposal"]>
 
@@ -1101,6 +1268,7 @@ export type TrafficProposalSelectScalar = {
 export type TrafficProposalOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "clientEmail" | "clientName" | "companyName" | "segment" | "monthlyMediaBudget" | "goals" | "contactPhone" | "intro" | "title" | "scope" | "services" | "setupFee" | "adBudgetSuggestion" | "deadlineDays" | "implementationPlan" | "conditions" | "terms" | "validUntil" | "status" | "acceptedAt" | "acceptance" | "createdAt" | "updatedAt", ExtArgs["result"]["trafficProposal"]>
 export type TrafficProposalInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   billingItems?: boolean | Prisma.TrafficProposal$billingItemsArgs<ExtArgs>
+  marketingPlans?: boolean | Prisma.TrafficProposal$marketingPlansArgs<ExtArgs>
   _count?: boolean | Prisma.TrafficProposalCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type TrafficProposalIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1110,6 +1278,7 @@ export type $TrafficProposalPayload<ExtArgs extends runtime.Types.Extensions.Int
   name: "TrafficProposal"
   objects: {
     billingItems: Prisma.$ProposalBillingItemPayload<ExtArgs>[]
+    marketingPlans: Prisma.$MarketingPlanPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1532,6 +1701,7 @@ readonly fields: TrafficProposalFieldRefs;
 export interface Prisma__TrafficProposalClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   billingItems<T extends Prisma.TrafficProposal$billingItemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TrafficProposal$billingItemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProposalBillingItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  marketingPlans<T extends Prisma.TrafficProposal$marketingPlansArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TrafficProposal$marketingPlansArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MarketingPlanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2000,6 +2170,30 @@ export type TrafficProposal$billingItemsArgs<ExtArgs extends runtime.Types.Exten
   take?: number
   skip?: number
   distinct?: Prisma.ProposalBillingItemScalarFieldEnum | Prisma.ProposalBillingItemScalarFieldEnum[]
+}
+
+/**
+ * TrafficProposal.marketingPlans
+ */
+export type TrafficProposal$marketingPlansArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the MarketingPlan
+   */
+  select?: Prisma.MarketingPlanSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the MarketingPlan
+   */
+  omit?: Prisma.MarketingPlanOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MarketingPlanInclude<ExtArgs> | null
+  where?: Prisma.MarketingPlanWhereInput
+  orderBy?: Prisma.MarketingPlanOrderByWithRelationInput | Prisma.MarketingPlanOrderByWithRelationInput[]
+  cursor?: Prisma.MarketingPlanWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.MarketingPlanScalarFieldEnum | Prisma.MarketingPlanScalarFieldEnum[]
 }
 
 /**

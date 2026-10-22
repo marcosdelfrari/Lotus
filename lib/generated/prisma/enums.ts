@@ -34,3 +34,11 @@ export const BillingItemStatus = {
 } as const
 
 export type BillingItemStatus = (typeof BillingItemStatus)[keyof typeof BillingItemStatus]
+
+
+export const MarketingPlanStatus = {
+  draft: 'draft',
+  saved: 'saved'
+} as const
+
+export type MarketingPlanStatus = (typeof MarketingPlanStatus)[keyof typeof MarketingPlanStatus]

@@ -1,52 +1,29 @@
-import { redirect } from "next/navigation";
 import { ContractedServicesScreen } from "@/app/components/contracted-services-screen";
 import {
   ensureInitialBillingForProposal,
   listBillingForProposal,
 } from "@/lib/billing-store";
-import { getSession } from "@/lib/auth";
-import { hasActivePlan } from "@/lib/plan";
-import {
-  ensureProPlanForAcceptedProposal,
-  getLatestProposalForUser,
-} from "@/lib/proposals-store";
+import { getMarketingPlanForProposal } from "@/lib/marketing-plans-store";
+import { requireAcceptedClientContext } from "@/lib/servicos-context";
 
 export const instant = false;
 
-export default async function ServicosContratadosPage() {
-  const session = await getSession();
-  if (!session) return null;
-
-  if (session.role === "admin") {
-    redirect("/admin");
-  }
-
-  let planActive = hasActivePlan(session);
-  const proposal = await getLatestProposalForUser(session.userId, session.email);
-
-  if (!proposal || proposal.status !== "accepted") {
-    redirect("/propostas");
-  }
-
-  if (!planActive) {
-    await ensureProPlanForAcceptedProposal({
-      proposal,
-      sessionUserId: session.userId,
-      sessionEmail: session.email,
-      planAlreadyActive: planActive,
-    });
-    const refreshed = await getSession();
-    planActive = refreshed ? hasActivePlan(refreshed) : false;
-  }
-
-  if (!planActive) {
-    redirect("/propostas");
-  }
+export default async function ServicosDashPage() {
+  const { proposal } = await requireAcceptedClientContext();
 
   await ensureInitialBillingForProposal(proposal.id);
-  const billingItems = await listBillingForProposal(proposal.id);
+  const [billingItems, plan] = await Promise.all([
+    listBillingForProposal(proposal.id),
+    getMarketingPlanForProposal(proposal.id),
+  ]);
+
+  const pendingCount = billingItems.filter((item) => item.status === "pending").length;
 
   return (
-    <ContractedServicesScreen proposal={proposal} billingItems={billingItems} />
+    <ContractedServicesScreen
+      proposal={proposal}
+      pendingBillingCount={pendingCount}
+      hasMarketingPlan={Boolean(plan)}
+    />
   );
 }

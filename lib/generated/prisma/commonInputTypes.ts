@@ -281,6 +281,23 @@ export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedDateTimeFilter<$PrismaModel>
 }
 
+export type EnumMarketingPlanStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.MarketingPlanStatus | Prisma.EnumMarketingPlanStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.MarketingPlanStatus[] | Prisma.ListEnumMarketingPlanStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.MarketingPlanStatus[] | Prisma.ListEnumMarketingPlanStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumMarketingPlanStatusFilter<$PrismaModel> | $Enums.MarketingPlanStatus
+}
+
+export type EnumMarketingPlanStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.MarketingPlanStatus | Prisma.EnumMarketingPlanStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.MarketingPlanStatus[] | Prisma.ListEnumMarketingPlanStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.MarketingPlanStatus[] | Prisma.ListEnumMarketingPlanStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumMarketingPlanStatusWithAggregatesFilter<$PrismaModel> | $Enums.MarketingPlanStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumMarketingPlanStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumMarketingPlanStatusFilter<$PrismaModel>
+}
+
 export type EnumBillingItemKindFilter<$PrismaModel = never> = {
   equals?: $Enums.BillingItemKind | Prisma.EnumBillingItemKindFieldRefInput<$PrismaModel>
   in?: $Enums.BillingItemKind[] | Prisma.ListEnumBillingItemKindFieldRefInput<$PrismaModel>
@@ -566,6 +583,23 @@ export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedDateTimeFilter<$PrismaModel>
   _max?: Prisma.NestedDateTimeFilter<$PrismaModel>
+}
+
+export type NestedEnumMarketingPlanStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.MarketingPlanStatus | Prisma.EnumMarketingPlanStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.MarketingPlanStatus[] | Prisma.ListEnumMarketingPlanStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.MarketingPlanStatus[] | Prisma.ListEnumMarketingPlanStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumMarketingPlanStatusFilter<$PrismaModel> | $Enums.MarketingPlanStatus
+}
+
+export type NestedEnumMarketingPlanStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.MarketingPlanStatus | Prisma.EnumMarketingPlanStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.MarketingPlanStatus[] | Prisma.ListEnumMarketingPlanStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.MarketingPlanStatus[] | Prisma.ListEnumMarketingPlanStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumMarketingPlanStatusWithAggregatesFilter<$PrismaModel> | $Enums.MarketingPlanStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumMarketingPlanStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumMarketingPlanStatusFilter<$PrismaModel>
 }
 
 export type NestedEnumBillingItemKindFilter<$PrismaModel = never> = {

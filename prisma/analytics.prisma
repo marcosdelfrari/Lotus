@@ -12,7 +12,7 @@ enum Role {
   client
 }
 
-/// Espelho somente da tabela users do Analytics. Sem migrate neste schema.
+/// Espelho somente leitura/escrita nas tabelas do Analytics. Migrate roda no projeto Analytics.
 model User {
   id         String   @id @default(uuid())
   email      String   @unique
@@ -23,4 +23,54 @@ model User {
   updatedAt  DateTime @updatedAt @map("updated_at")
 
   @@map("users")
+}
+
+model Organization {
+  id           String        @id @default(uuid())
+  name         String
+  createdAt    DateTime      @default(now()) @map("created_at")
+  updatedAt    DateTime      @updatedAt @map("updated_at")
+  companies    Company[]
+  accessGrants AccessGrant[]
+
+  @@map("organizations")
+}
+
+model Company {
+  id             String               @id @default(uuid())
+  organizationId String               @map("organization_id")
+  name           String
+  planActive     Boolean              @default(false) @map("plan_active")
+  createdAt      DateTime             @default(now()) @map("created_at")
+  updatedAt      DateTime             @updatedAt @map("updated_at")
+  organization   Organization         @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  grantLinks     AccessGrantCompany[]
+
+  @@index([organizationId])
+  @@map("companies")
+}
+
+model AccessGrant {
+  id             String               @id @default(uuid())
+  organizationId String               @map("organization_id")
+  email          String
+  allCompanies   Boolean              @default(true) @map("all_companies")
+  isOwner        Boolean              @default(false) @map("is_owner")
+  createdAt      DateTime             @default(now()) @map("created_at")
+  organization   Organization         @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  companies      AccessGrantCompany[]
+
+  @@unique([organizationId, email])
+  @@index([email])
+  @@map("access_grants")
+}
+
+model AccessGrantCompany {
+  grantId   String      @map("grant_id")
+  companyId String      @map("company_id")
+  grant     AccessGrant @relation(fields: [grantId], references: [id], onDelete: Cascade)
+  company   Company     @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@id([grantId, companyId])
+  @@map("access_grant_companies")
 }

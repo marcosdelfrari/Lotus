@@ -14,7 +14,7 @@ import type * as Prisma from "../internal/prismaNamespace"
 
 /**
  * Model User
- * Espelho somente da tabela users do Analytics. Sem migrate neste schema.
+ * Espelho somente leitura/escrita nas tabelas do Analytics. Migrate roda no projeto Analytics.
  */
 export type UserModel = runtime.Types.Result.DefaultSelection<Prisma.$UserPayload>
 

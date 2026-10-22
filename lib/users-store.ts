@@ -1,4 +1,8 @@
 import { adminEmail, roleForEmail } from "@/lib/access-code";
+import {
+  ensureClientOrganization,
+  syncCompanyPlanWithUser,
+} from "@/lib/client-companies-store";
 import type { User } from "@/lib/generated/analytics/client";
 import { analyticsPrisma as prisma } from "@/lib/analytics-db";
 import type { Account, Role } from "@/lib/types";
@@ -80,6 +84,7 @@ export async function setClientPlanActive(id: string, planActive: boolean) {
     where: { id },
     data: { planActive },
   });
+  await syncCompanyPlanWithUser(id, planActive);
   return { account: toAccount(updated) } as const;
 }
 
@@ -115,6 +120,7 @@ export async function activateClientProPlan(input: {
   if (!clientId) {
     return { error: "Conta do Analytics não encontrada para ativar o plano Pro." } as const;
   }
+  await ensureClientOrganization(clientId);
   const plan = await setClientPlanActive(clientId, true);
   if ("error" in plan) {
     return { error: plan.error } as const;

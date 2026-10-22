@@ -52,6 +52,7 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   TrafficProposal: 'TrafficProposal',
+  MarketingPlan: 'MarketingPlan',
   ProposalBillingItem: 'ProposalBillingItem',
   Interest: 'Interest'
 } as const
@@ -101,6 +102,24 @@ export const TrafficProposalScalarFieldEnum = {
 } as const
 
 export type TrafficProposalScalarFieldEnum = (typeof TrafficProposalScalarFieldEnum)[keyof typeof TrafficProposalScalarFieldEnum]
+
+
+export const MarketingPlanScalarFieldEnum = {
+  id: 'id',
+  proposalId: 'proposalId',
+  analyticsCompanyId: 'analyticsCompanyId',
+  operationProposal: 'operationProposal',
+  funnelTouchpoints: 'funnelTouchpoints',
+  mediaChannels: 'mediaChannels',
+  adFormats: 'adFormats',
+  notes: 'notes',
+  customAssets: 'customAssets',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type MarketingPlanScalarFieldEnum = (typeof MarketingPlanScalarFieldEnum)[keyof typeof MarketingPlanScalarFieldEnum]
 
 
 export const ProposalBillingItemScalarFieldEnum = {

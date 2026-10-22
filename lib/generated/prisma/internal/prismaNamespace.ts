@@ -398,6 +398,7 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 export const ModelName = {
   TrafficProposal: 'TrafficProposal',
+  MarketingPlan: 'MarketingPlan',
   ProposalBillingItem: 'ProposalBillingItem',
   Interest: 'Interest'
 } as const
@@ -415,7 +416,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "trafficProposal" | "proposalBillingItem" | "interest"
+    modelProps: "trafficProposal" | "marketingPlan" | "proposalBillingItem" | "interest"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -490,6 +491,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.TrafficProposalCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.TrafficProposalCountAggregateOutputType> | number
+        }
+      }
+    }
+    MarketingPlan: {
+      payload: Prisma.$MarketingPlanPayload<ExtArgs>
+      fields: Prisma.MarketingPlanFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.MarketingPlanFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MarketingPlanPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.MarketingPlanFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MarketingPlanPayload>
+        }
+        findFirst: {
+          args: Prisma.MarketingPlanFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MarketingPlanPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.MarketingPlanFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MarketingPlanPayload>
+        }
+        findMany: {
+          args: Prisma.MarketingPlanFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MarketingPlanPayload>[]
+        }
+        create: {
+          args: Prisma.MarketingPlanCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MarketingPlanPayload>
+        }
+        createMany: {
+          args: Prisma.MarketingPlanCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.MarketingPlanCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MarketingPlanPayload>[]
+        }
+        delete: {
+          args: Prisma.MarketingPlanDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MarketingPlanPayload>
+        }
+        update: {
+          args: Prisma.MarketingPlanUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MarketingPlanPayload>
+        }
+        deleteMany: {
+          args: Prisma.MarketingPlanDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.MarketingPlanUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.MarketingPlanUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MarketingPlanPayload>[]
+        }
+        upsert: {
+          args: Prisma.MarketingPlanUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MarketingPlanPayload>
+        }
+        aggregate: {
+          args: Prisma.MarketingPlanAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateMarketingPlan>
+        }
+        groupBy: {
+          args: Prisma.MarketingPlanGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MarketingPlanGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.MarketingPlanCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MarketingPlanCountAggregateOutputType> | number
         }
       }
     }
@@ -711,6 +786,24 @@ export const TrafficProposalScalarFieldEnum = {
 export type TrafficProposalScalarFieldEnum = (typeof TrafficProposalScalarFieldEnum)[keyof typeof TrafficProposalScalarFieldEnum]
 
 
+export const MarketingPlanScalarFieldEnum = {
+  id: 'id',
+  proposalId: 'proposalId',
+  analyticsCompanyId: 'analyticsCompanyId',
+  operationProposal: 'operationProposal',
+  funnelTouchpoints: 'funnelTouchpoints',
+  mediaChannels: 'mediaChannels',
+  adFormats: 'adFormats',
+  notes: 'notes',
+  customAssets: 'customAssets',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type MarketingPlanScalarFieldEnum = (typeof MarketingPlanScalarFieldEnum)[keyof typeof MarketingPlanScalarFieldEnum]
+
+
 export const ProposalBillingItemScalarFieldEnum = {
   id: 'id',
   proposalId: 'proposalId',
@@ -861,6 +954,20 @@ export type EnumProposalStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$P
  * Reference to a field of type 'ProposalStatus[]'
  */
 export type ListEnumProposalStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProposalStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'MarketingPlanStatus'
+ */
+export type EnumMarketingPlanStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MarketingPlanStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'MarketingPlanStatus[]'
+ */
+export type ListEnumMarketingPlanStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MarketingPlanStatus[]'>
     
 
 
@@ -1057,6 +1164,7 @@ export interface PrismaClientOptionsWithAdapter extends PrismaClientBaseOptions 
 export type PrismaClientOptions = PrismaClientOptionsWithAccelerateUrl | PrismaClientOptionsWithAdapter
 export type GlobalOmitConfig = {
   trafficProposal?: Prisma.TrafficProposalOmit
+  marketingPlan?: Prisma.MarketingPlanOmit
   proposalBillingItem?: Prisma.ProposalBillingItemOmit
   interest?: Prisma.InterestOmit
 }

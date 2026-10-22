@@ -20,7 +20,7 @@ export function AppShell({
     pathname.includes("/propostas/") ||
     pathname === "/servicos" ||
     pathname.startsWith("/servicos/");
-  const fullBleed = pathname === "/admin" || bare;
+  const fullBleed = pathname === "/admin" || pathname.startsWith("/admin/") || bare;
   const frame = fullBleed
     ? "w-full px-3.5 sm:px-8 lg:px-10"
     : "mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8";
@@ -37,7 +37,7 @@ export function AppShell({
           </div>
           {session.role === "admin" ? (
             <Link
-              href="/admin"
+              href="/admin/prospeccao"
               className="hidden rounded-md border border-border px-3 py-1.5 text-[12px] font-medium sm:inline-flex"
             >
               Admin
