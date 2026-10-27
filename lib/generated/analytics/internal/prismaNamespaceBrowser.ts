@@ -52,6 +52,7 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   User: 'User',
+  LoginOtp: 'LoginOtp',
   Organization: 'Organization',
   Company: 'Company',
   AccessGrant: 'AccessGrant',
@@ -85,6 +86,15 @@ export const UserScalarFieldEnum = {
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const LoginOtpScalarFieldEnum = {
+  email: 'email',
+  codeHash: 'codeHash',
+  expiresAt: 'expiresAt'
+} as const
+
+export type LoginOtpScalarFieldEnum = (typeof LoginOtpScalarFieldEnum)[keyof typeof LoginOtpScalarFieldEnum]
 
 
 export const OrganizationScalarFieldEnum = {

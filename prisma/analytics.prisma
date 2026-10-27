@@ -25,6 +25,14 @@ model User {
   @@map("users")
 }
 
+model LoginOtp {
+  email     String   @id
+  codeHash  String   @map("code_hash")
+  expiresAt DateTime @map("expires_at")
+
+  @@map("login_otps")
+}
+
 model Organization {
   id           String        @id @default(uuid())
   name         String

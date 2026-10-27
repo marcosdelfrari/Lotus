@@ -4,7 +4,7 @@ import { PrismaClient } from "@/lib/generated/analytics/client";
 import { createAppPool, disposePool } from "@/lib/pg-pool";
 
 /** Bump quando o espelho Analytics mudar — força novo client no hot reload. */
-const ANALYTICS_SCHEMA_TOKEN = "20261022180000_org_mirror_only";
+const ANALYTICS_SCHEMA_TOKEN = "20261027140000_login_otp";
 
 const globalForAnalytics = globalThis as unknown as {
   analyticsPrisma: PrismaClient | undefined;
@@ -15,7 +15,8 @@ const globalForAnalytics = globalThis as unknown as {
 function hasCurrentModels(client: PrismaClient) {
   return (
     typeof client.user?.findFirst === "function" &&
-    typeof client.company?.findFirst === "function"
+    typeof client.company?.findFirst === "function" &&
+    typeof client.loginOtp?.findFirst === "function"
   );
 }
 

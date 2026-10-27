@@ -398,6 +398,7 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 export const ModelName = {
   User: 'User',
+  LoginOtp: 'LoginOtp',
   Organization: 'Organization',
   Company: 'Company',
   AccessGrant: 'AccessGrant',
@@ -417,7 +418,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "organization" | "company" | "accessGrant" | "accessGrantCompany"
+    modelProps: "user" | "loginOtp" | "organization" | "company" | "accessGrant" | "accessGrantCompany"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -492,6 +493,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.UserCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.UserCountAggregateOutputType> | number
+        }
+      }
+    }
+    LoginOtp: {
+      payload: Prisma.$LoginOtpPayload<ExtArgs>
+      fields: Prisma.LoginOtpFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.LoginOtpFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LoginOtpPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.LoginOtpFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LoginOtpPayload>
+        }
+        findFirst: {
+          args: Prisma.LoginOtpFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LoginOtpPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.LoginOtpFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LoginOtpPayload>
+        }
+        findMany: {
+          args: Prisma.LoginOtpFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LoginOtpPayload>[]
+        }
+        create: {
+          args: Prisma.LoginOtpCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LoginOtpPayload>
+        }
+        createMany: {
+          args: Prisma.LoginOtpCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.LoginOtpCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LoginOtpPayload>[]
+        }
+        delete: {
+          args: Prisma.LoginOtpDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LoginOtpPayload>
+        }
+        update: {
+          args: Prisma.LoginOtpUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LoginOtpPayload>
+        }
+        deleteMany: {
+          args: Prisma.LoginOtpDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.LoginOtpUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.LoginOtpUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LoginOtpPayload>[]
+        }
+        upsert: {
+          args: Prisma.LoginOtpUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LoginOtpPayload>
+        }
+        aggregate: {
+          args: Prisma.LoginOtpAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateLoginOtp>
+        }
+        groupBy: {
+          args: Prisma.LoginOtpGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.LoginOtpGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.LoginOtpCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.LoginOtpCountAggregateOutputType> | number
         }
       }
     }
@@ -843,6 +918,15 @@ export const UserScalarFieldEnum = {
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
+export const LoginOtpScalarFieldEnum = {
+  email: 'email',
+  codeHash: 'codeHash',
+  expiresAt: 'expiresAt'
+} as const
+
+export type LoginOtpScalarFieldEnum = (typeof LoginOtpScalarFieldEnum)[keyof typeof LoginOtpScalarFieldEnum]
+
+
 export const OrganizationScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -1121,6 +1205,7 @@ export interface PrismaClientOptionsWithAdapter extends PrismaClientBaseOptions 
 export type PrismaClientOptions = PrismaClientOptionsWithAccelerateUrl | PrismaClientOptionsWithAdapter
 export type GlobalOmitConfig = {
   user?: Prisma.UserOmit
+  loginOtp?: Prisma.LoginOtpOmit
   organization?: Prisma.OrganizationOmit
   company?: Prisma.CompanyOmit
   accessGrant?: Prisma.AccessGrantOmit

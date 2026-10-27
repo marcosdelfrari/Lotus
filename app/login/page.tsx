@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import { BrandMark } from "@/app/components/brand-mark";
+import { CodeLoginForm } from "@/app/login/code-login-form";
 
 export const instant = false;
 
@@ -27,7 +28,8 @@ export default function LoginPage({
           <div className="border-b border-border px-4 py-3">
             <h1 className="text-sm font-medium">Entrar</h1>
             <p className="mt-1 text-[12px] leading-5 text-muted">
-              Acesso com Google à proposta, contrato ou serviços já contratados.
+              Acesso com Google ou código por e-mail à proposta, contrato ou
+              serviços já contratados.
             </p>
           </div>
           <Suspense>
@@ -63,6 +65,7 @@ async function LoginBody({
         >
           Entrar com Google
         </a>
+        <CodeLoginForm next={returnTo} />
       </div>
     </>
   );
