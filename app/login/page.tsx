@@ -1,8 +1,4 @@
-import { Suspense } from "react";
 import { BrandMark } from "@/app/components/brand-mark";
-import { CodeLoginForm } from "@/app/login/code-login-form";
-
-export const instant = false;
 
 const errors: Record<string, string> = {
   "sem-acesso": "Não foi possível criar sua conta. Tente de novo.",
@@ -13,35 +9,7 @@ const errors: Record<string, string> = {
     "Não foi possível concluir o login. Verifique DATABASE_URL e se as migrações do Prisma foram aplicadas.",
 };
 
-export default function LoginPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ erro?: string; next?: string }>;
-}) {
-  return (
-    <main className="flex min-h-dvh w-full items-center justify-center bg-background px-4 pb-[env(safe-area-inset-bottom)]">
-      <div className="w-full max-w-sm">
-        <div className="mb-6 flex justify-center">
-          <BrandMark />
-        </div>
-        <div className="border border-border bg-surface">
-          <div className="border-b border-border px-4 py-3">
-            <h1 className="text-sm font-medium">Entrar</h1>
-            <p className="mt-1 text-[12px] leading-5 text-muted">
-              Acesso com Google ou código por e-mail à proposta, contrato ou
-              serviços já contratados.
-            </p>
-          </div>
-          <Suspense>
-            <LoginBody searchParams={searchParams} />
-          </Suspense>
-        </div>
-      </div>
-    </main>
-  );
-}
-
-async function LoginBody({
+export default async function LoginPage({
   searchParams,
 }: {
   searchParams: Promise<{ erro?: string; next?: string }>;
@@ -54,19 +22,31 @@ async function LoginBody({
       : "/propostas";
 
   return (
-    <>
-      {message ? (
-        <p className="px-4 pt-4 text-[12px] text-negative">{message}</p>
-      ) : null}
-      <div className="border-t border-border px-4 py-3">
-        <a
-          href={`/api/auth/google?next=${encodeURIComponent(returnTo)}`}
-          className="block w-full border border-foreground bg-foreground px-3 py-1.5 text-center text-[12px] text-background"
-        >
-          Entrar com Google
-        </a>
-        <CodeLoginForm next={returnTo} />
+    <main className="fixed inset-0 flex items-center justify-center bg-background px-4 pb-[env(safe-area-inset-bottom)]">
+      <div className="w-full max-w-sm">
+        <div className="mb-6 flex justify-center">
+          <BrandMark />
+        </div>
+        <div className="border border-border bg-surface">
+          <div className="border-b border-border px-4 py-3">
+            <h1 className="text-sm font-medium">Entrar</h1>
+            <p className="mt-1 text-[12px] leading-5 text-muted">
+              Acesso com Google à proposta, contrato ou serviços já contratados.
+            </p>
+          </div>
+          {message ? (
+            <p className="px-4 pt-4 text-[12px] text-negative">{message}</p>
+          ) : null}
+          <div className="px-4 py-3">
+            <a
+              href={`/api/auth/google?next=${encodeURIComponent(returnTo)}`}
+              className="block w-full border border-foreground bg-foreground px-3 py-1.5 text-center text-[12px] text-background"
+            >
+              Entrar com Google
+            </a>
+          </div>
+        </div>
       </div>
-    </>
+    </main>
   );
 }

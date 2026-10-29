@@ -33,10 +33,6 @@ function fromAddress() {
   return process.env.EMAIL_FROM || "Lótus <onboarding@resend.dev>";
 }
 
-export function mailConfigured() {
-  return Boolean(resendApiKey());
-}
-
 function resendErrorMessage(status: number, body: string) {
   let apiMessage = "";
   try {
@@ -47,7 +43,7 @@ function resendErrorMessage(status: number, body: string) {
   }
 
   if (status === 403 && apiMessage.toLowerCase().includes("testing emails")) {
-    return "No modo de teste do Resend, o código só pode ir para o e-mail da sua conta Resend. Verifique um domínio em resend.com/domains ou teste com esse e-mail.";
+    return "No modo de teste do Resend, o e-mail só pode ir para a conta Resend. Verifique um domínio em resend.com/domains ou teste com esse e-mail.";
   }
 
   if (status === 401) {
@@ -57,41 +53,6 @@ function resendErrorMessage(status: number, body: string) {
   if (apiMessage) return apiMessage;
 
   return "Não foi possível enviar o e-mail. Tente de novo.";
-}
-
-export async function sendLoginCodeEmail(to: string, code: string) {
-  const apiKey = resendApiKey();
-  if (!apiKey) {
-    return { error: "Envio de e-mail não configurado." } as const;
-  }
-
-  const response = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      from: fromAddress(),
-      to: [to],
-      subject: "Seu código de acesso — Lótus",
-      text: [
-        "Use o código abaixo para entrar na Lótus:",
-        "",
-        code,
-        "",
-        "O código expira em 15 minutos. Se você não pediu este e-mail, ignore.",
-      ].join("\n"),
-    }),
-  });
-
-  if (!response.ok) {
-    const body = await response.text().catch(() => "");
-    console.error("Resend falhou", response.status, body);
-    return { error: resendErrorMessage(response.status, body) } as const;
-  }
-
-  return { ok: true } as const;
 }
 
 export async function sendProposalEmail(input: {

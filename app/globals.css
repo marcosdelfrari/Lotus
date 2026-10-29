@@ -46,14 +46,13 @@
 }
 
 html {
+  color-scheme: dark;
   overflow-x: clip;
-  min-height: 100dvh;
-  background-color: var(--background);
 }
 
 body {
   min-height: 100dvh;
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
   font-family: var(--font-sora), sans-serif;
   overflow-x: clip;

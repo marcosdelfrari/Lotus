@@ -280,6 +280,67 @@ export async function confirmBillingPayment(billingItemId: string) {
   return { ok: true as const };
 }
 
+export async function revertBillingPayment(billingItemId: string) {
+  const item = await prisma.proposalBillingItem.findUnique({
+    where: { id: billingItemId },
+    include: { proposal: true },
+  });
+
+  if (!item) {
+    return { error: "Fatura não encontrada." } as const;
+  }
+  if (item.status !== BillingItemStatus.paid) {
+    return { error: "Este pagamento não está confirmado." } as const;
+  }
+  if (item.proposal.status !== ProposalStatus.accepted) {
+    return { error: "Proposta não está aceita." } as const;
+  }
+
+  const laterPaid = await prisma.proposalBillingItem.findFirst({
+    where: {
+      proposalId: item.proposalId,
+      status: BillingItemStatus.paid,
+      sequence: { gt: item.sequence },
+    },
+  });
+  if (laterPaid) {
+    return {
+      error: "Reverta o pagamento mais recente antes deste.",
+    } as const;
+  }
+
+  await prisma.proposalBillingItem.update({
+    where: { id: billingItemId },
+    data: {
+      status: BillingItemStatus.pending,
+      paidAt: null,
+    },
+  });
+
+  if (item.kind === BillingItemKind.setup) {
+    await prisma.proposalBillingItem.updateMany({
+      where: {
+        proposalId: item.proposalId,
+        kind: BillingItemKind.monthly,
+        status: BillingItemStatus.pending,
+      },
+      data: { dueDate: null },
+    });
+    await prisma.proposalBillingItem.deleteMany({
+      where: {
+        proposalId: item.proposalId,
+        kind: BillingItemKind.monthly,
+        status: BillingItemStatus.pending,
+        sequence: { gt: 1 },
+      },
+    });
+  }
+
+  await ensureInitialBillingForProposal(item.proposalId);
+
+  return { ok: true as const };
+}
+
 /** Repara propostas aceitas antigas sem faturamento. */
 export async function ensureBillingForAcceptedProposals() {
   const accepted = await prisma.trafficProposal.findMany({

@@ -1,7 +1,10 @@
 "use client";
 
 import { useTransition } from "react";
-import { adminConfirmBillingPaymentAction } from "@/app/(workspace)/admin/actions";
+import {
+  adminConfirmBillingPaymentAction,
+  adminRevertBillingPaymentAction,
+} from "@/app/(workspace)/admin/actions";
 import { formatCurrency, formatShortDate } from "@/lib/format";
 import type { BillingItemWithClient } from "@/lib/billing-store";
 import { BillingItemStatus } from "@/lib/generated/prisma/browser";
@@ -19,10 +22,19 @@ export function AdminBillingPanel({
   const payableId = proposalItems?.find(
     (row) => row.status === BillingItemStatus.pending && row.dueDate,
   )?.id;
+  const lastPaidId = [...(proposalItems ?? [])]
+    .filter((row) => row.status === BillingItemStatus.paid)
+    .sort((a, b) => b.sequence - a.sequence)[0]?.id;
 
   function confirm(id: string) {
     startTransition(async () => {
       await adminConfirmBillingPaymentAction(id);
+    });
+  }
+
+  function revert(id: string) {
+    startTransition(async () => {
+      await adminRevertBillingPaymentAction(id);
     });
   }
 
@@ -118,6 +130,16 @@ export function AdminBillingPanel({
                       className="rounded-full border border-border px-3 py-1 text-[11px] hover:bg-surface-elevated disabled:opacity-60"
                     >
                       Confirmar
+                    </button>
+                  ) : null}
+                  {row.id === lastPaidId ? (
+                    <button
+                      type="button"
+                      disabled={isPending}
+                      onClick={() => revert(row.id)}
+                      className="rounded-full border border-border px-3 py-1 text-[11px] text-muted-foreground hover:bg-surface-elevated hover:text-foreground disabled:opacity-60"
+                    >
+                      Reverter
                     </button>
                   ) : null}
                 </div>

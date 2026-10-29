@@ -6,7 +6,10 @@ import { getSession } from "@/lib/auth";
 import type { ProposalCommercialPayload } from "@/lib/proposal-types";
 import type { MarketingPlanFields } from "@/lib/campaign-marketing-options";
 import { saveMarketingPlan } from "@/lib/marketing-plans-store";
-import { confirmBillingPayment } from "@/lib/billing-store";
+import {
+  confirmBillingPayment,
+  revertBillingPayment,
+} from "@/lib/billing-store";
 import {
   adminCreateAndSendProposal,
   adminDeleteProposal,
@@ -133,6 +136,15 @@ export async function adminDeleteProposalAction(proposalId: string) {
 export async function adminConfirmBillingPaymentAction(billingItemId: string) {
   await requireAdmin();
   const result = await confirmBillingPayment(billingItemId);
+  if ("error" in result) return result;
+  revalidateAdminRoutes();
+  revalidateServicosRoutes();
+  return { ok: true as const };
+}
+
+export async function adminRevertBillingPaymentAction(billingItemId: string) {
+  await requireAdmin();
+  const result = await revertBillingPayment(billingItemId);
   if ("error" in result) return result;
   revalidateAdminRoutes();
   revalidateServicosRoutes();
