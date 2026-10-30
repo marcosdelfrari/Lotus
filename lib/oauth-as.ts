@@ -62,13 +62,19 @@ export function buildAgentAuthBlock() {
   };
 }
 
-type JsonWebKeyPrivate = JsonWebKey & { d?: string; kid?: string };
+/** JWK público/privado com campos JOSE além do JsonWebKey do DOM. */
+type LotusJwk = JsonWebKey & {
+  kid?: string;
+  use?: string;
+  alg?: string;
+  d?: string;
+};
 
 type CachedKey = {
   kid: string;
   privateKey: CryptoKey;
   publicKey: CryptoKey;
-  publicJwk: JsonWebKey;
+  publicJwk: LotusJwk;
 };
 
 declare global {
@@ -101,7 +107,7 @@ async function importOrCreateKey(): Promise<CachedKey> {
 
   const raw = process.env.OAUTH_PRIVATE_JWK?.trim();
   if (raw) {
-    const jwk = JSON.parse(raw) as JsonWebKeyPrivate;
+    const jwk = JSON.parse(raw) as LotusJwk;
     const kid = jwk.kid || "lotus-1";
     const privateKey = await crypto.subtle.importKey(
       "jwk",
@@ -111,7 +117,7 @@ async function importOrCreateKey(): Promise<CachedKey> {
       ["sign"],
     );
     const { d: _d, ...publicParts } = jwk;
-    const publicJwk: JsonWebKey = {
+    const publicJwk: LotusJwk = {
       ...publicParts,
       kid,
       use: "sig",
@@ -136,11 +142,14 @@ async function importOrCreateKey(): Promise<CachedKey> {
     ["sign", "verify"],
   );
   const kid = "lotus-ephemeral";
-  const publicJwk = await crypto.subtle.exportKey("jwk", pair.publicKey);
-  publicJwk.kid = kid;
-  publicJwk.use = "sig";
-  publicJwk.alg = "ES256";
-  publicJwk.key_ops = ["verify"];
+  const exported = await crypto.subtle.exportKey("jwk", pair.publicKey);
+  const publicJwk: LotusJwk = {
+    ...exported,
+    kid,
+    use: "sig",
+    alg: "ES256",
+    key_ops: ["verify"],
+  };
 
   const cached = {
     kid,
