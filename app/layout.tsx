@@ -6,6 +6,8 @@ import {
   Sora,
 } from "next/font/google";
 import type { Metadata } from "next";
+import Script from "next/script";
+import { WebMcpProvider } from "@/app/components/webmcp-provider";
 import "./globals.css";
 
 const sora = Sora({
@@ -57,7 +59,23 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${sora.variable} ${barlowCondensed.variable} ${robotoFlex.variable} ${sairaCondensed.variable} ${geistMono.variable} bg-background antialiased`}
       style={{ backgroundColor: "#0c0c0c", colorScheme: "dark" }}
     >
+      <head>
+        <link
+          rel="describedby"
+          href="/.well-known/ai-catalog.json"
+          type="application/json"
+          title="ARD AI Catalog"
+        />
+        <link
+          rel="describedby"
+          href="/.well-known/poppy.json"
+          type="application/json"
+          title="Personal Agent Protocol"
+        />
+      </head>
       <body className="min-h-dvh overflow-x-clip bg-background text-foreground">
+        <Script src="/webmcp.js" strategy="beforeInteractive" />
+        <WebMcpProvider />
         {children}
       </body>
     </html>

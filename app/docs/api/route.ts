@@ -1,0 +1,12 @@
+import { buildServiceDoc } from "@/lib/agent-discovery";
+
+/** /docs/api — service-doc (documentação humana da superfície de discovery) */
+export function GET() {
+  return new Response(buildServiceDoc(), {
+    status: 200,
+    headers: {
+      "Content-Type": "text/plain; charset=utf-8",
+      "Cache-Control": "public, max-age=3600, stale-while-revalidate=86400",
+    },
+  });
+}

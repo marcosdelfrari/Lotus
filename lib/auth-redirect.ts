@@ -12,6 +12,11 @@ export async function destinationAfterLogin(
   account: Account,
   returnTo: string,
 ) {
+  // Fluxos de agentes: voltar ao authorize/claim após login.
+  if (returnTo.startsWith("/oauth/authorize") || returnTo.startsWith("/claim")) {
+    return returnTo;
+  }
+
   if (account.role === "admin") {
     return returnTo.startsWith("/admin") ? returnTo : "/admin";
   }

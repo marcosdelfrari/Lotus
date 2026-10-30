@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { LotusContactAgentForm } from "@/app/components/lotus/contact-agent-form";
 import { Reveal } from "@/app/components/lotus/motion";
 
 export function LotusFinalCta() {
@@ -19,11 +20,12 @@ export function LotusFinalCta() {
               Trabalhamos com um número limitado de novas contas por ciclo.
               Vamos avaliar o encaixe entre o seu negócio e nossa gestão.
             </p>
+            <LotusContactAgentForm />
             <Link
               href="/login?next=/propostas"
-              className="group mt-8 inline-flex w-fit items-center gap-3 rounded-full bg-white px-6 py-3.5 text-sm font-medium text-black transition hover:bg-white/90"
+              className="group mt-4 inline-flex w-fit items-center gap-3 text-sm font-medium text-white/70 transition hover:text-white"
             >
-              Começar agora
+              Já tenho conta — entrar
               <span
                 aria-hidden
                 className="transition-transform duration-200 group-hover:translate-x-0.5"
