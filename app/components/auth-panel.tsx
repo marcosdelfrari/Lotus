@@ -12,9 +12,12 @@ import {
 } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
+  checkLoginEmailAction,
   loginWithPasswordAction,
   registerWithPasswordAction,
+  setupPasswordLoginAction,
   type AuthFormState,
+  type CheckLoginEmailState,
 } from "@/app/login/actions";
 import { BrandMark } from "@/app/components/brand-mark";
 import { motionEase } from "@/app/components/lotus/motion";
@@ -141,7 +144,7 @@ function AuthVideoShowcase() {
           aria-hidden
         />
 
-        <div className="relative z-10 flex h-full flex-col justify-between p-8 xl:p-10">
+        <div className="relative z-10 flex h-full flex-col p-8 xl:p-10">
           <div className="flex items-center gap-5">
             <span className="inline-flex items-center gap-2 text-[11px] text-white/85">
               <Image
@@ -163,17 +166,6 @@ function AuthVideoShowcase() {
               />
               Meta Ads
             </span>
-          </div>
-
-          <div className="max-w-md">
-            <p className="text-2xl font-light leading-[1.18] tracking-tight text-white xl:text-3xl">
-              Transformando anúncios{" "}
-              <span className="font-semibold">em demanda previsível.</span>
-            </p>
-            <p className="mt-3 text-[13px] leading-6 text-white/75">
-              Acompanhe propostas, contratos e a performance da sua operação de
-              tráfego pago em um só lugar.
-            </p>
           </div>
         </div>
       </div>
@@ -257,22 +249,50 @@ export function LoginPanel({
   next: string;
   message?: string | null;
 }) {
-  const [state, action, pending] = useActionState<AuthFormState, FormData>(
-    loginWithPasswordAction,
-    null,
+  const [checkState, checkAction, checkPending] = useActionState<
+    CheckLoginEmailState,
+    FormData
+  >(checkLoginEmailAction, null);
+  const [loginState, loginAction, loginPending] = useActionState<
+    AuthFormState,
+    FormData
+  >(loginWithPasswordAction, null);
+  const [setupState, setupAction, setupPending] = useActionState<
+    AuthFormState,
+    FormData
+  >(setupPasswordLoginAction, null);
+  const [showEmailForm, setShowEmailForm] = useState(
+    Boolean(loginState?.error || setupState?.error || checkState?.error),
   );
-  const [showEmailForm, setShowEmailForm] = useState(Boolean(state?.error));
+  const [verifiedEmail, setVerifiedEmail] = useState<string | null>(
+    checkState?.verifiedEmail ?? null,
+  );
+  const [needsPasswordSetup, setNeedsPasswordSetup] = useState(
+    Boolean(checkState?.needsPasswordSetup),
+  );
 
   useEffect(() => {
-    if (state?.error) {
+    if (loginState?.error || checkState?.error) {
       setShowEmailForm(true);
     }
-  }, [state?.error]);
+  }, [loginState?.error, checkState?.error]);
+
+  useEffect(() => {
+    if (checkState?.verifiedEmail) {
+      setVerifiedEmail(checkState.verifiedEmail);
+      setNeedsPasswordSetup(Boolean(checkState.needsPasswordSetup));
+    }
+  }, [checkState?.verifiedEmail, checkState?.needsPasswordSetup]);
+
+  const passwordStepError = needsPasswordSetup
+    ? setupState?.error
+    : loginState?.error;
+  const passwordStepPending = needsPasswordSetup ? setupPending : loginPending;
 
   return (
     <AuthShell
-      title="Bem-vindo de volta"
-      description="Entre para ver propostas, contratos e o andamento das suas campanhas."
+      title="Bem-vindo à Lótus"
+      description="O próximo passo para escalar os resultados do seu negócio começa aqui."
       footer={
         <p className="text-[12px] text-white/55">
           Primeiro acesso sem Google?{" "}
@@ -309,17 +329,16 @@ export function LoginPanel({
             >
               Continuar com e-mail e senha
             </motion.button>
-          ) : (
+          ) : !verifiedEmail ? (
             <motion.form
-              key="form"
-              action={action}
+              key="email-step"
+              action={checkAction}
               initial={{ opacity: 0, y: -6 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -6 }}
               transition={{ duration: 0.22, ease: motionEase }}
               className="space-y-2.5 pt-0.5"
             >
-              <input type="hidden" name="next" value={next} />
               <label className="block text-[11.5px] text-white/70">
                 E-mail
                 <input
@@ -332,26 +351,96 @@ export function LoginPanel({
                   className={fieldClass}
                 />
               </label>
+              {checkState?.error ? (
+                <p className="text-[11.5px] text-red-300">{checkState.error}</p>
+              ) : null}
+              <button
+                type="submit"
+                disabled={checkPending}
+                className={primaryButtonClass}
+              >
+                {checkPending ? "Verificando…" : "Continuar"}
+              </button>
+            </motion.form>
+          ) : (
+            <motion.form
+              key={needsPasswordSetup ? "setup-password" : "password-step"}
+              action={needsPasswordSetup ? setupAction : loginAction}
+              initial={{ opacity: 0, y: -6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.22, ease: motionEase }}
+              className="space-y-2.5 pt-0.5"
+            >
+              <input type="hidden" name="next" value={next} />
+              <input type="hidden" name="email" value={verifiedEmail} />
+              <div className="flex items-center justify-between gap-2 rounded-lg border border-white/10 bg-white/[0.02] px-3 py-2">
+                <span className="truncate text-[12px] text-white/85">
+                  {verifiedEmail}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setVerifiedEmail(null);
+                    setNeedsPasswordSetup(false);
+                  }}
+                  className="shrink-0 cursor-pointer text-[11px] text-white/55 underline decoration-white/25 underline-offset-2 transition hover:text-white"
+                >
+                  Alterar
+                </button>
+              </div>
+              {needsPasswordSetup ? (
+                <p className="text-[11.5px] leading-5 text-white/55">
+                  Esta conta ainda não tem senha. Crie uma senha para entrar com
+                  e-mail nas próximas vezes.
+                </p>
+              ) : null}
               <label className="block text-[11.5px] text-white/70">
-                Senha
+                {needsPasswordSetup ? "Nova senha" : "Senha"}
                 <input
                   name="password"
                   type="password"
                   required
-                  placeholder="Sua senha"
-                  autoComplete="current-password"
+                  autoFocus
+                  minLength={needsPasswordSetup ? 8 : undefined}
+                  placeholder={
+                    needsPasswordSetup ? "Mín. 8 caracteres" : "Sua senha"
+                  }
+                  autoComplete={
+                    needsPasswordSetup ? "new-password" : "current-password"
+                  }
                   className={fieldClass}
                 />
               </label>
-              {state?.error ? (
-                <p className="text-[11.5px] text-red-300">{state.error}</p>
+              {needsPasswordSetup ? (
+                <label className="block text-[11.5px] text-white/70">
+                  Confirmar senha
+                  <input
+                    name="confirmPassword"
+                    type="password"
+                    required
+                    minLength={8}
+                    placeholder="Repita a senha"
+                    autoComplete="new-password"
+                    className={fieldClass}
+                  />
+                </label>
+              ) : null}
+              {passwordStepError ? (
+                <p className="text-[11.5px] text-red-300">{passwordStepError}</p>
               ) : null}
               <button
                 type="submit"
-                disabled={pending}
+                disabled={passwordStepPending}
                 className={primaryButtonClass}
               >
-                {pending ? "Entrando…" : "Entrar com e-mail"}
+                {passwordStepPending
+                  ? needsPasswordSetup
+                    ? "Salvando…"
+                    : "Entrando…"
+                  : needsPasswordSetup
+                    ? "Criar senha e entrar"
+                    : "Entrar com e-mail"}
               </button>
             </motion.form>
           )}

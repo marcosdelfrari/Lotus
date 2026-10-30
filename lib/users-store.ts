@@ -115,7 +115,8 @@ export async function registerWithPassword(input: {
       return { error: "Já existe uma conta com esse e-mail. Entre com e-mail e senha." } as const;
     }
     return {
-      error: "Já existe uma conta com esse e-mail. Entre com o Google.",
+      error:
+        "Já existe uma conta com esse e-mail. Entre com e-mail para criar sua senha ou use o Google.",
     } as const;
   }
 
@@ -124,6 +125,56 @@ export async function registerWithPassword(input: {
     email,
     password: input.password,
   });
+}
+
+export async function checkEmailForPasswordLogin(email: string) {
+  const normalized = normalizeEmail(email);
+  if (!normalized || !normalized.includes("@")) {
+    return { error: "Informe um e-mail válido." } as const;
+  }
+
+  const user = await prisma.user.findUnique({ where: { email: normalized } });
+  if (!user) {
+    return {
+      error:
+        "Não encontramos conta com esse e-mail. Crie uma conta ou entre com o Google.",
+    } as const;
+  }
+  return {
+    email: normalized,
+    needsPasswordSetup: !user.passwordHash,
+  } as const;
+}
+
+export async function setupPasswordAndLogin(input: {
+  email: string;
+  password: string;
+  confirmPassword: string;
+}) {
+  const email = normalizeEmail(input.email);
+  if (!email || !input.password) {
+    return { error: "Informe e-mail e senha." } as const;
+  }
+  if (input.password !== input.confirmPassword) {
+    return { error: "As senhas não coincidem." } as const;
+  }
+  const passwordError = validatePassword(input.password);
+  if (passwordError) return { error: passwordError } as const;
+
+  const user = await prisma.user.findUnique({ where: { email } });
+  if (!user) {
+    return { error: "Conta não encontrada." } as const;
+  }
+  if (user.passwordHash) {
+    return authenticateWithPassword({ email, password: input.password });
+  }
+
+  const passwordHash = await hashPassword(input.password);
+  const updated = await prisma.user.update({
+    where: { email },
+    data: { passwordHash },
+  });
+  return { account: toAccount(updated) } as const;
 }
 
 export async function authenticateWithPassword(input: {
