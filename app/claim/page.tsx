@@ -7,6 +7,8 @@ export const metadata = {
   robots: { index: false, follow: false },
 };
 
+export const instant = false;
+
 type Props = {
   searchParams: Promise<{ claim_attempt_token?: string }>;
 };
