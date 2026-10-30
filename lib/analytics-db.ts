@@ -4,7 +4,7 @@ import { PrismaClient } from "@/lib/generated/analytics/client";
 import { createAppPool, disposePool } from "@/lib/pg-pool";
 
 /** Bump quando o espelho Analytics mudar — força novo client no hot reload. */
-const ANALYTICS_SCHEMA_TOKEN = "20261027140000_login_otp";
+const ANALYTICS_SCHEMA_TOKEN = "20261030120000_user_password_hash";
 
 const globalForAnalytics = globalThis as unknown as {
   analyticsPrisma: PrismaClient | undefined;

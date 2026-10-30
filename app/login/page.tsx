@@ -1,4 +1,4 @@
-import { BrandMark } from "@/app/components/brand-mark";
+import { LoginPanel } from "@/app/components/auth-panel";
 
 const errors: Record<string, string> = {
   "sem-acesso": "Não foi possível criar sua conta. Tente de novo.",
@@ -21,32 +21,5 @@ export default async function LoginPage({
       ? next
       : "/propostas";
 
-  return (
-    <main className="fixed inset-0 flex items-center justify-center bg-background px-4 pb-[env(safe-area-inset-bottom)]">
-      <div className="w-full max-w-sm">
-        <div className="mb-6 flex justify-center">
-          <BrandMark />
-        </div>
-        <div className="border border-border bg-surface">
-          <div className="border-b border-border px-4 py-3">
-            <h1 className="text-sm font-medium">Entrar</h1>
-            <p className="mt-1 text-[12px] leading-5 text-muted">
-              Acesso com Google à proposta, contrato ou serviços já contratados.
-            </p>
-          </div>
-          {message ? (
-            <p className="px-4 pt-4 text-[12px] text-negative">{message}</p>
-          ) : null}
-          <div className="px-4 py-3">
-            <a
-              href={`/api/auth/google?next=${encodeURIComponent(returnTo)}`}
-              className="block w-full border border-foreground bg-foreground px-3 py-1.5 text-center text-[12px] text-background"
-            >
-              Entrar com Google
-            </a>
-          </div>
-        </div>
-      </div>
-    </main>
-  );
+  return <LoginPanel next={returnTo} message={message} />;
 }

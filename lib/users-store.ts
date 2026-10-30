@@ -5,6 +5,7 @@ import {
 } from "@/lib/client-companies-store";
 import type { User } from "@/lib/generated/analytics/client";
 import { analyticsPrisma as prisma } from "@/lib/analytics-db";
+import { hashPassword, verifyPassword } from "@/lib/password";
 import type { Account, Role } from "@/lib/types";
 
 function toAccount(user: User): Account {
@@ -16,6 +17,17 @@ function toAccount(user: User): Account {
     role,
     planActive: role === "admin" ? true : user.planActive,
   };
+}
+
+function normalizeEmail(email: string) {
+  return email.trim().toLowerCase();
+}
+
+function validatePassword(password: string) {
+  if (password.length < 8) {
+    return "A senha precisa ter pelo menos 8 caracteres.";
+  }
+  return null;
 }
 
 async function ensureAdminUser() {
@@ -56,22 +68,88 @@ export async function listClients() {
   return users.map(toAccount).filter((user) => user.role === "client");
 }
 
-export async function createClient(input: { name: string; email: string }) {
-  const email = input.email.trim().toLowerCase();
+export async function createClient(input: {
+  name: string;
+  email: string;
+  password?: string;
+}) {
+  const email = normalizeEmail(input.email);
   const existing = await prisma.user.findUnique({ where: { email } });
   if (existing) {
     return { error: "Já existe uma conta com esse e-mail." } as const;
   }
 
   const role: Role = roleForEmail(email);
+  const passwordHash = input.password
+    ? await hashPassword(input.password)
+    : undefined;
   const user = await prisma.user.create({
     data: {
       name: input.name.trim(),
       email,
       role,
       planActive: role === "admin",
+      ...(passwordHash ? { passwordHash } : {}),
     },
   });
+  return { account: toAccount(user) } as const;
+}
+
+export async function registerWithPassword(input: {
+  name: string;
+  email: string;
+  password: string;
+}) {
+  const name = input.name.trim();
+  const email = normalizeEmail(input.email);
+  if (!name) return { error: "Informe seu nome." } as const;
+  if (!email || !email.includes("@")) {
+    return { error: "Informe um e-mail válido." } as const;
+  }
+  const passwordError = validatePassword(input.password);
+  if (passwordError) return { error: passwordError } as const;
+
+  const existing = await prisma.user.findUnique({ where: { email } });
+  if (existing) {
+    if (existing.passwordHash) {
+      return { error: "Já existe uma conta com esse e-mail. Entre com e-mail e senha." } as const;
+    }
+    return {
+      error: "Já existe uma conta com esse e-mail. Entre com o Google.",
+    } as const;
+  }
+
+  return createClient({
+    name,
+    email,
+    password: input.password,
+  });
+}
+
+export async function authenticateWithPassword(input: {
+  email: string;
+  password: string;
+}) {
+  const email = normalizeEmail(input.email);
+  if (!email || !input.password) {
+    return { error: "Informe e-mail e senha." } as const;
+  }
+
+  const user = await prisma.user.findUnique({ where: { email } });
+  if (!user) {
+    return { error: "E-mail ou senha incorretos." } as const;
+  }
+  if (!user.passwordHash) {
+    return {
+      error: "Esta conta entra com Google. Use o botão Entrar com Google.",
+    } as const;
+  }
+
+  const ok = await verifyPassword(input.password, user.passwordHash);
+  if (!ok) {
+    return { error: "E-mail ou senha incorretos." } as const;
+  }
+
   return { account: toAccount(user) } as const;
 }
 

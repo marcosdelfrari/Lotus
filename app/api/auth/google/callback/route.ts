@@ -8,7 +8,10 @@ import {
   googleStateCookie,
   publicOrigin,
 } from "@/lib/google-oauth";
-import { getLatestProposalForUser } from "@/lib/proposals-store";
+import {
+  destinationAfterLogin,
+  safeReturnPath,
+} from "@/lib/auth-redirect";
 import { sessionCookie, sessionCookieOptions, signSession } from "@/lib/session";
 import { createClient, ensureAdminFromEnv, findAccountByEmail } from "@/lib/users-store";
 
@@ -23,11 +26,6 @@ function fail(origin: string, erro: string) {
   response.cookies.delete(googleStateCookie);
   response.cookies.delete(googleReturnCookie);
   return response;
-}
-
-function safeReturnPath(value: string | undefined) {
-  if (!value || !value.startsWith("/") || value.startsWith("//")) return "/propostas";
-  return value;
 }
 
 export async function GET(request: NextRequest) {
@@ -64,15 +62,7 @@ export async function GET(request: NextRequest) {
       email: account.email,
     });
 
-    let destination = returnTo;
-    if (account.role === "admin") {
-      destination = returnTo.startsWith("/admin") ? returnTo : "/admin";
-    } else {
-      const proposal = await getLatestProposalForUser(account.id);
-      if (proposal?.status === "sent" || proposal?.status === "accepted") {
-        destination = "/propostas";
-      }
-    }
+    const destination = await destinationAfterLogin(account, returnTo);
     const response = NextResponse.redirect(new URL(destination, origin));
     response.cookies.set(sessionCookie, token, sessionCookieOptions(origin));
     response.cookies.delete(googleStateCookie);

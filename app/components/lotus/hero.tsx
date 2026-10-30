@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
-import { fadeUp } from "@/app/components/lotus/motion";
+import { AnimatePresence, motion } from "framer-motion";
+import { fadeUp, motionEase } from "@/app/components/lotus/motion";
 
 const links = [
   { href: "#servicos", label: "O que fazemos" },
@@ -13,40 +13,78 @@ const links = [
   { href: "#contato", label: "Contato" },
 ];
 
+function HeroBackdrop() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [videoReady, setVideoReady] = useState(false);
+
+  const markVideoReady = useCallback(() => {
+    setVideoReady(true);
+  }, []);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    if (!video.paused && video.currentTime > 0) {
+      markVideoReady();
+    }
+  }, [markVideoReady]);
+
+  return (
+    <div className="absolute inset-0 bg-black" aria-hidden>
+      <Image
+        src="/hero-poster.webp"
+        alt=""
+        fill
+        priority
+        sizes="100vw"
+        className="object-cover"
+      />
+      <motion.video
+        ref={videoRef}
+        className="absolute inset-0 h-full w-full object-cover motion-reduce:hidden"
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="metadata"
+        initial={false}
+        animate={{ opacity: videoReady ? 1 : 0 }}
+        transition={{ duration: 0.75, ease: motionEase }}
+        onPlaying={markVideoReady}
+      >
+        <source src="/hero.webm" type="video/webm" />
+        <source src="/hero.mp4" type="video/mp4" />
+      </motion.video>
+    </div>
+  );
+}
+
 export function LotusHero() {
   const [open, setOpen] = useState(false);
 
   return (
     <section className="relative isolate h-dvh overflow-hidden bg-black text-white">
-      <video
-        className="absolute inset-0 h-full w-full object-cover"
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="auto"
-        aria-hidden
-      >
-        <source src="/hero.mp4" type="video/mp4" />
-      </video>
+      <HeroBackdrop />
 
-      <div
-        className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/45 to-black/20"
+      <motion.div
+        className="pointer-events-none absolute inset-0"
         aria-hidden
-      />
-      <div
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-[42%] bg-gradient-to-t from-black via-black/50 to-transparent"
-        aria-hidden
-      />
-      <div
-        className="pointer-events-none absolute inset-0 opacity-40 mix-blend-overlay"
-        style={{
-          backgroundImage: "url(/pattern.webp)",
-          backgroundRepeat: "repeat",
-          backgroundSize: "180px 180px",
-        }}
-        aria-hidden
-      />
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5, ease: motionEase, delay: 0.05 }}
+      >
+        <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/45 to-black/20" />
+        <div className="absolute inset-x-0 bottom-0 h-[42%] bg-gradient-to-t from-black via-black/50 to-transparent" />
+        <div
+          className="absolute inset-0 opacity-40 mix-blend-overlay"
+          style={{
+            backgroundImage: "url(/pattern.webp)",
+            backgroundRepeat: "repeat",
+            backgroundSize: "180px 180px",
+          }}
+        />
+      </motion.div>
 
       <header className="relative z-20 flex items-center justify-between px-6 py-6 sm:px-10 lg:px-14">
         <Link href="/" className="inline-flex" aria-label="Lótus">
@@ -70,23 +108,31 @@ export function LotusHero() {
         </button>
       </header>
 
-      {open ? (
-        <nav className="absolute inset-x-0 top-20 z-20 px-6 sm:px-10 lg:px-14">
-          <ul className="w-fit space-y-3 rounded-md bg-black/55 px-5 py-4 backdrop-blur-sm">
-            {links.map((link) => (
-              <li key={link.href}>
-                <a
-                  href={link.href}
-                  className="text-sm tracking-wide text-white/90 hover:text-white"
-                  onClick={() => setOpen(false)}
-                >
-                  {link.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </nav>
-      ) : null}
+      <AnimatePresence>
+        {open ? (
+          <motion.nav
+            className="absolute inset-x-0 top-20 z-20 px-6 sm:px-10 lg:px-14"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.22, ease: motionEase }}
+          >
+            <ul className="w-fit space-y-3 rounded-md bg-black/55 px-5 py-4 backdrop-blur-sm">
+              {links.map((link) => (
+                <li key={link.href}>
+                  <a
+                    href={link.href}
+                    className="text-sm tracking-wide text-white/90 hover:text-white"
+                    onClick={() => setOpen(false)}
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </motion.nav>
+        ) : null}
+      </AnimatePresence>
 
       <motion.div
         className="absolute inset-0 z-10 flex flex-col justify-end px-6 pb-10 pt-24 sm:px-10 sm:pb-12 lg:px-14 lg:pb-14"
@@ -94,7 +140,12 @@ export function LotusHero() {
         animate="show"
         variants={{
           hidden: {},
-          show: { transition: { staggerChildren: 0.12, delayChildren: 0.08 } },
+          show: {
+            transition: {
+              staggerChildren: 0.12,
+              delayChildren: 0.15,
+            },
+          },
         }}
       >
         <motion.h1 className="max-w-md text-[1.7rem] leading-[1.12] tracking-tight text-white sm:text-4xl lg:text-[2.35rem]" variants={fadeUp}>
