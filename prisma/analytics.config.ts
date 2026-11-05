@@ -7,6 +7,6 @@ loadEnv();
 export default defineConfig({
   schema: "analytics.prisma",
   datasource: {
-    url: process.env["DATABASE_URL_ANALYTICS"],
+    url: process.env["DATABASE_URL"],
   },
 });

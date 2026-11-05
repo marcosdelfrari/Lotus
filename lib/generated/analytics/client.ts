@@ -43,7 +43,7 @@ export { Prisma }
 
 /**
  * Model User
- * Espelho somente leitura/escrita nas tabelas do Analytics. Migrate roda no projeto Analytics.
+ * Espelho das tabelas compartilhadas (Analytics/Fractal). Migrate roda no Fractal-Api.
  */
 export type User = Prisma.UserModel
 /**

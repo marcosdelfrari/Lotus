@@ -27,16 +27,19 @@ export type AggregateAccessGrantCompany = {
 export type AccessGrantCompanyMinAggregateOutputType = {
   grantId: string | null
   companyId: string | null
+  role: $Enums.CompanyAccessRole | null
 }
 
 export type AccessGrantCompanyMaxAggregateOutputType = {
   grantId: string | null
   companyId: string | null
+  role: $Enums.CompanyAccessRole | null
 }
 
 export type AccessGrantCompanyCountAggregateOutputType = {
   grantId: number
   companyId: number
+  role: number
   _all: number
 }
 
@@ -44,16 +47,19 @@ export type AccessGrantCompanyCountAggregateOutputType = {
 export type AccessGrantCompanyMinAggregateInputType = {
   grantId?: true
   companyId?: true
+  role?: true
 }
 
 export type AccessGrantCompanyMaxAggregateInputType = {
   grantId?: true
   companyId?: true
+  role?: true
 }
 
 export type AccessGrantCompanyCountAggregateInputType = {
   grantId?: true
   companyId?: true
+  role?: true
   _all?: true
 }
 
@@ -132,6 +138,7 @@ export type AccessGrantCompanyGroupByArgs<ExtArgs extends runtime.Types.Extensio
 export type AccessGrantCompanyGroupByOutputType = {
   grantId: string
   companyId: string
+  role: $Enums.CompanyAccessRole
   _count: AccessGrantCompanyCountAggregateOutputType | null
   _min: AccessGrantCompanyMinAggregateOutputType | null
   _max: AccessGrantCompanyMaxAggregateOutputType | null
@@ -158,6 +165,7 @@ export type AccessGrantCompanyWhereInput = {
   NOT?: Prisma.AccessGrantCompanyWhereInput | Prisma.AccessGrantCompanyWhereInput[]
   grantId?: Prisma.StringFilter<"AccessGrantCompany"> | string
   companyId?: Prisma.StringFilter<"AccessGrantCompany"> | string
+  role?: Prisma.EnumCompanyAccessRoleFilter<"AccessGrantCompany"> | $Enums.CompanyAccessRole
   grant?: Prisma.XOR<Prisma.AccessGrantScalarRelationFilter, Prisma.AccessGrantWhereInput>
   company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
 }
@@ -165,6 +173,7 @@ export type AccessGrantCompanyWhereInput = {
 export type AccessGrantCompanyOrderByWithRelationInput = {
   grantId?: Prisma.SortOrder
   companyId?: Prisma.SortOrder
+  role?: Prisma.SortOrder
   grant?: Prisma.AccessGrantOrderByWithRelationInput
   company?: Prisma.CompanyOrderByWithRelationInput
 }
@@ -176,6 +185,7 @@ export type AccessGrantCompanyWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.AccessGrantCompanyWhereInput | Prisma.AccessGrantCompanyWhereInput[]
   grantId?: Prisma.StringFilter<"AccessGrantCompany"> | string
   companyId?: Prisma.StringFilter<"AccessGrantCompany"> | string
+  role?: Prisma.EnumCompanyAccessRoleFilter<"AccessGrantCompany"> | $Enums.CompanyAccessRole
   grant?: Prisma.XOR<Prisma.AccessGrantScalarRelationFilter, Prisma.AccessGrantWhereInput>
   company?: Prisma.XOR<Prisma.CompanyScalarRelationFilter, Prisma.CompanyWhereInput>
 }, "grantId_companyId">
@@ -183,6 +193,7 @@ export type AccessGrantCompanyWhereUniqueInput = Prisma.AtLeast<{
 export type AccessGrantCompanyOrderByWithAggregationInput = {
   grantId?: Prisma.SortOrder
   companyId?: Prisma.SortOrder
+  role?: Prisma.SortOrder
   _count?: Prisma.AccessGrantCompanyCountOrderByAggregateInput
   _max?: Prisma.AccessGrantCompanyMaxOrderByAggregateInput
   _min?: Prisma.AccessGrantCompanyMinOrderByAggregateInput
@@ -194,9 +205,11 @@ export type AccessGrantCompanyScalarWhereWithAggregatesInput = {
   NOT?: Prisma.AccessGrantCompanyScalarWhereWithAggregatesInput | Prisma.AccessGrantCompanyScalarWhereWithAggregatesInput[]
   grantId?: Prisma.StringWithAggregatesFilter<"AccessGrantCompany"> | string
   companyId?: Prisma.StringWithAggregatesFilter<"AccessGrantCompany"> | string
+  role?: Prisma.EnumCompanyAccessRoleWithAggregatesFilter<"AccessGrantCompany"> | $Enums.CompanyAccessRole
 }
 
 export type AccessGrantCompanyCreateInput = {
+  role?: $Enums.CompanyAccessRole
   grant: Prisma.AccessGrantCreateNestedOneWithoutCompaniesInput
   company: Prisma.CompanyCreateNestedOneWithoutGrantLinksInput
 }
@@ -204,9 +217,11 @@ export type AccessGrantCompanyCreateInput = {
 export type AccessGrantCompanyUncheckedCreateInput = {
   grantId: string
   companyId: string
+  role?: $Enums.CompanyAccessRole
 }
 
 export type AccessGrantCompanyUpdateInput = {
+  role?: Prisma.EnumCompanyAccessRoleFieldUpdateOperationsInput | $Enums.CompanyAccessRole
   grant?: Prisma.AccessGrantUpdateOneRequiredWithoutCompaniesNestedInput
   company?: Prisma.CompanyUpdateOneRequiredWithoutGrantLinksNestedInput
 }
@@ -214,20 +229,23 @@ export type AccessGrantCompanyUpdateInput = {
 export type AccessGrantCompanyUncheckedUpdateInput = {
   grantId?: Prisma.StringFieldUpdateOperationsInput | string
   companyId?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumCompanyAccessRoleFieldUpdateOperationsInput | $Enums.CompanyAccessRole
 }
 
 export type AccessGrantCompanyCreateManyInput = {
   grantId: string
   companyId: string
+  role?: $Enums.CompanyAccessRole
 }
 
 export type AccessGrantCompanyUpdateManyMutationInput = {
-
+  role?: Prisma.EnumCompanyAccessRoleFieldUpdateOperationsInput | $Enums.CompanyAccessRole
 }
 
 export type AccessGrantCompanyUncheckedUpdateManyInput = {
   grantId?: Prisma.StringFieldUpdateOperationsInput | string
   companyId?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumCompanyAccessRoleFieldUpdateOperationsInput | $Enums.CompanyAccessRole
 }
 
 export type AccessGrantCompanyListRelationFilter = {
@@ -248,16 +266,19 @@ export type AccessGrantCompanyGrantIdCompanyIdCompoundUniqueInput = {
 export type AccessGrantCompanyCountOrderByAggregateInput = {
   grantId?: Prisma.SortOrder
   companyId?: Prisma.SortOrder
+  role?: Prisma.SortOrder
 }
 
 export type AccessGrantCompanyMaxOrderByAggregateInput = {
   grantId?: Prisma.SortOrder
   companyId?: Prisma.SortOrder
+  role?: Prisma.SortOrder
 }
 
 export type AccessGrantCompanyMinOrderByAggregateInput = {
   grantId?: Prisma.SortOrder
   companyId?: Prisma.SortOrder
+  role?: Prisma.SortOrder
 }
 
 export type AccessGrantCompanyCreateNestedManyWithoutCompanyInput = {
@@ -344,12 +365,18 @@ export type AccessGrantCompanyUncheckedUpdateManyWithoutGrantNestedInput = {
   deleteMany?: Prisma.AccessGrantCompanyScalarWhereInput | Prisma.AccessGrantCompanyScalarWhereInput[]
 }
 
+export type EnumCompanyAccessRoleFieldUpdateOperationsInput = {
+  set?: $Enums.CompanyAccessRole
+}
+
 export type AccessGrantCompanyCreateWithoutCompanyInput = {
+  role?: $Enums.CompanyAccessRole
   grant: Prisma.AccessGrantCreateNestedOneWithoutCompaniesInput
 }
 
 export type AccessGrantCompanyUncheckedCreateWithoutCompanyInput = {
   grantId: string
+  role?: $Enums.CompanyAccessRole
 }
 
 export type AccessGrantCompanyCreateOrConnectWithoutCompanyInput = {
@@ -384,14 +411,17 @@ export type AccessGrantCompanyScalarWhereInput = {
   NOT?: Prisma.AccessGrantCompanyScalarWhereInput | Prisma.AccessGrantCompanyScalarWhereInput[]
   grantId?: Prisma.StringFilter<"AccessGrantCompany"> | string
   companyId?: Prisma.StringFilter<"AccessGrantCompany"> | string
+  role?: Prisma.EnumCompanyAccessRoleFilter<"AccessGrantCompany"> | $Enums.CompanyAccessRole
 }
 
 export type AccessGrantCompanyCreateWithoutGrantInput = {
+  role?: $Enums.CompanyAccessRole
   company: Prisma.CompanyCreateNestedOneWithoutGrantLinksInput
 }
 
 export type AccessGrantCompanyUncheckedCreateWithoutGrantInput = {
   companyId: string
+  role?: $Enums.CompanyAccessRole
 }
 
 export type AccessGrantCompanyCreateOrConnectWithoutGrantInput = {
@@ -422,34 +452,42 @@ export type AccessGrantCompanyUpdateManyWithWhereWithoutGrantInput = {
 
 export type AccessGrantCompanyCreateManyCompanyInput = {
   grantId: string
+  role?: $Enums.CompanyAccessRole
 }
 
 export type AccessGrantCompanyUpdateWithoutCompanyInput = {
+  role?: Prisma.EnumCompanyAccessRoleFieldUpdateOperationsInput | $Enums.CompanyAccessRole
   grant?: Prisma.AccessGrantUpdateOneRequiredWithoutCompaniesNestedInput
 }
 
 export type AccessGrantCompanyUncheckedUpdateWithoutCompanyInput = {
   grantId?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumCompanyAccessRoleFieldUpdateOperationsInput | $Enums.CompanyAccessRole
 }
 
 export type AccessGrantCompanyUncheckedUpdateManyWithoutCompanyInput = {
   grantId?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumCompanyAccessRoleFieldUpdateOperationsInput | $Enums.CompanyAccessRole
 }
 
 export type AccessGrantCompanyCreateManyGrantInput = {
   companyId: string
+  role?: $Enums.CompanyAccessRole
 }
 
 export type AccessGrantCompanyUpdateWithoutGrantInput = {
+  role?: Prisma.EnumCompanyAccessRoleFieldUpdateOperationsInput | $Enums.CompanyAccessRole
   company?: Prisma.CompanyUpdateOneRequiredWithoutGrantLinksNestedInput
 }
 
 export type AccessGrantCompanyUncheckedUpdateWithoutGrantInput = {
   companyId?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumCompanyAccessRoleFieldUpdateOperationsInput | $Enums.CompanyAccessRole
 }
 
 export type AccessGrantCompanyUncheckedUpdateManyWithoutGrantInput = {
   companyId?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumCompanyAccessRoleFieldUpdateOperationsInput | $Enums.CompanyAccessRole
 }
 
 
@@ -457,6 +495,7 @@ export type AccessGrantCompanyUncheckedUpdateManyWithoutGrantInput = {
 export type AccessGrantCompanySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   grantId?: boolean
   companyId?: boolean
+  role?: boolean
   grant?: boolean | Prisma.AccessGrantDefaultArgs<ExtArgs>
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["accessGrantCompany"]>
@@ -464,6 +503,7 @@ export type AccessGrantCompanySelect<ExtArgs extends runtime.Types.Extensions.In
 export type AccessGrantCompanySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   grantId?: boolean
   companyId?: boolean
+  role?: boolean
   grant?: boolean | Prisma.AccessGrantDefaultArgs<ExtArgs>
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["accessGrantCompany"]>
@@ -471,6 +511,7 @@ export type AccessGrantCompanySelectCreateManyAndReturn<ExtArgs extends runtime.
 export type AccessGrantCompanySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   grantId?: boolean
   companyId?: boolean
+  role?: boolean
   grant?: boolean | Prisma.AccessGrantDefaultArgs<ExtArgs>
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["accessGrantCompany"]>
@@ -478,9 +519,10 @@ export type AccessGrantCompanySelectUpdateManyAndReturn<ExtArgs extends runtime.
 export type AccessGrantCompanySelectScalar = {
   grantId?: boolean
   companyId?: boolean
+  role?: boolean
 }
 
-export type AccessGrantCompanyOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"grantId" | "companyId", ExtArgs["result"]["accessGrantCompany"]>
+export type AccessGrantCompanyOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"grantId" | "companyId" | "role", ExtArgs["result"]["accessGrantCompany"]>
 export type AccessGrantCompanyInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   grant?: boolean | Prisma.AccessGrantDefaultArgs<ExtArgs>
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
@@ -503,6 +545,7 @@ export type $AccessGrantCompanyPayload<ExtArgs extends runtime.Types.Extensions.
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     grantId: string
     companyId: string
+    role: $Enums.CompanyAccessRole
   }, ExtArgs["result"]["accessGrantCompany"]>
   composites: {}
 }
@@ -930,6 +973,7 @@ export interface Prisma__AccessGrantCompanyClient<T, Null = never, ExtArgs exten
 export interface AccessGrantCompanyFieldRefs {
   readonly grantId: Prisma.FieldRef<"AccessGrantCompany", 'String'>
   readonly companyId: Prisma.FieldRef<"AccessGrantCompany", 'String'>
+  readonly role: Prisma.FieldRef<"AccessGrantCompany", 'CompanyAccessRole'>
 }
     
 

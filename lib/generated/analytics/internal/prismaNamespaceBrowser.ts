@@ -92,7 +92,8 @@ export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof User
 export const LoginOtpScalarFieldEnum = {
   email: 'email',
   codeHash: 'codeHash',
-  expiresAt: 'expiresAt'
+  expiresAt: 'expiresAt',
+  attemptCount: 'attemptCount'
 } as const
 
 export type LoginOtpScalarFieldEnum = (typeof LoginOtpScalarFieldEnum)[keyof typeof LoginOtpScalarFieldEnum]
@@ -134,7 +135,8 @@ export type AccessGrantScalarFieldEnum = (typeof AccessGrantScalarFieldEnum)[key
 
 export const AccessGrantCompanyScalarFieldEnum = {
   grantId: 'grantId',
-  companyId: 'companyId'
+  companyId: 'companyId',
+  role: 'role'
 } as const
 
 export type AccessGrantCompanyScalarFieldEnum = (typeof AccessGrantCompanyScalarFieldEnum)[keyof typeof AccessGrantCompanyScalarFieldEnum]

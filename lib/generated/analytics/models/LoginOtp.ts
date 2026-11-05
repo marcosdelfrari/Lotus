@@ -20,46 +20,70 @@ export type LoginOtpModel = runtime.Types.Result.DefaultSelection<Prisma.$LoginO
 
 export type AggregateLoginOtp = {
   _count: LoginOtpCountAggregateOutputType | null
+  _avg: LoginOtpAvgAggregateOutputType | null
+  _sum: LoginOtpSumAggregateOutputType | null
   _min: LoginOtpMinAggregateOutputType | null
   _max: LoginOtpMaxAggregateOutputType | null
+}
+
+export type LoginOtpAvgAggregateOutputType = {
+  attemptCount: number | null
+}
+
+export type LoginOtpSumAggregateOutputType = {
+  attemptCount: number | null
 }
 
 export type LoginOtpMinAggregateOutputType = {
   email: string | null
   codeHash: string | null
   expiresAt: Date | null
+  attemptCount: number | null
 }
 
 export type LoginOtpMaxAggregateOutputType = {
   email: string | null
   codeHash: string | null
   expiresAt: Date | null
+  attemptCount: number | null
 }
 
 export type LoginOtpCountAggregateOutputType = {
   email: number
   codeHash: number
   expiresAt: number
+  attemptCount: number
   _all: number
 }
 
+
+export type LoginOtpAvgAggregateInputType = {
+  attemptCount?: true
+}
+
+export type LoginOtpSumAggregateInputType = {
+  attemptCount?: true
+}
 
 export type LoginOtpMinAggregateInputType = {
   email?: true
   codeHash?: true
   expiresAt?: true
+  attemptCount?: true
 }
 
 export type LoginOtpMaxAggregateInputType = {
   email?: true
   codeHash?: true
   expiresAt?: true
+  attemptCount?: true
 }
 
 export type LoginOtpCountAggregateInputType = {
   email?: true
   codeHash?: true
   expiresAt?: true
+  attemptCount?: true
   _all?: true
 }
 
@@ -101,6 +125,18 @@ export type LoginOtpAggregateArgs<ExtArgs extends runtime.Types.Extensions.Inter
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: LoginOtpAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: LoginOtpSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: LoginOtpMinAggregateInputType
@@ -131,6 +167,8 @@ export type LoginOtpGroupByArgs<ExtArgs extends runtime.Types.Extensions.Interna
   take?: number
   skip?: number
   _count?: LoginOtpCountAggregateInputType | true
+  _avg?: LoginOtpAvgAggregateInputType
+  _sum?: LoginOtpSumAggregateInputType
   _min?: LoginOtpMinAggregateInputType
   _max?: LoginOtpMaxAggregateInputType
 }
@@ -139,7 +177,10 @@ export type LoginOtpGroupByOutputType = {
   email: string
   codeHash: string
   expiresAt: Date
+  attemptCount: number
   _count: LoginOtpCountAggregateOutputType | null
+  _avg: LoginOtpAvgAggregateOutputType | null
+  _sum: LoginOtpSumAggregateOutputType | null
   _min: LoginOtpMinAggregateOutputType | null
   _max: LoginOtpMaxAggregateOutputType | null
 }
@@ -166,12 +207,14 @@ export type LoginOtpWhereInput = {
   email?: Prisma.StringFilter<"LoginOtp"> | string
   codeHash?: Prisma.StringFilter<"LoginOtp"> | string
   expiresAt?: Prisma.DateTimeFilter<"LoginOtp"> | Date | string
+  attemptCount?: Prisma.IntFilter<"LoginOtp"> | number
 }
 
 export type LoginOtpOrderByWithRelationInput = {
   email?: Prisma.SortOrder
   codeHash?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
+  attemptCount?: Prisma.SortOrder
 }
 
 export type LoginOtpWhereUniqueInput = Prisma.AtLeast<{
@@ -181,15 +224,19 @@ export type LoginOtpWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.LoginOtpWhereInput | Prisma.LoginOtpWhereInput[]
   codeHash?: Prisma.StringFilter<"LoginOtp"> | string
   expiresAt?: Prisma.DateTimeFilter<"LoginOtp"> | Date | string
+  attemptCount?: Prisma.IntFilter<"LoginOtp"> | number
 }, "email">
 
 export type LoginOtpOrderByWithAggregationInput = {
   email?: Prisma.SortOrder
   codeHash?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
+  attemptCount?: Prisma.SortOrder
   _count?: Prisma.LoginOtpCountOrderByAggregateInput
+  _avg?: Prisma.LoginOtpAvgOrderByAggregateInput
   _max?: Prisma.LoginOtpMaxOrderByAggregateInput
   _min?: Prisma.LoginOtpMinOrderByAggregateInput
+  _sum?: Prisma.LoginOtpSumOrderByAggregateInput
 }
 
 export type LoginOtpScalarWhereWithAggregatesInput = {
@@ -199,66 +246,93 @@ export type LoginOtpScalarWhereWithAggregatesInput = {
   email?: Prisma.StringWithAggregatesFilter<"LoginOtp"> | string
   codeHash?: Prisma.StringWithAggregatesFilter<"LoginOtp"> | string
   expiresAt?: Prisma.DateTimeWithAggregatesFilter<"LoginOtp"> | Date | string
+  attemptCount?: Prisma.IntWithAggregatesFilter<"LoginOtp"> | number
 }
 
 export type LoginOtpCreateInput = {
   email: string
   codeHash: string
   expiresAt: Date | string
+  attemptCount?: number
 }
 
 export type LoginOtpUncheckedCreateInput = {
   email: string
   codeHash: string
   expiresAt: Date | string
+  attemptCount?: number
 }
 
 export type LoginOtpUpdateInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   codeHash?: Prisma.StringFieldUpdateOperationsInput | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  attemptCount?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type LoginOtpUncheckedUpdateInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   codeHash?: Prisma.StringFieldUpdateOperationsInput | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  attemptCount?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type LoginOtpCreateManyInput = {
   email: string
   codeHash: string
   expiresAt: Date | string
+  attemptCount?: number
 }
 
 export type LoginOtpUpdateManyMutationInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   codeHash?: Prisma.StringFieldUpdateOperationsInput | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  attemptCount?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type LoginOtpUncheckedUpdateManyInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   codeHash?: Prisma.StringFieldUpdateOperationsInput | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  attemptCount?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type LoginOtpCountOrderByAggregateInput = {
   email?: Prisma.SortOrder
   codeHash?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
+  attemptCount?: Prisma.SortOrder
+}
+
+export type LoginOtpAvgOrderByAggregateInput = {
+  attemptCount?: Prisma.SortOrder
 }
 
 export type LoginOtpMaxOrderByAggregateInput = {
   email?: Prisma.SortOrder
   codeHash?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
+  attemptCount?: Prisma.SortOrder
 }
 
 export type LoginOtpMinOrderByAggregateInput = {
   email?: Prisma.SortOrder
   codeHash?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
+  attemptCount?: Prisma.SortOrder
+}
+
+export type LoginOtpSumOrderByAggregateInput = {
+  attemptCount?: Prisma.SortOrder
+}
+
+export type IntFieldUpdateOperationsInput = {
+  set?: number
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
 }
 
 
@@ -267,27 +341,31 @@ export type LoginOtpSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   email?: boolean
   codeHash?: boolean
   expiresAt?: boolean
+  attemptCount?: boolean
 }, ExtArgs["result"]["loginOtp"]>
 
 export type LoginOtpSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   email?: boolean
   codeHash?: boolean
   expiresAt?: boolean
+  attemptCount?: boolean
 }, ExtArgs["result"]["loginOtp"]>
 
 export type LoginOtpSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   email?: boolean
   codeHash?: boolean
   expiresAt?: boolean
+  attemptCount?: boolean
 }, ExtArgs["result"]["loginOtp"]>
 
 export type LoginOtpSelectScalar = {
   email?: boolean
   codeHash?: boolean
   expiresAt?: boolean
+  attemptCount?: boolean
 }
 
-export type LoginOtpOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"email" | "codeHash" | "expiresAt", ExtArgs["result"]["loginOtp"]>
+export type LoginOtpOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"email" | "codeHash" | "expiresAt" | "attemptCount", ExtArgs["result"]["loginOtp"]>
 
 export type $LoginOtpPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "LoginOtp"
@@ -296,6 +374,7 @@ export type $LoginOtpPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     email: string
     codeHash: string
     expiresAt: Date
+    attemptCount: number
   }, ExtArgs["result"]["loginOtp"]>
   composites: {}
 }
@@ -722,6 +801,7 @@ export interface LoginOtpFieldRefs {
   readonly email: Prisma.FieldRef<"LoginOtp", 'String'>
   readonly codeHash: Prisma.FieldRef<"LoginOtp", 'String'>
   readonly expiresAt: Prisma.FieldRef<"LoginOtp", 'DateTime'>
+  readonly attemptCount: Prisma.FieldRef<"LoginOtp", 'Int'>
 }
     
 

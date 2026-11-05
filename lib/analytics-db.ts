@@ -4,7 +4,7 @@ import { PrismaClient } from "@/lib/generated/analytics/client";
 import { createAppPool, disposePool } from "@/lib/pg-pool";
 
 /** Bump quando o espelho Analytics mudar — força novo client no hot reload. */
-const ANALYTICS_SCHEMA_TOKEN = "20261030120000_user_password_hash";
+const ANALYTICS_SCHEMA_TOKEN = "20261105120000_schemas_por_categoria";
 
 const globalForAnalytics = globalThis as unknown as {
   analyticsPrisma: PrismaClient | undefined;
@@ -36,9 +36,9 @@ async function disposeAnalyticsClient() {
 }
 
 function createAnalyticsClient() {
-  const raw = process.env.DATABASE_URL_ANALYTICS;
+  const raw = process.env.DATABASE_URL;
   if (!raw) {
-    throw new Error("DATABASE_URL_ANALYTICS não está definida.");
+    throw new Error("DATABASE_URL não está definida.");
   }
   const pool = createAppPool(raw, "analytics");
   globalForAnalytics.analyticsPool = pool;

@@ -5,34 +5,47 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+  schemas  = ["dbo"]
 }
 
 enum Role {
   admin
   client
+
+  @@schema("dbo")
 }
 
-/// Espelho somente leitura/escrita nas tabelas do Analytics. Migrate roda no projeto Analytics.
+enum CompanyAccessRole {
+  proprietario @map("administrator")
+  analista     @map("analyst")
+
+  @@map("company_access_role")
+  @@schema("dbo")
+}
+
+/// Espelho das tabelas compartilhadas (Analytics/Fractal). Migrate roda no Fractal-Api.
 model User {
   id           String   @id @default(uuid())
   email        String   @unique
   name         String
-  /// Null = conta só Google (ou legado). Não apaga dados existentes.
   passwordHash String?  @map("password_hash")
   role         Role     @default(client)
   planActive   Boolean  @default(false) @map("plan_active")
   createdAt    DateTime @default(now()) @map("created_at")
   updatedAt    DateTime @updatedAt @map("updated_at")
 
-  @@map("users")
+  @@map("cad_usuario")
+  @@schema("dbo")
 }
 
 model LoginOtp {
-  email     String   @id
-  codeHash  String   @map("code_hash")
-  expiresAt DateTime @map("expires_at")
+  email        String   @id
+  codeHash     String   @map("code_hash")
+  expiresAt    DateTime @map("expires_at")
+  attemptCount Int      @default(0) @map("attempt_count")
 
-  @@map("login_otps")
+  @@map("aux_login_otp")
+  @@schema("dbo")
 }
 
 model Organization {
@@ -43,7 +56,8 @@ model Organization {
   companies    Company[]
   accessGrants AccessGrant[]
 
-  @@map("organizations")
+  @@map("cad_organizacao")
+  @@schema("dbo")
 }
 
 model Company {
@@ -57,30 +71,34 @@ model Company {
   grantLinks     AccessGrantCompany[]
 
   @@index([organizationId])
-  @@map("companies")
+  @@map("cad_empresa")
+  @@schema("dbo")
 }
 
 model AccessGrant {
-  id             String               @id @default(uuid())
-  organizationId String               @map("organization_id")
-  email          String
-  allCompanies   Boolean              @default(true) @map("all_companies")
+  id                String               @id @default(uuid())
+  organizationId    String               @map("organization_id")
+  email             String
+  allCompanies      Boolean              @default(true) @map("all_companies")
   isOwner        Boolean              @default(false) @map("is_owner")
-  createdAt      DateTime             @default(now()) @map("created_at")
-  organization   Organization         @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  companies      AccessGrantCompany[]
+  createdAt         DateTime             @default(now()) @map("created_at")
+  organization      Organization         @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  companies         AccessGrantCompany[]
 
   @@unique([organizationId, email])
   @@index([email])
-  @@map("access_grants")
+  @@map("cad_acesso")
+  @@schema("dbo")
 }
 
 model AccessGrantCompany {
-  grantId   String      @map("grant_id")
-  companyId String      @map("company_id")
-  grant     AccessGrant @relation(fields: [grantId], references: [id], onDelete: Cascade)
-  company   Company     @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  grantId   String            @map("grant_id")
+  companyId String            @map("company_id")
+  role      CompanyAccessRole @default(analista)
+  grant     AccessGrant       @relation(fields: [grantId], references: [id], onDelete: Cascade)
+  company   Company           @relation(fields: [companyId], references: [id], onDelete: Cascade)
 
   @@id([grantId, companyId])
-  @@map("access_grant_companies")
+  @@map("cad_acesso_empresa")
+  @@schema("dbo")
 }

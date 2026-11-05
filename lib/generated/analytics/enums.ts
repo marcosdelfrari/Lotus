@@ -15,3 +15,11 @@ export const Role = {
 } as const
 
 export type Role = (typeof Role)[keyof typeof Role]
+
+
+export const CompanyAccessRole = {
+  proprietario: 'proprietario',
+  analista: 'analista'
+} as const
+
+export type CompanyAccessRole = (typeof CompanyAccessRole)[keyof typeof CompanyAccessRole]

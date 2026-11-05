@@ -6,7 +6,7 @@ const errors: Record<string, string> = {
   invalido: "Não foi possível entrar com o Google. Tente de novo.",
   config: "Login com Google ainda não está configurado.",
   servidor:
-    "Não foi possível concluir o login. Verifique DATABASE_URL e se as migrações do Prisma foram aplicadas.",
+    "Não foi possível concluir o login. Verifique DATABASE_URL (banco fractal na VPS) e se as migrações do Fractal-Api foram aplicadas.",
 };
 
 export default async function LoginPage({

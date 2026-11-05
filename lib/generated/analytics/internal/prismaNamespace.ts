@@ -922,7 +922,8 @@ export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof User
 export const LoginOtpScalarFieldEnum = {
   email: 'email',
   codeHash: 'codeHash',
-  expiresAt: 'expiresAt'
+  expiresAt: 'expiresAt',
+  attemptCount: 'attemptCount'
 } as const
 
 export type LoginOtpScalarFieldEnum = (typeof LoginOtpScalarFieldEnum)[keyof typeof LoginOtpScalarFieldEnum]
@@ -964,7 +965,8 @@ export type AccessGrantScalarFieldEnum = (typeof AccessGrantScalarFieldEnum)[key
 
 export const AccessGrantCompanyScalarFieldEnum = {
   grantId: 'grantId',
-  companyId: 'companyId'
+  companyId: 'companyId',
+  role: 'role'
 } as const
 
 export type AccessGrantCompanyScalarFieldEnum = (typeof AccessGrantCompanyScalarFieldEnum)[keyof typeof AccessGrantCompanyScalarFieldEnum]
@@ -1060,6 +1062,34 @@ export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'In
  * Reference to a field of type 'Int[]'
  */
 export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+/**
+ * Reference to a field of type 'CompanyAccessRole'
+ */
+export type EnumCompanyAccessRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CompanyAccessRole'>
+    
+
+
+/**
+ * Reference to a field of type 'CompanyAccessRole[]'
+ */
+export type ListEnumCompanyAccessRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CompanyAccessRole[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Float'
+ */
+export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+/**
+ * Reference to a field of type 'Float[]'
+ */
+export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
     
 
 /**
