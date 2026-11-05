@@ -25,8 +25,8 @@ enum BillingItemStatus {
   paid
 }
 
-// Propostas ficam só no banco da Lótus. userId aponta para users.id no banco do Analytics, sem FK.
-// clientEmail espelha o login (Analytics) no save — evita join só para listar/enviar e permite achar proposta pelo e-mail.
+// Propostas, financeiro e planos de marketing ficam no mesmo banco `fractal` (schema public).
+// userId aponta para dbo.cad_usuario.id — sem FK entre schemas.
 model TrafficProposal {
   id     String @id @default(uuid())
   userId String @map("user_id")

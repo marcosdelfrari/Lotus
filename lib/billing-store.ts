@@ -280,6 +280,64 @@ export async function confirmBillingPayment(billingItemId: string) {
   return { ok: true as const };
 }
 
+export async function updateBillingDueDate(
+  billingItemId: string,
+  dueDateIso: string,
+) {
+  const trimmed = dueDateIso.trim().slice(0, 10);
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(trimmed)) {
+    return { error: "Informe uma data válida (AAAA-MM-DD)." } as const;
+  }
+  const parsed = dateOnly(trimmed);
+  if (Number.isNaN(parsed.getTime())) {
+    return { error: "Informe uma data válida." } as const;
+  }
+
+  const item = await prisma.proposalBillingItem.findUnique({
+    where: { id: billingItemId },
+    include: { proposal: true },
+  });
+
+  if (!item) {
+    return { error: "Fatura não encontrada." } as const;
+  }
+  if (item.status === BillingItemStatus.paid) {
+    return { error: "Não é possível alterar o vencimento de um item já pago." } as const;
+  }
+  if (item.proposal.status !== ProposalStatus.accepted) {
+    return { error: "Proposta não está aceita." } as const;
+  }
+
+  await prisma.proposalBillingItem.update({
+    where: { id: billingItemId },
+    data: { dueDate: parsed },
+  });
+
+  // Recalcula a cadeia: cada pendente com data seguinte fica +1 mês.
+  const laterDated = await prisma.proposalBillingItem.findMany({
+    where: {
+      proposalId: item.proposalId,
+      sequence: { gt: item.sequence },
+      status: BillingItemStatus.pending,
+      dueDate: { not: null },
+    },
+    orderBy: { sequence: "asc" },
+  });
+
+  let cursor = parsed;
+  for (const next of laterDated) {
+    cursor = addCalendarMonth(cursor);
+    await prisma.proposalBillingItem.update({
+      where: { id: next.id },
+      data: { dueDate: cursor },
+    });
+  }
+
+  await ensureInitialBillingForProposal(item.proposalId);
+
+  return { ok: true as const };
+}
+
 export async function revertBillingPayment(billingItemId: string) {
   const item = await prisma.proposalBillingItem.findUnique({
     where: { id: billingItemId },

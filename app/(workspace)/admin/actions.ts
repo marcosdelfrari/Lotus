@@ -9,6 +9,7 @@ import { saveMarketingPlan } from "@/lib/marketing-plans-store";
 import {
   confirmBillingPayment,
   revertBillingPayment,
+  updateBillingDueDate,
 } from "@/lib/billing-store";
 import {
   adminCreateAndSendProposal,
@@ -145,6 +146,18 @@ export async function adminConfirmBillingPaymentAction(billingItemId: string) {
 export async function adminRevertBillingPaymentAction(billingItemId: string) {
   await requireAdmin();
   const result = await revertBillingPayment(billingItemId);
+  if ("error" in result) return result;
+  revalidateAdminRoutes();
+  revalidateServicosRoutes();
+  return { ok: true as const };
+}
+
+export async function adminUpdateBillingDueDateAction(
+  billingItemId: string,
+  dueDate: string,
+) {
+  await requireAdmin();
+  const result = await updateBillingDueDate(billingItemId, dueDate);
   if ("error" in result) return result;
   revalidateAdminRoutes();
   revalidateServicosRoutes();

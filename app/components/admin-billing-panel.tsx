@@ -1,13 +1,93 @@
 "use client";
 
-import { useTransition } from "react";
+import { useState, useTransition } from "react";
 import {
   adminConfirmBillingPaymentAction,
   adminRevertBillingPaymentAction,
+  adminUpdateBillingDueDateAction,
 } from "@/app/(workspace)/admin/actions";
 import { formatCurrency, formatShortDate } from "@/lib/format";
 import type { BillingItemWithClient } from "@/lib/billing-store";
 import { BillingItemStatus } from "@/lib/generated/prisma/browser";
+
+function DueDateControls({
+  row,
+  editingId,
+  draftDate,
+  dateError,
+  isPending,
+  onStartEdit,
+  onCancel,
+  onDraftChange,
+  onSave,
+}: {
+  row: { id: string; dueDate: string | null; status: BillingItemStatus };
+  editingId: string | null;
+  draftDate: string;
+  dateError: string | null;
+  isPending: boolean;
+  onStartEdit: (row: { id: string; dueDate: string | null }) => void;
+  onCancel: () => void;
+  onDraftChange: (value: string) => void;
+  onSave: (id: string) => void;
+}) {
+  if (row.status === BillingItemStatus.paid) {
+    return (
+      <p className="text-[11px] text-muted">
+        {row.dueDate ? `Venc. ${formatShortDate(row.dueDate)}` : "Sem vencimento"}
+      </p>
+    );
+  }
+
+  if (editingId === row.id) {
+    return (
+      <div className="mt-1 flex flex-wrap items-center gap-2">
+        <input
+          type="date"
+          value={draftDate}
+          onChange={(event) => onDraftChange(event.target.value)}
+          className="rounded-md border border-border bg-background px-2 py-1 text-[12px]"
+          disabled={isPending}
+        />
+        <button
+          type="button"
+          disabled={isPending || !draftDate}
+          onClick={() => onSave(row.id)}
+          className="rounded-full bg-foreground px-3 py-1 text-[11px] font-medium text-background disabled:opacity-60"
+        >
+          Salvar
+        </button>
+        <button
+          type="button"
+          disabled={isPending}
+          onClick={onCancel}
+          className="rounded-full border border-border px-3 py-1 text-[11px] text-muted-foreground hover:bg-surface-elevated disabled:opacity-60"
+        >
+          Cancelar
+        </button>
+        {dateError ? (
+          <span className="w-full text-[11px] text-red-600">{dateError}</span>
+        ) : null}
+      </div>
+    );
+  }
+
+  return (
+    <div className="mt-0.5 flex flex-wrap items-center gap-2">
+      <p className="text-[11px] text-muted">
+        {row.dueDate ? `Venc. ${formatShortDate(row.dueDate)}` : "Data pendente"}
+      </p>
+      <button
+        type="button"
+        disabled={isPending}
+        onClick={() => onStartEdit(row)}
+        className="text-[11px] text-muted-foreground underline-offset-2 hover:text-foreground hover:underline disabled:opacity-60"
+      >
+        {row.dueDate ? "Alterar data" : "Definir data"}
+      </button>
+    </div>
+  );
+}
 
 export function AdminBillingPanel({
   pending,
@@ -19,6 +99,10 @@ export function AdminBillingPanel({
   proposalCompanyName?: string;
 }) {
   const [isPending, startTransition] = useTransition();
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [draftDate, setDraftDate] = useState("");
+  const [dateError, setDateError] = useState<string | null>(null);
+
   const payableId = proposalItems?.find(
     (row) => row.status === BillingItemStatus.pending && row.dueDate,
   )?.id;
@@ -38,13 +122,55 @@ export function AdminBillingPanel({
     });
   }
 
+  function startEditDueDate(row: { id: string; dueDate: string | null }) {
+    setEditingId(row.id);
+    setDraftDate(row.dueDate ?? "");
+    setDateError(null);
+  }
+
+  function cancelEditDueDate() {
+    setEditingId(null);
+    setDraftDate("");
+    setDateError(null);
+  }
+
+  function saveDueDate(id: string) {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(draftDate.trim())) {
+      setDateError("Escolha uma data válida.");
+      return;
+    }
+    startTransition(async () => {
+      const result = await adminUpdateBillingDueDateAction(id, draftDate.trim());
+      if (result && "error" in result) {
+        setDateError(result.error ?? "Não foi possível salvar.");
+        return;
+      }
+      cancelEditDueDate();
+    });
+  }
+
+  const dueDateProps = {
+    editingId,
+    draftDate,
+    dateError,
+    isPending,
+    onStartEdit: startEditDueDate,
+    onCancel: cancelEditDueDate,
+    onDraftChange: (value: string) => {
+      setDraftDate(value);
+      setDateError(null);
+    },
+    onSave: saveDueDate,
+  };
+
   return (
     <div className="space-y-8">
       <section>
         <h2 className="text-sm font-medium">Pagamentos pendentes</h2>
         <p className="mt-1 text-[12px] text-muted-foreground">
           Confirme quando o PIX cair. A primeira mensalidade fica com data pendente
-          até a implantação; depois, cada vencimento é 1 mês após o anterior.
+          até a implantação; depois, cada vencimento é 1 mês após o anterior. Dá para
+          definir ou alterar a data manualmente.
         </p>
         {pending.length === 0 ? (
           <p className="mt-4 rounded-xl border border-dashed border-border px-4 py-6 text-center text-sm text-muted-foreground">
@@ -69,12 +195,8 @@ export function AdminBillingPanel({
                   </p>
                   <p className="mt-1 font-mono text-sm tabular-nums">
                     {formatCurrency(row.amount)}
-                    {row.dueDate ? (
-                      <span className="ml-2 text-[11px] font-sans text-muted">
-                        · venc. {formatShortDate(row.dueDate)}
-                      </span>
-                    ) : null}
                   </p>
+                  <DueDateControls row={row} {...dueDateProps} />
                 </div>
                 <button
                   type="button"
@@ -103,11 +225,7 @@ export function AdminBillingPanel({
               >
                 <div>
                   <p className="text-sm">{row.label}</p>
-                  <p className="text-[11px] text-muted">
-                    {row.dueDate
-                      ? `Venc. ${formatShortDate(row.dueDate)}`
-                      : "Data pendente"}
-                  </p>
+                  <DueDateControls row={row} {...dueDateProps} />
                 </div>
                 <div className="flex items-center gap-3">
                   <span className="font-mono text-sm tabular-nums">
